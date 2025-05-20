@@ -3,8 +3,11 @@ extends CharacterBody2D
 
 const SPEED := 130.0
 const JUMP_VELOCITY := -300.0
+const MAX_HEALTH := 3
 
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
+
+var current_health: int = MAX_HEALTH
 
 func _physics_process(delta: float) -> void:
 	# Add the gravity.
@@ -32,8 +35,6 @@ func _physics_process(delta: float) -> void:
 			animated_sprite.play("run")
 	else:
 		animated_sprite.play("jump")
-	
-
 	
 	# Apply movement
 	if direction:
