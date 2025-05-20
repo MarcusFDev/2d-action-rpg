@@ -39,7 +39,6 @@ atlas = ExtResource("1_5e2k1")
 region = Rect2(128, 128, 32, 32)
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_04xbm"]
-load_path = "res://.godot/imported/Heart.png-31c836a7fc07a4aec24d397b5372a25c.ctex"
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_s1rge"]
 atlas = SubResource("CompressedTexture2D_04xbm")
@@ -90,7 +89,6 @@ atlas = SubResource("CompressedTexture2D_04xbm")
 region = Rect2(96, 64, 32, 32)
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_0kg2g"]
-load_path = "res://.godot/imported/heartset.png-ecc87aff43514bdaa6022d1d5df5905a.ctex"
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_t3ndm"]
 atlas = SubResource("CompressedTexture2D_0kg2g")
@@ -179,8 +177,8 @@ animations = [{
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_ygih5")
-animation = &"lose_health"
-frame = 2
-frame_progress = 0.279202
+animation = &"gain_health"
+frame = 8
+frame_progress = 1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
