@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://dpg6pyjck4uj5"]
+[gd_scene load_steps=25 format=3 uid="uid://dpg6pyjck4uj5"]
 
 [ext_resource type="Texture2D" uid="uid://coqgspn22jmtr" path="res://assets/sprites/hearts.png" id="1_5e2k1"]
 
@@ -38,61 +38,57 @@ region = Rect2(96, 128, 32, 32)
 atlas = ExtResource("1_5e2k1")
 region = Rect2(128, 128, 32, 32)
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_04xbm"]
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_s1rge"]
-atlas = SubResource("CompressedTexture2D_04xbm")
-region = Rect2(0, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_mo1f0"]
-atlas = SubResource("CompressedTexture2D_04xbm")
+[sub_resource type="AtlasTexture" id="AtlasTexture_5e2k1"]
+atlas = ExtResource("1_5e2k1")
 region = Rect2(32, 0, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_mwdll"]
-atlas = SubResource("CompressedTexture2D_04xbm")
+[sub_resource type="AtlasTexture" id="AtlasTexture_04xbm"]
+atlas = ExtResource("1_5e2k1")
 region = Rect2(64, 0, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_uudlx"]
-atlas = SubResource("CompressedTexture2D_04xbm")
+[sub_resource type="AtlasTexture" id="AtlasTexture_s1rge"]
+atlas = ExtResource("1_5e2k1")
 region = Rect2(96, 0, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_1cvjs"]
-atlas = SubResource("CompressedTexture2D_04xbm")
+[sub_resource type="AtlasTexture" id="AtlasTexture_mo1f0"]
+atlas = ExtResource("1_5e2k1")
+region = Rect2(128, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mwdll"]
+atlas = ExtResource("1_5e2k1")
 region = Rect2(0, 32, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_wyqgl"]
-atlas = SubResource("CompressedTexture2D_04xbm")
+[sub_resource type="AtlasTexture" id="AtlasTexture_uudlx"]
+atlas = ExtResource("1_5e2k1")
 region = Rect2(32, 32, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_lun8b"]
-atlas = SubResource("CompressedTexture2D_04xbm")
+[sub_resource type="AtlasTexture" id="AtlasTexture_1cvjs"]
+atlas = ExtResource("1_5e2k1")
 region = Rect2(64, 32, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_ke852"]
-atlas = SubResource("CompressedTexture2D_04xbm")
+[sub_resource type="AtlasTexture" id="AtlasTexture_wyqgl"]
+atlas = ExtResource("1_5e2k1")
 region = Rect2(96, 32, 32, 32)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_lun8b"]
+atlas = ExtResource("1_5e2k1")
+region = Rect2(128, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ke852"]
+atlas = ExtResource("1_5e2k1")
+region = Rect2(0, 64, 32, 32)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_l27ot"]
-atlas = SubResource("CompressedTexture2D_04xbm")
+atlas = ExtResource("1_5e2k1")
 region = Rect2(32, 64, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_f6jtf"]
-atlas = SubResource("CompressedTexture2D_04xbm")
-region = Rect2(0, 64, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_l2ka8"]
-atlas = SubResource("CompressedTexture2D_04xbm")
+atlas = ExtResource("1_5e2k1")
 region = Rect2(64, 64, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_msiio"]
-atlas = SubResource("CompressedTexture2D_04xbm")
+[sub_resource type="AtlasTexture" id="AtlasTexture_l2ka8"]
+atlas = ExtResource("1_5e2k1")
 region = Rect2(96, 64, 32, 32)
-
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_0kg2g"]
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_t3ndm"]
-atlas = SubResource("CompressedTexture2D_0kg2g")
-region = Rect2(0, 96, 32, 32)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_ygih5"]
 animations = [{
@@ -130,6 +126,12 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_5e2k1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_04xbm")
+}, {
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_s1rge")
 }, {
 "duration": 1.0,
@@ -161,12 +163,6 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_l2ka8")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_msiio")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_t3ndm")
 }],
 "loop": true,
 "name": &"lose_health",
@@ -177,8 +173,7 @@ animations = [{
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_ygih5")
-animation = &"gain_health"
-frame = 8
-frame_progress = 1.0
+animation = &"lose_health"
+frame_progress = 0.0134708
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
