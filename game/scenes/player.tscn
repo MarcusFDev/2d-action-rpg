@@ -1,7 +1,20 @@
-[gd_scene load_steps=26 format=3 uid="uid://beftgbphk8tt3"]
+[gd_scene load_steps=44 format=3 uid="uid://beftgbphk8tt3"]
 
 [ext_resource type="Texture2D" uid="uid://dtvu1mi4fn8u5" path="res://assets/sprites/knight.png" id="1_4flbx"]
 [ext_resource type="Script" uid="uid://dc7is6nsd35mi" path="res://scripts/player.gd" id="1_g2els"]
+[ext_resource type="Script" uid="uid://bcoqv8smpfvig" path="res://scripts/states/state_machines/player_state_machine.gd" id="3_qhqgy"]
+[ext_resource type="Script" uid="uid://dgwwleo0uj0yk" path="res://scripts/states/player_states/idle.gd" id="4_dqkch"]
+[ext_resource type="Script" uid="uid://c1j7v7xti3d7l" path="res://scripts/states/player_states/jump.gd" id="5_qlg0r"]
+[ext_resource type="Script" uid="uid://cjg5ja5klcfa4" path="res://scripts/states/player_states/fall.gd" id="6_fjrip"]
+[ext_resource type="Script" uid="uid://cnnnt2rekswhf" path="res://scripts/states/player_states/move.gd" id="7_smehm"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4r5pv"]
+atlas = ExtResource("1_4flbx")
+region = Rect2(192, 160, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_60mlk"]
+atlas = ExtResource("1_4flbx")
+region = Rect2(64, 160, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_onrkg"]
 atlas = ExtResource("1_4flbx")
@@ -19,9 +32,37 @@ region = Rect2(64, 0, 32, 32)
 atlas = ExtResource("1_4flbx")
 region = Rect2(96, 0, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_g2els"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_i4ail"]
+atlas = ExtResource("1_4flbx")
+region = Rect2(0, 160, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a38lo"]
+atlas = ExtResource("1_4flbx")
+region = Rect2(32, 160, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4ni07"]
 atlas = ExtResource("1_4flbx")
 region = Rect2(64, 160, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l71n6"]
+atlas = ExtResource("1_4flbx")
+region = Rect2(96, 160, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ke2ow"]
+atlas = ExtResource("1_4flbx")
+region = Rect2(128, 160, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ujl30"]
+atlas = ExtResource("1_4flbx")
+region = Rect2(160, 160, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_31cv2"]
+atlas = ExtResource("1_4flbx")
+region = Rect2(192, 160, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pf23h"]
+atlas = ExtResource("1_4flbx")
+region = Rect2(224, 160, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qhqgy"]
 atlas = ExtResource("1_4flbx")
@@ -91,6 +132,17 @@ region = Rect2(224, 96, 32, 32)
 animations = [{
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_4r5pv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_60mlk")
+}],
+"loop": true,
+"name": &"fall",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_onrkg")
 }, {
 "duration": 1.0,
@@ -108,11 +160,32 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_g2els")
+"texture": SubResource("AtlasTexture_i4ail")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a38lo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4ni07")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l71n6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ke2ow")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ujl30")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_31cv2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pf23h")
 }],
-"loop": true,
+"loop": false,
 "name": &"jump",
-"speed": 5.0
+"speed": 10.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -164,25 +237,151 @@ animations = [{
 "texture": SubResource("AtlasTexture_fulsm")
 }],
 "loop": true,
-"name": &"run",
+"name": &"move",
 "speed": 8.0
 }]
+
+[sub_resource type="Animation" id="Animation_smehm"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"jump"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_ur7pv"]
+resource_name = "idle"
+length = 0.4
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(),
+"transitions": PackedFloat32Array(),
+"update": 1,
+"values": []
+}
+
+[sub_resource type="Animation" id="Animation_fjrip"]
+resource_name = "jump"
+length = 0.8
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"jump"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.211393, 0.3, 0.4, 0.5, 0.6, 0.7),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_y4r1p"]
+_data = {
+&"RESET": SubResource("Animation_smehm"),
+&"idle": SubResource("Animation_ur7pv"),
+&"jump": SubResource("Animation_fjrip")
+}
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_1jxqw"]
 radius = 5.09902
 
-[node name="Player" type="CharacterBody2D"]
+[node name="player" type="CharacterBody2D" groups=["player"]]
 z_index = 5
-collision_layer = 2
+collision_mask = 14
 script = ExtResource("1_g2els")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="animations" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -12)
 sprite_frames = SubResource("SpriteFrames_2hs0m")
-animation = &"run"
+animation = &"jump"
 autoplay = "idle"
-frame_progress = 0.466406
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." node_paths=PackedStringArray("fall", "idle", "move")]
+root_node = NodePath("../animations")
+libraries = {
+&"": SubResource("AnimationLibrary_y4r1p")
+}
+autoplay = "idle"
+script = ExtResource("5_qlg0r")
+fall = NodePath("../state_machine/fall")
+idle = NodePath("../state_machine/idle")
+move = NodePath("../state_machine/move")
+animation_name = "jump"
+
+[node name="collision" type="CollisionShape2D" parent="."]
 position = Vector2(0, -5)
 shape = SubResource("CircleShape2D_1jxqw")
+
+[node name="state_machine" type="Node" parent="." node_paths=PackedStringArray("starting_state")]
+script = ExtResource("3_qhqgy")
+starting_state = NodePath("idle")
+
+[node name="idle" type="Node" parent="state_machine" node_paths=PackedStringArray("fall", "jump", "move")]
+script = ExtResource("4_dqkch")
+fall = NodePath("../fall")
+jump = NodePath("../jump")
+move = NodePath("../move")
+animation_name = "idle"
+
+[node name="jump" type="Node" parent="state_machine" node_paths=PackedStringArray("fall", "idle", "move")]
+script = ExtResource("5_qlg0r")
+fall = NodePath("../fall")
+idle = NodePath("../idle")
+move = NodePath("../move")
+animation_name = "jump"
+
+[node name="fall" type="Node" parent="state_machine" node_paths=PackedStringArray("move", "idle")]
+script = ExtResource("6_fjrip")
+move = NodePath("../move")
+idle = NodePath("../idle")
+animation_name = "fall"
+
+[node name="move" type="Node" parent="state_machine" node_paths=PackedStringArray("jump", "fall", "idle")]
+script = ExtResource("7_smehm")
+jump = NodePath("../jump")
+fall = NodePath("../fall")
+idle = NodePath("../idle")
+animation_name = "move"
+move_speed = 150.0
+
+[node name="take_damage" type="Node" parent="state_machine"]

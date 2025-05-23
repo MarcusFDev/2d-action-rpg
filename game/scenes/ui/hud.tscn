@@ -1,6 +1,7 @@
-[gd_scene load_steps=17 format=3 uid="uid://djt4jaxstqp53"]
+[gd_scene load_steps=33 format=3 uid="uid://djt4jaxstqp53"]
 
 [ext_resource type="FontFile" uid="uid://be18v7te12m5p" path="res://assets/fonts/PixelOperator8-Bold.ttf" id="2_bo48s"]
+[ext_resource type="Texture2D" uid="uid://82bld10iaeel" path="res://assets/sprites/hearts.png" id="3_8qguk"]
 [ext_resource type="Texture2D" uid="uid://cqm0r02sn7u1j" path="res://assets/sprites/coin.png" id="3_bo48s"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_8qguk"]
@@ -102,6 +103,112 @@ animations = [{
 "speed": 20.0
 }]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_bo48s"]
+atlas = ExtResource("3_8qguk")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cwdlq"]
+atlas = ExtResource("3_8qguk")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o6xly"]
+atlas = ExtResource("3_8qguk")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_we3sy"]
+atlas = ExtResource("3_8qguk")
+region = Rect2(128, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_65nxt"]
+atlas = ExtResource("3_8qguk")
+region = Rect2(0, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_el1dq"]
+atlas = ExtResource("3_8qguk")
+region = Rect2(32, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gmc6u"]
+atlas = ExtResource("3_8qguk")
+region = Rect2(64, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1e6lo"]
+atlas = ExtResource("3_8qguk")
+region = Rect2(96, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4mi7y"]
+atlas = ExtResource("3_8qguk")
+region = Rect2(128, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pkwgd"]
+atlas = ExtResource("3_8qguk")
+region = Rect2(0, 64, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d5po8"]
+atlas = ExtResource("3_8qguk")
+region = Rect2(32, 64, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7yoph"]
+atlas = ExtResource("3_8qguk")
+region = Rect2(64, 64, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qmm8d"]
+atlas = ExtResource("3_8qguk")
+region = Rect2(96, 64, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t0png"]
+atlas = ExtResource("3_8qguk")
+region = Rect2(128, 64, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_27rlx"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bo48s")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cwdlq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o6xly")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_we3sy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_65nxt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_el1dq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gmc6u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1e6lo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4mi7y")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pkwgd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d5po8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7yoph")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qmm8d")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t0png")
+}],
+"loop": false,
+"name": &"lose_health",
+"speed": 20.0
+}]
+
 [node name="HUD" type="Control"]
 layout_mode = 3
 anchors_preset = 15
@@ -130,3 +237,23 @@ theme_override_colors/font_shadow_color = Color(0.180392, 0.113725, 0.0117647, 1
 theme_override_fonts/font = ExtResource("2_bo48s")
 theme_override_font_sizes/font_size = 32
 text = "x 0"
+
+[node name="HealthBar" type="Node" parent="."]
+
+[node name="Heart1" type="AnimatedSprite2D" parent="HealthBar"]
+position = Vector2(1088, 64)
+scale = Vector2(4, 4)
+sprite_frames = SubResource("SpriteFrames_27rlx")
+animation = &"lose_health"
+
+[node name="Heart2" type="AnimatedSprite2D" parent="HealthBar"]
+position = Vector2(1016, 64)
+scale = Vector2(4, 4)
+sprite_frames = SubResource("SpriteFrames_27rlx")
+animation = &"lose_health"
+
+[node name="Heart3" type="AnimatedSprite2D" parent="HealthBar"]
+position = Vector2(944, 64)
+scale = Vector2(4, 4)
+sprite_frames = SubResource("SpriteFrames_27rlx")
+animation = &"lose_health"
