@@ -89,3 +89,22 @@
    - Void Knight.
 
 - ✅ A Boss | > Olimog the Masterful
+
+### 7. The Void Realm (Endless Mode) - (Level 7) <br> | Difficulty: Insane
+
+- Labyrinth of rooms with vared enemies and traps. Far larger than the normal void level.
+- Binding of Issac & Infinite Inferno @YokaiWatch inspired level.
+- Respawning enemies.
+- No Player Healing.
+- Enemy Kill Counter.
+- Enemy List:
+
+   - Void Slime.
+   - Void Teddy Bear.
+   - Void Bat.
+   - Void Crab.
+   - Void Gremlin.
+   - Void Knight.
+   - TBD
+ 
+- ❌ No Boss.
