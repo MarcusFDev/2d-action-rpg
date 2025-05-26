@@ -7,7 +7,7 @@ var current_state: State
 # Intialize the state machine by giving each child state a refernce to the
 # parent object it belongs to and enter the default starting_state.
 func init(parent: Node2D, animations: AnimatedSprite2D) -> void:
-	for child in get_children():
+	for child: Node in get_children():
 		if child is State:
 			child.parent = parent
 			child.animations = animations
@@ -22,19 +22,25 @@ func change_state(new_state: State) -> void:
 	current_state = new_state
 	current_state.enter()
 
+func get_state(state_name: String) -> State:
+	for child: Node in get_children():
+		if child is State and child.name == state_name:
+			return child
+	return null
+
 # Pass through functions for the Player to call,
 # handling state changes as needed.
 func process_physics(delta: float) -> void:
-	var new_state = current_state.process_physics(delta)
+	var new_state: State = current_state.process_physics(delta)
 	if new_state:
 		change_state(new_state)
 
 func process_input(event: InputEvent) -> void:
-	var new_state = current_state.process_input(event)
+	var new_state: State = current_state.process_input(event)
 	if new_state:
 		change_state(new_state)
 
 func process_frame(delta: float) -> void:
-	var new_state = current_state.process_frame(delta)
+	var new_state: State = current_state.process_frame(delta)
 	if new_state:
 		change_state(new_state)

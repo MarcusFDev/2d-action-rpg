@@ -1,16 +1,19 @@
 extends Area2D
 
-func _ready():
+func _ready() -> void:
 	print("Damage Zone ready")
 	connect("body_entered", _on_body_entered)
 
-func _on_body_entered(body):
+func _on_body_entered(body: Node) -> void:
 	print("Something entered DamageZone:", body.name)
 	if not body.is_in_group("player"):
 		return
 		
-	var enemy = get_parent()
+	var enemy: Node = get_parent()
 	if "damage" in enemy:
-		var damage = enemy.damage
-		body.take_damage(damage)
-		print("Player Took", damage, "damage from", enemy.name)
+		var damage: int = enemy.damage
+		body.take_damage(damage, enemy.global_position)
+		print("Damage Zone | Player Took", damage, "damage from", enemy.name)
+		
+		if enemy.has_method("trigger_attack"):
+			enemy.trigger_attack()

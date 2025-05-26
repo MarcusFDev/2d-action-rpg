@@ -10,7 +10,7 @@ func enter() -> void:
 	super()
 	parent.velocity.x = 0
 
-func process_input(event: InputEvent) -> State:
+func process_input(_event: InputEvent) -> State:
 	if Input.is_action_just_pressed('jump') and parent.is_on_floor():
 		parent.velocity.y = jump_force
 		#print("jump triggered from idle.gd")

@@ -1,14 +1,14 @@
 class_name SlimeIdleState
 extends State
 
-@export var min_idle_time := 1.0
-@export var max_idle_time := 3.0
+@export var min_idle_time : float = 1.0
+@export var max_idle_time : float = 3.0
 @export var slime_patrol: SlimePatrolState
 @export var slime_fall: SlimeFallState
 
-var direction := 1
-var idle_timer := 0.0
-var target_idle_time := 1.0
+var direction : int = 1
+var idle_timer : float = 0.0
+var target_idle_time : float = 1.0
 
 func set_direction(dir : Variant = null) -> void:
 	if dir == null:
@@ -18,6 +18,7 @@ func set_direction(dir : Variant = null) -> void:
 
 func enter() -> void:
 	super.enter()
+	print("Slime has entered idle.")
 	idle_timer = 0.0
 	target_idle_time = randf_range(min_idle_time, max_idle_time)
 	parent.velocity.x = 0

@@ -1,12 +1,58 @@
-[gd_scene load_steps=33 format=3 uid="uid://chptbuqgr7qyt"]
+[gd_scene load_steps=46 format=3 uid="uid://chptbuqgr7qyt"]
 
 [ext_resource type="Script" uid="uid://n35k36oc5i6u" path="res://scripts/slime.gd" id="1_68p8s"]
+[ext_resource type="Texture2D" uid="uid://bu61w57o0700v" path="res://assets/sprites/Green Slime.png" id="2_0l8pv"]
 [ext_resource type="Texture2D" uid="uid://bj18dq6x6g107" path="res://assets/sprites/slime.png" id="2_2npkn"]
 [ext_resource type="PackedScene" uid="uid://bg7nrwxlpxf3p" path="res://scenes/damage_zone.tscn" id="2_68p8s"]
 [ext_resource type="Script" uid="uid://dx4xc2bef7fpn" path="res://scripts/states/state_machines/enemy_state_machine.gd" id="4_v083o"]
 [ext_resource type="Script" uid="uid://bi43tvg8ehxwt" path="res://scripts/states/enemy_states/slime_patrol.gd" id="5_w3amv"]
 [ext_resource type="Script" uid="uid://52nci3gkus1o" path="res://scripts/states/enemy_states/slime_idle.gd" id="6_fd6lc"]
 [ext_resource type="Script" uid="uid://bcjjn4g2nva4f" path="res://scripts/states/enemy_states/slime_fall.gd" id="7_gstla"]
+[ext_resource type="Script" uid="uid://cj5m4q4fchcg5" path="res://scripts/states/enemy_states/slime_attack.gd" id="8_vnioy"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qwlg4"]
+atlas = ExtResource("2_0l8pv")
+region = Rect2(128, 96, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1sdgb"]
+atlas = ExtResource("2_0l8pv")
+region = Rect2(0, 128, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rrr3x"]
+atlas = ExtResource("2_0l8pv")
+region = Rect2(32, 128, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eyfvk"]
+atlas = ExtResource("2_0l8pv")
+region = Rect2(64, 128, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iscye"]
+atlas = ExtResource("2_0l8pv")
+region = Rect2(96, 128, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aq06o"]
+atlas = ExtResource("2_0l8pv")
+region = Rect2(128, 128, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3tc40"]
+atlas = ExtResource("2_0l8pv")
+region = Rect2(96, 128, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_klxi6"]
+atlas = ExtResource("2_0l8pv")
+region = Rect2(64, 128, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0yeyc"]
+atlas = ExtResource("2_0l8pv")
+region = Rect2(32, 128, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t6mwi"]
+atlas = ExtResource("2_0l8pv")
+region = Rect2(0, 128, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7d6fo"]
+atlas = ExtResource("2_0l8pv")
+region = Rect2(128, 96, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_1kmbt"]
 atlas = ExtResource("2_2npkn")
@@ -100,6 +146,44 @@ region = Rect2(64, 96, 32, 32)
 animations = [{
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_qwlg4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1sdgb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rrr3x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_eyfvk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iscye")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_aq06o")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3tc40")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_klxi6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0yeyc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t6mwi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7d6fo")
+}],
+"loop": false,
+"name": &"slime_attack",
+"speed": 20.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_1kmbt")
 }, {
 "duration": 1.0,
@@ -181,7 +265,7 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gstla"]
-size = Vector2(24, 17)
+size = Vector2(22, 17)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6axq5"]
 size = Vector2(20, 15)
@@ -201,15 +285,18 @@ visible = false
 position = Vector2(0, 6)
 target_position = Vector2(-13, 0)
 
-[node name="animations" type="AnimatedSprite2D" parent="." node_paths=PackedStringArray("slime_idle")]
+[node name="animations" type="AnimatedSprite2D" parent="." node_paths=PackedStringArray("slime_idle", "slime_fall")]
 position = Vector2(4.76837e-07, -1.19209e-07)
 scale = Vector2(0.671875, 0.671875)
 sprite_frames = SubResource("SpriteFrames_a1j1j")
-animation = &"slime_fall"
+animation = &"slime_attack"
 autoplay = "slime_patrol"
-frame_progress = 0.693262
+frame = 10
+frame_progress = 1.0
 script = ExtResource("5_w3amv")
 slime_idle = NodePath("../state_machine/slime_idle")
+slime_fall = NodePath("../state_machine/slime_fall")
+animation_name = "slime_attack"
 
 [node name="damage_zone" parent="." instance=ExtResource("2_68p8s")]
 position = Vector2(0, -0.5)
@@ -219,6 +306,7 @@ position = Vector2(0, -1)
 shape = SubResource("RectangleShape2D_gstla")
 
 [node name="Collision" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2(0, -0.5)
 shape = SubResource("RectangleShape2D_6axq5")
 
@@ -232,7 +320,12 @@ slime_patrol = NodePath("../slime_patrol")
 slime_fall = NodePath("../slime_fall")
 animation_name = "slime_idle"
 
-[node name="slime_attack" type="Node" parent="state_machine"]
+[node name="slime_attack" type="Node" parent="state_machine" node_paths=PackedStringArray("slime_idle")]
+script = ExtResource("8_vnioy")
+slime_idle = NodePath("../slime_idle")
+animation_name = "slime_attack"
+
+[node name="attack_timer" type="Timer" parent="state_machine/slime_attack"]
 
 [node name="slime_patrol" type="Node" parent="state_machine" node_paths=PackedStringArray("slime_idle", "slime_fall")]
 script = ExtResource("5_w3amv")

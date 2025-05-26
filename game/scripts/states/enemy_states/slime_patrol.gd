@@ -1,18 +1,18 @@
 class_name SlimePatrolState
 extends State
 
-var direction := 1
-@export var speed := 60.0
+var direction : int = 1
+@export var speed : float = 60.0
 @export var slime_idle: SlimeIdleState
 @export var slime_fall: SlimeFallState
 
 var ray_cast_right: RayCast2D
 var ray_cast_left: RayCast2D
 
-var delay_timer := 0.15
-var idle_chance_timer := 0.0
-@export var idle_check_interval := 1.0
-@export var idle_chance := 0.2
+var delay_timer : float = 0.15
+var idle_chance_timer : float = 0.0
+@export var idle_check_interval : float = 1.0
+@export var idle_chance : float = 0.2
 
 func enter() -> void:
 	super.enter()

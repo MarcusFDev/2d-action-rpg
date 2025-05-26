@@ -8,9 +8,9 @@ extends State
 @export var jump_duration: float = 1.0
 
 var jump_timer: float = 0.0
-var has_applied_jump := false
+var has_applied_jump : bool = false
 
-func enter():
+func enter() -> void:
 	jump_timer = 0.0
 	has_applied_jump = false
 	super()
@@ -23,7 +23,7 @@ func process_physics(delta: float) -> State:
 	jump_timer += delta
 	parent.velocity.y += gravity * delta
 
-	var movement = Input.get_axis('move_left', 'move_right') * move_speed
+	var movement: float = Input.get_axis('move_left', 'move_right') * move_speed
 	if movement != 0:
 		parent.animations.flip_h = movement < 0
 	parent.velocity.x = movement

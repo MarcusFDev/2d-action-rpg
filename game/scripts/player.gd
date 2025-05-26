@@ -3,9 +3,9 @@ extends CharacterBody2D
 
 # Wait until loaded & create variables assigning corresponding nodes,
 # the '$' is shorthand for get_node("") method.
-@onready var animations = $animations
+@onready var animations: AnimatedSprite2D = $animations
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
-@onready var state_machine = $state_machine
+@onready var state_machine: Node = $state_machine
 
 
 # '_ready()' built-in function to run upon scene is ready,
@@ -31,5 +31,12 @@ func _process(delta: float) -> void:
 	# Trigger 'state_machine' to update non-physics each frame.
 	state_machine.process_frame(delta)
 
-func take_damage(amount: int) -> void:
-	print("Player takes", amount, "damage!")
+func take_damage(amount: int, enemy_velocity: Vector2) -> void:
+	print("Player.gd| Player takes", amount, "damage!")
+
+	var take_damage_state: State = state_machine.get_state("player_take_damage")
+	if take_damage_state:
+		take_damage_state.knockback_source_velocity = enemy_velocity
+		state_machine.change_state(take_damage_state)
+	else:
+		print("Player.gd| Error: Could not find PlayerTakeDamage state!")

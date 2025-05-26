@@ -1,4 +1,4 @@
-[gd_scene load_steps=44 format=3 uid="uid://beftgbphk8tt3"]
+[gd_scene load_steps=49 format=3 uid="uid://beftgbphk8tt3"]
 
 [ext_resource type="Texture2D" uid="uid://dtvu1mi4fn8u5" path="res://assets/sprites/knight.png" id="1_4flbx"]
 [ext_resource type="Script" uid="uid://dc7is6nsd35mi" path="res://scripts/player.gd" id="1_g2els"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://c1j7v7xti3d7l" path="res://scripts/states/player_states/jump.gd" id="5_qlg0r"]
 [ext_resource type="Script" uid="uid://cjg5ja5klcfa4" path="res://scripts/states/player_states/fall.gd" id="6_fjrip"]
 [ext_resource type="Script" uid="uid://cnnnt2rekswhf" path="res://scripts/states/player_states/move.gd" id="7_smehm"]
+[ext_resource type="Script" uid="uid://bx46domvi6xu4" path="res://scripts/states/player_states/player_take_damage.gd" id="8_smehm"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_4r5pv"]
 atlas = ExtResource("1_4flbx")
@@ -128,6 +129,22 @@ region = Rect2(192, 96, 32, 32)
 atlas = ExtResource("1_4flbx")
 region = Rect2(224, 96, 32, 32)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_dt7fs"]
+atlas = ExtResource("1_4flbx")
+region = Rect2(0, 192, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wqfne"]
+atlas = ExtResource("1_4flbx")
+region = Rect2(32, 192, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wnwbv"]
+atlas = ExtResource("1_4flbx")
+region = Rect2(64, 192, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gl8cc"]
+atlas = ExtResource("1_4flbx")
+region = Rect2(96, 192, 32, 32)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_2hs0m"]
 animations = [{
 "frames": [{
@@ -239,6 +256,23 @@ animations = [{
 "loop": true,
 "name": &"move",
 "speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dt7fs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wqfne")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wnwbv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gl8cc")
+}],
+"loop": true,
+"name": &"take_damage",
+"speed": 10.0
 }]
 
 [sub_resource type="Animation" id="Animation_smehm"]
@@ -384,4 +418,6 @@ idle = NodePath("../idle")
 animation_name = "move"
 move_speed = 150.0
 
-[node name="take_damage" type="Node" parent="state_machine"]
+[node name="player_take_damage" type="Node" parent="state_machine"]
+script = ExtResource("8_smehm")
+animation_name = "take_damage"

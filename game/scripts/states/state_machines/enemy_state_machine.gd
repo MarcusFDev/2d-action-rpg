@@ -5,7 +5,7 @@ extends Node
 var current_state: State
 
 func init(parent: Node2D, animations: AnimatedSprite2D) -> void:
-	for child in get_children():
+	for child: Node in get_children():
 		if child is State:
 			child.parent = parent
 			child.animations = animations
@@ -18,12 +18,18 @@ func change_state(new_state: State) -> void:
 	current_state = new_state
 	current_state.enter()
 
+func get_state(state_name: String) -> State:
+	for child: Node in get_children():
+		if child is State and child.name == state_name:
+			return child
+	return null
+
 func process_frame(delta: float) -> void:
-	var new_state = current_state.process_frame(delta)
+	var new_state: State = current_state.process_frame(delta)
 	if new_state:
 		change_state(new_state)
 
 func process_physics(delta: float) -> void:
-	var new_state = current_state.process_physics(delta)
+	var new_state: State = current_state.process_physics(delta)
 	if new_state:
 		change_state(new_state)

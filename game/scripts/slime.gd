@@ -1,7 +1,7 @@
 extends CharacterBody2D
 
-@onready var animations = $animations
-@onready var state_machine = $state_machine
+@onready var animations: AnimatedSprite2D = $animations
+@onready var state_machine: Node = $state_machine
 @onready var ray_cast_right: RayCast2D = $RayCastRight
 @onready var ray_cast_left: RayCast2D = $RayCastLeft
 
@@ -17,3 +17,10 @@ func _process(delta: float) -> void:
 func _physics_process(delta: float) -> void:
 	state_machine.process_physics(delta)
 	move_and_slide()
+
+func trigger_attack() -> void:
+	if state_machine.current_state.name != "slime_attack":
+
+		var attack_state: State = state_machine.get_state("slime_attack")
+		if attack_state:
+			state_machine.change_state(attack_state)

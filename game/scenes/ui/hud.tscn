@@ -211,11 +211,10 @@ animations = [{
 
 [node name="HUD" type="Control"]
 layout_mode = 3
-anchors_preset = 15
+anchors_preset = 1
+anchor_left = 1.0
 anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+grow_horizontal = 0
 
 [node name="CoinCounter" type="Node" parent="."]
 
@@ -241,19 +240,19 @@ text = "x 0"
 [node name="HealthBar" type="Node" parent="."]
 
 [node name="Heart1" type="AnimatedSprite2D" parent="HealthBar"]
-position = Vector2(1088, 64)
+position = Vector2(1856, 64)
 scale = Vector2(4, 4)
 sprite_frames = SubResource("SpriteFrames_27rlx")
 animation = &"lose_health"
 
 [node name="Heart2" type="AnimatedSprite2D" parent="HealthBar"]
-position = Vector2(1016, 64)
+position = Vector2(1784, 64)
 scale = Vector2(4, 4)
 sprite_frames = SubResource("SpriteFrames_27rlx")
 animation = &"lose_health"
 
 [node name="Heart3" type="AnimatedSprite2D" parent="HealthBar"]
-position = Vector2(944, 64)
+position = Vector2(1712, 64)
 scale = Vector2(4, 4)
 sprite_frames = SubResource("SpriteFrames_27rlx")
 animation = &"lose_health"
