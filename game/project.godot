@@ -11,14 +11,18 @@ config_version=5
 [application]
 
 config/name="First Game"
-run/main_scene="uid://sei36ou55kby"
+run/main_scene="uid://d0k7ow6ig35r4"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
 
+[audio]
+
+buses/default_bus_layout="res://scenes/music/music_controls.tres"
+
 [autoload]
 
-Music="*res://scenes/music.tscn"
-GameManager="*res://scripts/game_manager.gd"
+Music="*res://scenes/music/music.tscn"
+GameManager="*res://scripts/core/game_manager.gd"
 
 [debug]
 

@@ -1,0 +1,36 @@
+[gd_scene load_steps=2 format=3 uid="uid://d0k7ow6ig35r4"]
+
+[ext_resource type="Script" uid="uid://ba4r3118jb4n0" path="res://scripts/ui/main_menu.gd" id="1_sl1te"]
+
+[node name="main_menu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_sl1te")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="play_btn" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Play"
+
+[node name="options_btn" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Options"
+
+[node name="quit_btn" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Quit"
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/play_btn" to="." method="_on_play_btn_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/options_btn" to="." method="_on_options_btn_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/quit_btn" to="." method="_on_quit_btn_pressed"]

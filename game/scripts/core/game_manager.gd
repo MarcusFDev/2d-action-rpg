@@ -1,7 +1,7 @@
 extends Node
 
-var player_health := 3
-var score := 0
+var player_health: int = 3
+var score: int = 0
 
 signal health_changed(health)
 

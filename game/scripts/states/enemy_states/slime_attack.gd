@@ -9,7 +9,6 @@ var finished : bool = false
 func enter() -> void:
 	super.enter()
 	finished = false
-	print("Playing Slime Attack!")
 	animations.play("slime_attack")
 	
 	if not timer.is_connected("timeout", _on_attack_timer_timeout):
@@ -21,6 +20,5 @@ func _on_attack_timer_timeout() -> void:
 
 func process_frame(_delta: float) -> State:
 	if finished:
-		print("Slime has entered idle from attack.")
 		return slime_idle
 	return null

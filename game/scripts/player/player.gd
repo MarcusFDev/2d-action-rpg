@@ -31,8 +31,7 @@ func _process(delta: float) -> void:
 	# Trigger 'state_machine' to update non-physics each frame.
 	state_machine.process_frame(delta)
 
-func take_damage(amount: int, enemy_velocity: Vector2) -> void:
-	print("Player.gd| Player takes", amount, "damage!")
+func take_damage(_amount: int, enemy_velocity: Vector2) -> void:
 
 	var take_damage_state: State = state_machine.get_state("player_take_damage")
 	if take_damage_state:

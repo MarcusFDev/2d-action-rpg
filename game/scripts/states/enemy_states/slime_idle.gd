@@ -18,14 +18,12 @@ func set_direction(dir : Variant = null) -> void:
 
 func enter() -> void:
 	super.enter()
-	print("Slime has entered idle.")
 	idle_timer = 0.0
 	target_idle_time = randf_range(min_idle_time, max_idle_time)
 	parent.velocity.x = 0
 
 func process_physics(delta: float) -> State:
 	if not parent.is_on_floor():
-		#print("Slime is falling")
 		return slime_fall
 
 	parent.velocity.y += gravity * delta
@@ -35,6 +33,5 @@ func process_frame(delta: float) -> State:
 	idle_timer += delta
 	if idle_timer >= target_idle_time:
 		slime_patrol.direction = direction
-		#print("Slime done idling going on patrol. Direction:", direction)
 		return slime_patrol
 	return null
