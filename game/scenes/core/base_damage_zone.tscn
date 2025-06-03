@@ -1,10 +1,10 @@
 [gd_scene load_steps=2 format=3 uid="uid://bg7nrwxlpxf3p"]
 
-[ext_resource type="Script" uid="uid://cbl8a6y1m32f2" path="res://scripts/core/damage_zone.gd" id="1_ppofr"]
+[ext_resource type="Script" uid="uid://cbl8a6y1m32f2" path="res://scripts/core/enemy_damage_zone.gd" id="1_1h6qw"]
 
-[node name="damage_zone" type="Area2D"]
+[node name="DamageZone" type="Area2D"]
 collision_layer = 4
-script = ExtResource("1_ppofr")
+script = ExtResource("1_1h6qw")
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 0.6
