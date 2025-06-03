@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://n35k36oc5i6u" path="res://scripts/enemies/slime.gd" id="1_68p8s"]
 [ext_resource type="Texture2D" uid="uid://bu61w57o0700v" path="res://assets/sprites/Green Slime.png" id="2_0l8pv"]
 [ext_resource type="Texture2D" uid="uid://bj18dq6x6g107" path="res://assets/sprites/slime.png" id="2_2npkn"]
-[ext_resource type="PackedScene" uid="uid://bg7nrwxlpxf3p" path="res://scenes/core/damage_zone.tscn" id="2_68p8s"]
+[ext_resource type="PackedScene" uid="uid://bg7nrwxlpxf3p" path="res://scenes/core/base_damage_zone.tscn" id="2_68p8s"]
 [ext_resource type="Script" uid="uid://dx4xc2bef7fpn" path="res://scripts/states/state_machines/enemy_state_machine.gd" id="4_v083o"]
 [ext_resource type="Script" uid="uid://bi43tvg8ehxwt" path="res://scripts/states/enemy_states/slime_patrol.gd" id="5_w3amv"]
 [ext_resource type="Script" uid="uid://52nci3gkus1o" path="res://scripts/states/enemy_states/slime_idle.gd" id="6_fd6lc"]
@@ -265,10 +265,10 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gstla"]
-size = Vector2(22, 17)
+size = Vector2(22, 16)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6axq5"]
-size = Vector2(20, 15)
+size = Vector2(20, 14)
 
 [node name="slime" type="CharacterBody2D"]
 collision_layer = 2
@@ -298,16 +298,15 @@ slime_idle = NodePath("../state_machine/slime_idle")
 slime_fall = NodePath("../state_machine/slime_fall")
 animation_name = "slime_attack"
 
-[node name="damage_zone" parent="." instance=ExtResource("2_68p8s")]
+[node name="EnemyDamageZone" parent="." instance=ExtResource("2_68p8s")]
 position = Vector2(0, -0.5)
 
-[node name="Collision" type="CollisionShape2D" parent="damage_zone"]
-position = Vector2(0, -1)
+[node name="Collision" type="CollisionShape2D" parent="EnemyDamageZone"]
+position = Vector2(0, -1.5)
 shape = SubResource("RectangleShape2D_gstla")
 
 [node name="Collision" type="CollisionShape2D" parent="."]
-visible = false
-position = Vector2(0, -0.5)
+position = Vector2(0, -1)
 shape = SubResource("RectangleShape2D_6axq5")
 
 [node name="state_machine" type="Node" parent="." node_paths=PackedStringArray("starting_state")]
