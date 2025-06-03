@@ -1,7 +1,6 @@
-extends Area2D
+extends BaseDamageZone
 
 func _ready() -> void:
-	print("Damage Zone ready")
 	connect("body_entered", _on_body_entered)
 
 func _on_body_entered(body: Node) -> void:
@@ -12,7 +11,7 @@ func _on_body_entered(body: Node) -> void:
 	if "damage" in enemy:
 		var damage: int = enemy.damage
 		body.take_damage(damage, enemy.global_position)
-		print("Damage Zone | Player Took ", damage, " damage from ", enemy.name)
+		print("Enemy Damage Zone | Player Took ", damage, " damage from ", enemy.name)
 		
 		if enemy.has_method("trigger_attack"):
 			enemy.trigger_attack()
