@@ -1,20 +1,21 @@
 extends Node
 
+@onready var hud: Control = $"../Interfaces/CanvasLayer/Hud/Hud"
+
 var player_health: int = 3
 var score: int = 0
 
 signal health_changed(health)
 
-@onready var score_label: Label = $CanvasLayer/HUD/CoinCounter/ScoreLabel
-@onready var animation: AnimatedSprite2D = $CanvasLayer/HUD/CoinCounter/Coin
-
 func _ready():
 	emit_signal("health_changed", player_health)
 
 func add_point():
-	animation.play("gain_coin") # Plays animation upon coin increase.
+	#animation.play("gain_coin")
 	score += 1
-	score_label.text = "x " + str(score)
+	print("Your Score is: ", score)
+	hud.update_score(score)
+	#score_label.text = "x " + str(score)
 
 func damage_player(amount := 1):
 	player_health = max(player_health - amount, 0)
