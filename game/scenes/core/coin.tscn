@@ -104,7 +104,7 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("../AnimatedSprite2D:visible")
+tracks/0/path = NodePath("../Animations:visible")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -116,7 +116,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("../CollisionShape2D:disabled")
+tracks/1/path = NodePath("../CoinCollision:disabled")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -143,7 +143,7 @@ resource_name = "pickup"
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("../AnimatedSprite2D:visible")
+tracks/0/path = NodePath("../Animations:visible")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -155,7 +155,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("../CollisionShape2D:disabled")
+tracks/1/path = NodePath("../CoinCollision:disabled")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -200,12 +200,12 @@ _data = {
 [node name="Coin" type="Area2D"]
 script = ExtResource("1_i64fm")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="Animations" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_s5w7y")
 autoplay = "default"
 frame_progress = 0.595273
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CoinCollision" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_relgi")
 
 [node name="PickupSound" type="AudioStreamPlayer2D" parent="."]

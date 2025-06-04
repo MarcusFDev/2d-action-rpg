@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://b02slykbjhaut" path="res://assets/images/placeholder-image.png" id="2_imaij"]
 [ext_resource type="Theme" uid="uid://cdvnx1x2un6o8" path="res://assets/themes/btn_theme.tres" id="3_c4822"]
 
-[node name="options_menu" type="Control"]
+[node name="OptionsMenu" type="Control"]
 visible = false
 layout_mode = 3
 anchors_preset = 15
@@ -14,7 +14,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_ta2k2")
 
-[node name="background" type="TextureRect" parent="."]
+[node name="BackgroundImage" type="TextureRect" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -47,7 +47,7 @@ layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="back_btn" type="Button" parent="MarginContainer/VBoxContainer"]
+[node name="BackButton" type="Button" parent="MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 75)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -55,4 +55,4 @@ size_flags_vertical = 4
 text = "Go Back"
 flat = true
 
-[connection signal="pressed" from="MarginContainer/VBoxContainer/back_btn" to="." method="_on_back_btn_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/BackButton" to="." method="_on_back_btn_pressed"]

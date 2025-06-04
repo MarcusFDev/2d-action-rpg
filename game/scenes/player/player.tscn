@@ -278,53 +278,53 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_1jxqw"]
 radius = 5.09902
 
-[node name="player" type="CharacterBody2D" groups=["player"]]
+[node name="Player" type="CharacterBody2D" groups=["player"]]
 z_index = 5
 collision_mask = 14
 script = ExtResource("1_g2els")
 
-[node name="animations" type="AnimatedSprite2D" parent="."]
+[node name="Animations" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -12)
 sprite_frames = SubResource("SpriteFrames_2hs0m")
 animation = &"jump"
 autoplay = "idle"
 
-[node name="collision" type="CollisionShape2D" parent="."]
+[node name="PlayerCollision" type="CollisionShape2D" parent="."]
 position = Vector2(0, -5)
 shape = SubResource("CircleShape2D_1jxqw")
 
-[node name="state_machine" type="Node" parent="." node_paths=PackedStringArray("starting_state")]
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("starting_state")]
 script = ExtResource("3_qhqgy")
-starting_state = NodePath("player_idle")
+starting_state = NodePath("PlayerIdle")
 
-[node name="player_idle" type="Node" parent="state_machine" node_paths=PackedStringArray("fall", "jump", "move")]
+[node name="PlayerIdle" type="Node" parent="StateMachine" node_paths=PackedStringArray("fall", "jump", "move")]
 script = ExtResource("4_dqkch")
-fall = NodePath("../player_fall")
-jump = NodePath("../player_jump")
-move = NodePath("../player_move")
+fall = NodePath("../PlayerFall")
+jump = NodePath("../PlayerJump")
+move = NodePath("../PlayerMove")
 animation_name = "idle"
 
-[node name="player_jump" type="Node" parent="state_machine" node_paths=PackedStringArray("fall", "idle", "move")]
+[node name="PlayerJump" type="Node" parent="StateMachine" node_paths=PackedStringArray("fall", "idle", "move")]
 script = ExtResource("5_qlg0r")
-fall = NodePath("../player_fall")
-idle = NodePath("../player_idle")
-move = NodePath("../player_move")
+fall = NodePath("../PlayerFall")
+idle = NodePath("../PlayerIdle")
+move = NodePath("../PlayerMove")
 animation_name = "jump"
 
-[node name="player_fall" type="Node" parent="state_machine" node_paths=PackedStringArray("move", "idle")]
+[node name="PlayerFall" type="Node" parent="StateMachine" node_paths=PackedStringArray("move", "idle")]
 script = ExtResource("6_fjrip")
-move = NodePath("../player_move")
-idle = NodePath("../player_idle")
+move = NodePath("../PlayerMove")
+idle = NodePath("../PlayerIdle")
 animation_name = "fall"
 
-[node name="player_move" type="Node" parent="state_machine" node_paths=PackedStringArray("jump", "fall", "idle")]
+[node name="PlayerMove" type="Node" parent="StateMachine" node_paths=PackedStringArray("jump", "fall", "idle")]
 script = ExtResource("7_smehm")
-jump = NodePath("../player_jump")
-fall = NodePath("../player_fall")
-idle = NodePath("../player_idle")
+jump = NodePath("../PlayerJump")
+fall = NodePath("../PlayerFall")
+idle = NodePath("../PlayerIdle")
 animation_name = "move"
 move_speed = 150.0
 
-[node name="player_take_damage" type="Node" parent="state_machine"]
+[node name="PlayerTakeDamage" type="Node" parent="StateMachine"]
 script = ExtResource("8_smehm")
 animation_name = "take_damage"

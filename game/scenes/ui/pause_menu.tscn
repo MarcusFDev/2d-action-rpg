@@ -14,7 +14,7 @@ default_font_size = 48
 shader = ExtResource("3_8uki6")
 shader_parameter/amount = 2.0
 
-[node name="pause_menu" type="Control"]
+[node name="PauseMenu" type="Control"]
 layout_mode = 3
 anchors_preset = 8
 anchor_left = 0.5
@@ -27,14 +27,14 @@ size_flags_horizontal = 4
 theme = SubResource("Theme_f6eus")
 script = ExtResource("1_6tw0m")
 
-[node name="options_menu" parent="." instance=ExtResource("3_0bnpd")]
+[node name="OptionsMenu" parent="." instance=ExtResource("3_0bnpd")]
 layout_mode = 1
 offset_left = -208.0
 offset_top = -199.5
 offset_right = -208.0
 offset_bottom = -199.5
 
-[node name="blur" type="ColorRect" parent="."]
+[node name="BlurEffect" type="ColorRect" parent="."]
 z_index = 1
 material = SubResource("ShaderMaterial_0bnpd")
 custom_minimum_size = Vector2(500, 500)
@@ -77,7 +77,7 @@ size_flags_vertical = 4
 theme = ExtResource("3_f6eus")
 alignment = 1
 
-[node name="resume_btn" type="Button" parent="MarginContainer/VBoxContainer"]
+[node name="ResumeButton" type="Button" parent="MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 130)
 layout_mode = 2
 text = "Resume"
@@ -89,19 +89,19 @@ layout_mode = 2
 text = "Restart"
 flat = true
 
-[node name="options_btn" type="Button" parent="MarginContainer/VBoxContainer"]
+[node name="OptionsButton" type="Button" parent="MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 130)
 layout_mode = 2
 text = "Options"
 flat = true
 
-[node name="main_menu_btn" type="Button" parent="MarginContainer/VBoxContainer"]
+[node name="MainMenuButton" type="Button" parent="MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(200, 130)
 layout_mode = 2
 text = "Main Menu"
 flat = true
 
-[connection signal="pressed" from="MarginContainer/VBoxContainer/resume_btn" to="." method="_on_resume_btn_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/ResumeButton" to="." method="_on_resume_btn_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/RestartButton" to="." method="_on_restart_button_pressed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/options_btn" to="." method="_on_options_btn_pressed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/main_menu_btn" to="." method="_on_main_menu_btn_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/OptionsButton" to="." method="_on_options_btn_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/MainMenuButton" to="." method="_on_main_menu_btn_pressed"]

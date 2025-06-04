@@ -1,7 +1,7 @@
 extends CharacterBody2D
 
-@onready var animations: AnimatedSprite2D = $animations
-@onready var state_machine: Node = $state_machine
+@onready var animations: AnimatedSprite2D = $Animations
+@onready var state_machine: Node = $StateMachine
 @onready var ray_cast_right: RayCast2D = $RayCastRight
 @onready var ray_cast_left: RayCast2D = $RayCastLeft
 

@@ -3,9 +3,8 @@ extends CharacterBody2D
 
 # Wait until loaded & create variables assigning corresponding nodes,
 # the '$' is shorthand for get_node("") method.
-@onready var animations: AnimatedSprite2D = $animations
-@onready var animation_player: AnimationPlayer = $AnimationPlayer
-@onready var state_machine: Node = $state_machine
+@onready var animations: AnimatedSprite2D = $Animations
+@onready var state_machine: Node = $StateMachine
 
 
 # '_ready()' built-in function to run upon scene is ready,
@@ -33,7 +32,7 @@ func _process(delta: float) -> void:
 
 func take_damage(_amount: int, enemy_velocity: Vector2) -> void:
 
-	var take_damage_state: State = state_machine.get_state("player_take_damage")
+	var take_damage_state: State = state_machine.get_state("PlayerTakeDamage")
 	if take_damage_state:
 		take_damage_state.knockback_source_velocity = enemy_velocity
 		state_machine.change_state(take_damage_state)

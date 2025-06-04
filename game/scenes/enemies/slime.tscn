@@ -270,7 +270,7 @@ size = Vector2(22, 16)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6axq5"]
 size = Vector2(20, 14)
 
-[node name="slime" type="CharacterBody2D"]
+[node name="Slime" type="CharacterBody2D"]
 collision_layer = 2
 collision_mask = 11
 script = ExtResource("1_68p8s")
@@ -285,7 +285,7 @@ visible = false
 position = Vector2(0, 6)
 target_position = Vector2(-13, 0)
 
-[node name="animations" type="AnimatedSprite2D" parent="." node_paths=PackedStringArray("slime_idle", "slime_fall")]
+[node name="Animations" type="AnimatedSprite2D" parent="." node_paths=PackedStringArray("slime_idle", "slime_fall")]
 position = Vector2(4.76837e-07, -1.19209e-07)
 scale = Vector2(0.671875, 0.671875)
 sprite_frames = SubResource("SpriteFrames_a1j1j")
@@ -294,45 +294,45 @@ autoplay = "slime_patrol"
 frame = 10
 frame_progress = 1.0
 script = ExtResource("5_w3amv")
-slime_idle = NodePath("../state_machine/slime_idle")
-slime_fall = NodePath("../state_machine/slime_fall")
+slime_idle = NodePath("../StateMachine/SlimeIdle")
+slime_fall = NodePath("../StateMachine/SlimeFall")
 animation_name = "slime_attack"
 
 [node name="EnemyDamageZone" parent="." instance=ExtResource("2_68p8s")]
 position = Vector2(0, -0.5)
 
-[node name="Collision" type="CollisionShape2D" parent="EnemyDamageZone"]
+[node name="AttackCollision" type="CollisionShape2D" parent="EnemyDamageZone"]
 position = Vector2(0, -1.5)
 shape = SubResource("RectangleShape2D_gstla")
 
-[node name="Collision" type="CollisionShape2D" parent="."]
+[node name="SlimeCollision" type="CollisionShape2D" parent="."]
 position = Vector2(0, -1)
 shape = SubResource("RectangleShape2D_6axq5")
 
-[node name="state_machine" type="Node" parent="." node_paths=PackedStringArray("starting_state")]
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("starting_state")]
 script = ExtResource("4_v083o")
-starting_state = NodePath("slime_patrol")
+starting_state = NodePath("SlimePatrol")
 
-[node name="slime_idle" type="Node" parent="state_machine" node_paths=PackedStringArray("slime_patrol", "slime_fall")]
+[node name="SlimeIdle" type="Node" parent="StateMachine" node_paths=PackedStringArray("slime_patrol", "slime_fall")]
 script = ExtResource("6_fd6lc")
-slime_patrol = NodePath("../slime_patrol")
-slime_fall = NodePath("../slime_fall")
+slime_patrol = NodePath("../SlimePatrol")
+slime_fall = NodePath("../SlimeFall")
 animation_name = "slime_idle"
 
-[node name="slime_attack" type="Node" parent="state_machine" node_paths=PackedStringArray("slime_idle")]
+[node name="SlimeAttack" type="Node" parent="StateMachine" node_paths=PackedStringArray("slime_idle")]
 script = ExtResource("8_vnioy")
-slime_idle = NodePath("../slime_idle")
+slime_idle = NodePath("../SlimeIdle")
 animation_name = "slime_attack"
 
-[node name="attack_timer" type="Timer" parent="state_machine/slime_attack"]
+[node name="AttackTimer" type="Timer" parent="StateMachine/SlimeAttack"]
 
-[node name="slime_patrol" type="Node" parent="state_machine" node_paths=PackedStringArray("slime_idle", "slime_fall")]
+[node name="SlimePatrol" type="Node" parent="StateMachine" node_paths=PackedStringArray("slime_idle", "slime_fall")]
 script = ExtResource("5_w3amv")
-slime_idle = NodePath("../slime_idle")
-slime_fall = NodePath("../slime_fall")
+slime_idle = NodePath("../SlimeIdle")
+slime_fall = NodePath("../SlimeFall")
 animation_name = "slime_patrol"
 
-[node name="slime_fall" type="Node" parent="state_machine" node_paths=PackedStringArray("slime_patrol")]
+[node name="SlimeFall" type="Node" parent="StateMachine" node_paths=PackedStringArray("slime_patrol")]
 script = ExtResource("7_gstla")
-slime_patrol = NodePath("../slime_patrol")
+slime_patrol = NodePath("../SlimePatrol")
 animation_name = "slime_fall"

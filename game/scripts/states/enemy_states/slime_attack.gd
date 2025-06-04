@@ -1,7 +1,7 @@
 class_name SlimeAttackState
 extends State
 
-@onready var timer: Timer = $attack_timer
+@onready var timer: Timer = $AttackTimer
 @export var slime_idle: SlimeIdleState
 var finished : bool = false
 
