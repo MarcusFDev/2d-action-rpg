@@ -5,7 +5,7 @@ extends Node
 var score: int = 0
 
 
-func add_point():
+func add_point() -> void:
 	#animation.play("gain_coin")
 	score += 1
 	print("Your Score is: ", score)
@@ -13,7 +13,7 @@ func add_point():
 	#score_label.text = "x " + str(score)
 
 
-func restart_level():
+func restart_level() -> void:
 	score = 0
 	Engine.time_scale = 1
 	get_tree().reload_current_scene()

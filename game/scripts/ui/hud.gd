@@ -22,6 +22,6 @@ func update_score(new_score: int) -> void:
 
 func update_health(old_health: int, new_health: int) -> void:
 	if new_health < old_health:
-		for i in range(old_health - 1, new_health -1, -1):
+		for i: int in range(old_health - 1, new_health -1, -1):
 			if i >= 0 and i < hearts.size():
 				hearts[i].play("lose_health")

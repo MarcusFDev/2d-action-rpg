@@ -13,7 +13,7 @@ func enter() -> void:
 func process_input(_event: InputEvent) -> State:
 	return null
 
-func process_physics(delta: float) -> State:
+func process_physics(_delta: float) -> State:
 	return null
 
 func _on_animations_animation_finished() -> void:

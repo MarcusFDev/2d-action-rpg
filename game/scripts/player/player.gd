@@ -39,7 +39,7 @@ func take_damage(_amount: int, enemy_velocity: Vector2) -> void:
 	if current_health <= 0:
 		return
 	
-	var old_health = current_health
+	var old_health : int = current_health
 	current_health = max(current_health - _amount, 0)
 	
 	if hud:

@@ -9,7 +9,7 @@ func _on_body_entered(body: Node) -> void:
 		
 	var enemy: Node = get_parent()
 	if "damage" in enemy:
-		var damage: int = enemy.damage
+		damage = enemy.damage
 		body.take_damage(damage, enemy.global_position)
 		print("Enemy Damage Zone | The Player Took ", damage, " damage from a ", enemy.name)
 		
