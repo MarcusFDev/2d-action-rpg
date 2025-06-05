@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://djt4jaxstqp53"]
+[gd_scene load_steps=43 format=3 uid="uid://djt4jaxstqp53"]
 
 [ext_resource type="Script" uid="uid://7v4hvbqgqr1l" path="res://scripts/ui/hud.gd" id="1_8qguk"]
 [ext_resource type="FontFile" uid="uid://be18v7te12m5p" path="res://assets/fonts/PixelOperator8-Bold.ttf" id="2_bo48s"]
@@ -104,6 +104,42 @@ animations = [{
 "speed": 20.0
 }]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_b6swc"]
+atlas = ExtResource("3_8qguk")
+region = Rect2(32, 96, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_27rlx"]
+atlas = ExtResource("3_8qguk")
+region = Rect2(64, 96, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vuvg6"]
+atlas = ExtResource("3_8qguk")
+region = Rect2(96, 96, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_emer0"]
+atlas = ExtResource("3_8qguk")
+region = Rect2(128, 96, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kfdjh"]
+atlas = ExtResource("3_8qguk")
+region = Rect2(0, 128, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xdlig"]
+atlas = ExtResource("3_8qguk")
+region = Rect2(32, 128, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lptj4"]
+atlas = ExtResource("3_8qguk")
+region = Rect2(64, 128, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_74gae"]
+atlas = ExtResource("3_8qguk")
+region = Rect2(96, 128, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_33vp1"]
+atlas = ExtResource("3_8qguk")
+region = Rect2(128, 128, 32, 32)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_bo48s"]
 atlas = ExtResource("3_8qguk")
 region = Rect2(32, 0, 32, 32)
@@ -162,6 +198,38 @@ region = Rect2(128, 64, 32, 32)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_27rlx"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b6swc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_27rlx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vuvg6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_emer0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kfdjh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xdlig")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lptj4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_74gae")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_33vp1")
+}],
+"loop": false,
+"name": &"gain_health",
+"speed": 15.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_bo48s")
