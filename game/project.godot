@@ -13,7 +13,7 @@ config_version=5
 config/name="First Game"
 run/main_scene="uid://d0k7ow6ig35r4"
 config/features=PackedStringArray("4.4", "Forward Plus")
-config/icon="res://assets/images/icon.svg"
+config/icon="res://assets/images/icon.ico"
 
 [audio]
 
