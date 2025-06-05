@@ -5,12 +5,11 @@
 [ext_resource type="Theme" uid="uid://cdvnx1x2un6o8" path="res://assets/themes/btn_theme.tres" id="3_lpyf1"]
 [ext_resource type="StyleBox" uid="uid://bsq0gu7c1pqjm" path="res://assets/themes/level_panels_border.tres" id="3_mhmff"]
 [ext_resource type="Theme" uid="uid://kmndp1tcmq6f" path="res://assets/themes/title_theme.tres" id="3_mill3"]
+[ext_resource type="Theme" uid="uid://dct1adrtx53me" path="res://assets/themes/scrollbar_theme.tres" id="4_1rkqb"]
 [ext_resource type="StyleBox" uid="uid://beqo8irsniav2" path="res://assets/themes/level_panels_black.tres" id="4_mill3"]
 [ext_resource type="Script" uid="uid://bibfmbooi65dl" path="res://scripts/ui/level_scroller.gd" id="4_sc7fl"]
 [ext_resource type="Texture2D" uid="uid://bcy0nvc4ekpxx" path="res://assets/images/icon.svg" id="5_sc7fl"]
 [ext_resource type="Texture2D" uid="uid://ituxbiimdjgy" path="res://assets/images/lock.png" id="8_mill3"]
-
-[sub_resource type="Theme" id="Theme_sc7fl"]
 
 [node name="LevelPicker" type="Control"]
 layout_mode = 3
@@ -78,7 +77,7 @@ layout_mode = 2
 [node name="ScrollContainer" type="ScrollContainer" parent="LevelPanels/VBoxContainer"]
 custom_minimum_size = Vector2(1700, 500)
 layout_mode = 2
-theme = SubResource("Theme_sc7fl")
+theme = ExtResource("4_1rkqb")
 follow_focus = true
 vertical_scroll_mode = 0
 scroll_deadzone = 10
