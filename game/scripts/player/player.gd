@@ -7,6 +7,7 @@ extends CharacterBody2D
 @onready var animations: AnimatedSprite2D = $Animations
 @onready var state_machine: Node = $StateMachine
 @onready var game_over_menu: Control = $"../../Interfaces/CanvasLayer/Menus/GameOverMenu"
+@onready var game_over_timer: Timer = $GameOverDelayTimer
 
 @export var max_health : int = 3
 var current_health : int = max_health
@@ -46,9 +47,12 @@ func take_damage(_amount: int, enemy_velocity: Vector2) -> void:
 	
 	if current_health <= 0:
 		print("You have Died")
-		game_over_menu.visible = true
-		game_over_menu.on_enter()
-
+		
+		var player_death_state: State = state_machine.get_state("PlayerDeath")
+		if player_death_state:
+			state_machine.change_state(player_death_state)
+		else:
+			print("Player.gd| Error: Could not find PlayerDeath state!")
 		
 	else:
 		var take_damage_state: State = state_machine.get_state("PlayerTakeDamage")
@@ -57,3 +61,11 @@ func take_damage(_amount: int, enemy_velocity: Vector2) -> void:
 			state_machine.change_state(take_damage_state)
 		else:
 			print("Player.gd| Error: Could not find PlayerTakeDamage state!")
+
+func trigger_game_over() -> void:
+		game_over_timer.start()
+
+
+func _on_game_over_delay_timer_timeout() -> void:
+	game_over_menu.visible = true
+	game_over_menu.on_enter()
