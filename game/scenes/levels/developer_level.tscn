@@ -577,7 +577,6 @@ offset_right = -1920.0
 [node name="Menus" type="Node" parent="Core/Interfaces/CanvasLayer"]
 
 [node name="PauseMenu" parent="Core/Interfaces/CanvasLayer/Menus" instance=ExtResource("7_g4vw6")]
-visible = false
 size_flags_vertical = 4
 
 [node name="GameOverMenu" parent="Core/Interfaces/CanvasLayer/Menus" instance=ExtResource("7_m1gkr")]
