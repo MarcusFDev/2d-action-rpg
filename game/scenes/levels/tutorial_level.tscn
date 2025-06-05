@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=4 uid="uid://c17coch358rjq"]
+[gd_scene load_steps=17 format=4 uid="uid://c17coch358rjq"]
 
 [ext_resource type="Script" uid="uid://cxn04bicrxv54" path="res://scripts/core/game_manager.gd" id="1_8r123"]
 [ext_resource type="Texture2D" uid="uid://c7g7cuah1l2u0" path="res://assets/sprites/tilemap.png" id="1_i4g7q"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://3qwe5nmnoejx" path="res://scenes/ui/pause_menu.tscn" id="4_8r123"]
 [ext_resource type="PackedScene" uid="uid://chptbuqgr7qyt" path="res://scenes/enemies/slime.tscn" id="4_xl0d0"]
 [ext_resource type="PackedScene" uid="uid://dcvg187d11cce" path="res://scenes/core/platform.tscn" id="5_8r123"]
+[ext_resource type="PackedScene" uid="uid://ddx81y73wlc8s" path="res://scenes/ui/game_over_menu.tscn" id="6_d0g56"]
 [ext_resource type="PackedScene" uid="uid://bg7nrwxlpxf3p" path="res://scenes/core/base_damage_zone.tscn" id="9_77k6j"]
 [ext_resource type="Script" uid="uid://dxvil1un2kg0e" path="res://scripts/core/world_damage_zone.gd" id="10_d0g56"]
 
@@ -312,8 +313,10 @@ position_smoothing_enabled = true
 [node name="Menus" type="Node" parent="Core/Interfaces/CanvasLayer"]
 
 [node name="PauseMenu" parent="Core/Interfaces/CanvasLayer/Menus" instance=ExtResource("4_8r123")]
-visible = false
 metadata/_edit_use_anchors_ = true
+
+[node name="GameOverMenu" parent="Core/Interfaces/CanvasLayer/Menus" instance=ExtResource("6_d0g56")]
+visible = false
 
 [node name="Collectables" type="Node" parent="."]
 

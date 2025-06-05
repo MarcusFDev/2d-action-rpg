@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=4 uid="uid://sei36ou55kby"]
+[gd_scene load_steps=24 format=4 uid="uid://sei36ou55kby"]
 
 [ext_resource type="Script" uid="uid://cxn04bicrxv54" path="res://scripts/core/game_manager.gd" id="1_q4ie4"]
 [ext_resource type="Texture2D" uid="uid://cdltmf4lb4tbb" path="res://assets/sprites/world_tileset.png" id="2_d4sha"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://beftgbphk8tt3" path="res://scenes/player/player.tscn" id="4_05q6o"]
 [ext_resource type="PackedScene" uid="uid://djt4jaxstqp53" path="res://scenes/ui/hud.tscn" id="5_koahr"]
 [ext_resource type="PackedScene" uid="uid://3qwe5nmnoejx" path="res://scenes/ui/pause_menu.tscn" id="7_g4vw6"]
+[ext_resource type="PackedScene" uid="uid://ddx81y73wlc8s" path="res://scenes/ui/game_over_menu.tscn" id="7_m1gkr"]
 [ext_resource type="PackedScene" uid="uid://bf8leam20pyk" path="res://scenes/core/coin.tscn" id="8_2ocmr"]
 [ext_resource type="PackedScene" uid="uid://chptbuqgr7qyt" path="res://scenes/enemies/slime.tscn" id="9_lnjxb"]
 [ext_resource type="PackedScene" uid="uid://dcvg187d11cce" path="res://scenes/core/platform.tscn" id="10_56c0c"]
@@ -578,6 +579,9 @@ offset_right = -1920.0
 [node name="PauseMenu" parent="Core/Interfaces/CanvasLayer/Menus" instance=ExtResource("7_g4vw6")]
 visible = false
 size_flags_vertical = 4
+
+[node name="GameOverMenu" parent="Core/Interfaces/CanvasLayer/Menus" instance=ExtResource("7_m1gkr")]
+visible = false
 
 [node name="Collectables" type="Node" parent="."]
 
