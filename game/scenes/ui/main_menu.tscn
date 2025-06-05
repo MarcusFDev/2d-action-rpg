@@ -67,6 +67,10 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 theme = ExtResource("3_m1kxf")
 
+[node name="Spacer4" type="Control" parent="Buttons/VBoxContainer"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+
 [node name="PlayButton" type="Button" parent="Buttons/VBoxContainer"]
 custom_minimum_size = Vector2(75, 75)
 layout_mode = 2
@@ -79,25 +83,23 @@ flat = true
 custom_minimum_size = Vector2(0, 25)
 layout_mode = 2
 
-[node name="TutorialButton" type="Button" parent="Buttons/VBoxContainer"]
-custom_minimum_size = Vector2(75, 75)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-text = "Tutorial"
-flat = true
-
-[node name="Spacer3" type="Control" parent="Buttons/VBoxContainer"]
-custom_minimum_size = Vector2(0, 25)
-layout_mode = 2
-
-[node name="OptionsButton" type="Button" parent="Buttons/VBoxContainer"]
+[node name="SettingsButton" type="Button" parent="Buttons/VBoxContainer"]
 custom_minimum_size = Vector2(0, 75)
 layout_mode = 2
-text = "Options"
+text = "Settings"
 flat = true
 
 [node name="Spacer2" type="Control" parent="Buttons/VBoxContainer"]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+
+[node name="CreditsButton" type="Button" parent="Buttons/VBoxContainer"]
+custom_minimum_size = Vector2(0, 75)
+layout_mode = 2
+text = "Credits"
+flat = true
+
+[node name="Spacer5" type="Control" parent="Buttons/VBoxContainer"]
 custom_minimum_size = Vector2(0, 25)
 layout_mode = 2
 
@@ -108,6 +110,6 @@ text = "Quit"
 flat = true
 
 [connection signal="pressed" from="Buttons/VBoxContainer/PlayButton" to="." method="_on_play_btn_pressed"]
-[connection signal="pressed" from="Buttons/VBoxContainer/TutorialButton" to="." method="_on_tutorial_button_pressed"]
-[connection signal="pressed" from="Buttons/VBoxContainer/OptionsButton" to="." method="_on_options_btn_pressed"]
+[connection signal="pressed" from="Buttons/VBoxContainer/SettingsButton" to="." method="_on_settings_button_pressed"]
+[connection signal="pressed" from="Buttons/VBoxContainer/CreditsButton" to="." method="_on_settings_button_pressed"]
 [connection signal="pressed" from="Buttons/VBoxContainer/QuitButton" to="." method="_on_quit_btn_pressed"]
