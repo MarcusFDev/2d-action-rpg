@@ -2,7 +2,7 @@ extends Control
 @onready var pause_menu: Control = $"."
 @onready var level: Node2D = $"../../../../.."
 
-@onready var options_menu: Control = $options_menu
+@onready var options_menu: Control = $OptionsMenu
 
 var paused: bool = false
 # Called every frame. 'delta' is the elapsed time since the previous frame.

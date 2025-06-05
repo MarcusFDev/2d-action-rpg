@@ -1,8 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://3qwe5nmnoejx"]
+[gd_scene load_steps=7 format=3 uid="uid://3qwe5nmnoejx"]
 
 [ext_resource type="FontFile" uid="uid://be18v7te12m5p" path="res://assets/fonts/PixelOperator8-Bold.ttf" id="1_0lmf7"]
 [ext_resource type="Script" uid="uid://ddw4hrag0gwyw" path="res://scripts/ui/pause_menu.gd" id="1_6tw0m"]
-[ext_resource type="PackedScene" uid="uid://cecmvrsqr2wb6" path="res://scenes/ui/options_menu.tscn" id="3_0bnpd"]
 [ext_resource type="Shader" uid="uid://bou50jpte2i2x" path="res://assets/shaders/blur.gdshader" id="3_8uki6"]
 [ext_resource type="Theme" uid="uid://cdvnx1x2un6o8" path="res://assets/themes/btn_theme.tres" id="3_f6eus"]
 
@@ -15,6 +14,7 @@ shader = ExtResource("3_8uki6")
 shader_parameter/amount = 2.0
 
 [node name="PauseMenu" type="Control"]
+visible = false
 layout_mode = 3
 anchors_preset = 8
 anchor_left = 0.5
@@ -26,13 +26,6 @@ grow_vertical = 2
 size_flags_horizontal = 4
 theme = SubResource("Theme_f6eus")
 script = ExtResource("1_6tw0m")
-
-[node name="OptionsMenu" parent="." instance=ExtResource("3_0bnpd")]
-layout_mode = 1
-offset_left = -208.0
-offset_top = -199.5
-offset_right = -208.0
-offset_bottom = -199.5
 
 [node name="BlurEffect" type="ColorRect" parent="."]
 z_index = 1
@@ -89,12 +82,6 @@ layout_mode = 2
 text = "Restart"
 flat = true
 
-[node name="OptionsButton" type="Button" parent="MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 130)
-layout_mode = 2
-text = "Options"
-flat = true
-
 [node name="MainMenuButton" type="Button" parent="MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(200, 130)
 layout_mode = 2
@@ -103,5 +90,4 @@ flat = true
 
 [connection signal="pressed" from="MarginContainer/VBoxContainer/ResumeButton" to="." method="_on_resume_btn_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/RestartButton" to="." method="_on_restart_button_pressed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/OptionsButton" to="." method="_on_options_btn_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/MainMenuButton" to="." method="_on_main_menu_btn_pressed"]
