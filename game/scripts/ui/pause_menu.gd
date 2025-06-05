@@ -2,8 +2,6 @@ extends Control
 @onready var pause_menu: Control = $"."
 @onready var level: Node2D = $"../../../../.."
 
-@onready var options_menu: Control = $OptionsMenu
-
 var paused: bool = false
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -27,10 +25,6 @@ func _on_resume_btn_pressed() -> void:
 
 func _on_main_menu_btn_pressed() -> void:
 	get_tree().change_scene_to_file("res://scenes/ui/main_menu.tscn")
-
-
-func _on_options_btn_pressed() -> void:
-	options_menu.show_with_return(self)
 
 
 func _on_restart_button_pressed() -> void:

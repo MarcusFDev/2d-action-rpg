@@ -11,7 +11,7 @@ func _on_body_entered(body: Node) -> void:
 	if "damage" in enemy:
 		var damage: int = enemy.damage
 		body.take_damage(damage, enemy.global_position)
-		print("Enemy Damage Zone | Player Took ", damage, " damage from ", enemy.name)
+		print("Enemy Damage Zone | The Player Took ", damage, " damage from a ", enemy.name)
 		
 		if enemy.has_method("trigger_attack"):
 			enemy.trigger_attack()

@@ -7,7 +7,6 @@ extends CharacterBody2D
 
 @export var damage: int = 1
 
-
 func _ready() -> void:
 	state_machine.init(self, animations)
 
