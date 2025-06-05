@@ -8,11 +8,20 @@
 
 extends Control
 
-@onready var hearts:= [$HealthBar/Heart1, $HealthBar/Heart2, $HealthBar/Heart3]
+@onready var hearts: Array[AnimatedSprite2D] = [
+	$HealthBar/Heart1,
+	$HealthBar/Heart2,
+	$HealthBar/Heart3
+	]
 @onready var coin_animation: AnimatedSprite2D = $CoinCounter/Coin
 @onready var score_label: Label = $CoinCounter/ScoreLabel
-
 
 func update_score(new_score: int) -> void:
 	coin_animation.play("gain_coin")
 	score_label.text = "x " + str(new_score)
+
+func update_health(old_health: int, new_health: int) -> void:
+	if new_health < old_health:
+		for i in range(old_health - 1, new_health -1, -1):
+			if i >= 0 and i < hearts.size():
+				hearts[i].play("lose_health")
