@@ -16,6 +16,9 @@ extends Control
 @onready var coin_animation: AnimatedSprite2D = $CoinCounter/Coin
 @onready var score_label: Label = $CoinCounter/ScoreLabel
 
+func _ready() -> void:
+	GameManager.hud = self
+
 func update_score(new_score: int) -> void:
 	coin_animation.play("gain_coin")
 	score_label.text = "x " + str(new_score)

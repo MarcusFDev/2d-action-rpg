@@ -1,9 +1,8 @@
 extends Control
+	
 
-
-func _on_play_btn_pressed() -> void:
-	get_tree().change_scene_to_file("res://scenes/levels/level_picker.tscn")
-
+func _on_play_button_pressed() -> void:
+	get_tree().change_scene_to_file("res://scenes/ui/level_picker.tscn")
 
 func _on_settings_button_pressed() -> void:
 	get_tree().change_scene_to_file("res://scenes/ui/settings_menu.tscn")

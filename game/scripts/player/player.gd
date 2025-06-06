@@ -63,9 +63,11 @@ func take_damage(_amount: int, enemy_velocity: Vector2) -> void:
 			print("Player.gd| Error: Could not find PlayerTakeDamage state!")
 
 func trigger_game_over() -> void:
-		game_over_timer.start()
+	print("GameOverTimer started.")
+	game_over_timer.start()
 
 
 func _on_game_over_delay_timer_timeout() -> void:
+	print("GameOverTimer finished.")
 	game_over_menu.visible = true
 	game_over_menu.on_enter()

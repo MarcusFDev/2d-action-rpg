@@ -1,6 +1,6 @@
 extends Node
 
-@onready var hud: Control = $"../Interfaces/CanvasLayer/Hud/Hud"
+@onready var hud: Control = null
 
 var score: int = 0
 

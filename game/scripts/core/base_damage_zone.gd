@@ -5,7 +5,11 @@ extends Area2D
 @export var damage: int = 1  # Default damage
 
 func _ready() -> void:
-	connect("body_entered", _on_body_entered)
+	if not is_connected("body_entered", Callable(self, "_on_body_entered")):
+		connect("body_entered", _on_body_entered)
+
+#func _ready() -> void:
+	#connect("body_entered", _on_body_entered)
 
 func _on_body_entered(body: Node) -> void:
 	if not body.is_in_group("player"):

@@ -1,7 +1,7 @@
 extends Area2D
 
-@onready var game_manager: Node = %GameManager
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
+var game_manager: Node = GameManager
 
 func _on_body_entered(_body: CharacterBody2D) -> void:
 	game_manager.add_point()

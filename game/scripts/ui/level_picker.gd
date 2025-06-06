@@ -1,11 +1,18 @@
 extends Control
 
-@onready var dim_overlay: ColorRect = $DimOverlay
-@onready var lock_icon: TextureRect = $LockIcon
+func _ready() -> void:
+	var container_path: String = "LevelPanels/VBoxContainer/ScrollContainer/HBoxContainer"
+	var container: Node = get_node_or_null(container_path)
 
-func set_locked(is_locked: bool) -> void:
-	dim_overlay.visible = is_locked
-	lock_icon.visible = is_locked
+	for button: Node in container.get_children():
+		var btn_node: Node = button
+		var dim_overlay: Node = btn_node.get_node_or_null("DimOverlay")
+		var lock_icon: Node = btn_node.get_node_or_null("LockIcon")
+
+		if dim_overlay and lock_icon:
+			var is_locked: bool = true
+			dim_overlay.visible = is_locked
+			lock_icon.visible = is_locked
 
 
 func _on_back_button_pressed() -> void:
