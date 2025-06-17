@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://dpg6pyjck4uj5"]
+
+[ext_resource type="Script" uid="uid://brje2iuhmwpn7" path="res://scripts/core/heart_crystal.gd" id="1_5eakc"]
+[ext_resource type="AudioStream" uid="uid://bbm14ntpa0q46" path="res://assets/sounds/power_up.wav" id="2_adck5"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3ghpg"]
+size = Vector2(11, 16)
+
+[node name="Heart" type="Area2D"]
+script = ExtResource("1_5eakc")
+
+[node name="Heart" type="Sprite2D" parent="."]
+
+[node name="PickupSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("2_adck5")
+bus = &"SFX"
+
+[node name="HeartCollision" type="CollisionShape2D" parent="."]
+position = Vector2(0.5, 0)
+shape = SubResource("RectangleShape2D_3ghpg")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
