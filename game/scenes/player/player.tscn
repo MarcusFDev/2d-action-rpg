@@ -1,6 +1,7 @@
-[gd_scene load_steps=59 format=3 uid="uid://beftgbphk8tt3"]
+[gd_scene load_steps=68 format=3 uid="uid://beftgbphk8tt3"]
 
 [ext_resource type="Script" uid="uid://dc7is6nsd35mi" path="res://scripts/player/player.gd" id="1_g2els"]
+[ext_resource type="Texture2D" uid="uid://df6e5yhyvdsp6" path="res://assets/sprites/player/knight-attack1.png" id="2_myrg7"]
 [ext_resource type="Texture2D" uid="uid://q6qxk2euivaw" path="res://assets/sprites/player/knight-death.png" id="2_ugbui"]
 [ext_resource type="Texture2D" uid="uid://c5nm6jegwh4n5" path="res://assets/sprites/player/knight-fall.png" id="3_fm80t"]
 [ext_resource type="Texture2D" uid="uid://u680dc0wssdk" path="res://assets/sprites/player/knight-idle.png" id="3_h17s1"]
@@ -15,6 +16,38 @@
 [ext_resource type="Texture2D" uid="uid://npo044vxtqee" path="res://assets/sprites/player/knight-take-damage.png" id="7_ugbui"]
 [ext_resource type="Script" uid="uid://bx46domvi6xu4" path="res://scripts/states/player_states/player_take_damage.gd" id="8_smehm"]
 [ext_resource type="Script" uid="uid://caqbivosmm5lo" path="res://scripts/states/player_states/player_death.gd" id="9_5gtgg"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_upxxc"]
+atlas = ExtResource("2_myrg7")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ln3h3"]
+atlas = ExtResource("2_myrg7")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uygh0"]
+atlas = ExtResource("2_myrg7")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t1aof"]
+atlas = ExtResource("2_myrg7")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w8qe1"]
+atlas = ExtResource("2_myrg7")
+region = Rect2(128, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hdvrm"]
+atlas = ExtResource("2_myrg7")
+region = Rect2(160, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5xbmr"]
+atlas = ExtResource("2_myrg7")
+region = Rect2(192, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hir57"]
+atlas = ExtResource("2_myrg7")
+region = Rect2(224, 0, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_niom3"]
 atlas = ExtResource("2_ugbui")
@@ -182,6 +215,35 @@ region = Rect2(96, 0, 32, 32)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_2hs0m"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_upxxc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ln3h3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uygh0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t1aof")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w8qe1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hdvrm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5xbmr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hir57")
+}],
+"loop": true,
+"name": &"attack_1",
+"speed": 15.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_niom3")
@@ -352,7 +414,7 @@ script = ExtResource("1_g2els")
 [node name="Animations" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -12)
 sprite_frames = SubResource("SpriteFrames_2hs0m")
-animation = &"death"
+animation = &"attack_1"
 autoplay = "idle"
 
 [node name="PlayerCollision" type="CollisionShape2D" parent="."]
