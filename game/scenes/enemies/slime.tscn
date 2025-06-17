@@ -1,14 +1,16 @@
-[gd_scene load_steps=49 format=3 uid="uid://chptbuqgr7qyt"]
+[gd_scene load_steps=67 format=3 uid="uid://chptbuqgr7qyt"]
 
 [ext_resource type="Script" uid="uid://n35k36oc5i6u" path="res://scripts/enemies/slime.gd" id="1_68p8s"]
 [ext_resource type="PackedScene" uid="uid://bg7nrwxlpxf3p" path="res://scenes/core/base_damage_zone.tscn" id="2_68p8s"]
 [ext_resource type="Texture2D" uid="uid://mqmm0ytehpti" path="res://assets/sprites/enemies/slime/slime-attack.png" id="2_ikdmk"]
 [ext_resource type="Texture2D" uid="uid://b0c4p7qgu22yt" path="res://assets/sprites/enemies/slime/slime-fall.png" id="3_jjup5"]
+[ext_resource type="Texture2D" uid="uid://bqo4nv5fjoevl" path="res://assets/sprites/enemies/slime/slime-death.png" id="3_wfyvu"]
 [ext_resource type="Texture2D" uid="uid://c7uw5sw3daps0" path="res://assets/sprites/enemies/slime/slime-idle.png" id="4_mdcui"]
 [ext_resource type="Script" uid="uid://dx4xc2bef7fpn" path="res://scripts/states/state_machines/enemy_state_machine.gd" id="4_v083o"]
 [ext_resource type="Texture2D" uid="uid://cmiijc04jyy37" path="res://assets/sprites/enemies/slime/slime-patrol.png" id="5_ikdmk"]
 [ext_resource type="Script" uid="uid://bi43tvg8ehxwt" path="res://scripts/states/enemy_states/slime_patrol.gd" id="5_w3amv"]
 [ext_resource type="Script" uid="uid://52nci3gkus1o" path="res://scripts/states/enemy_states/slime_idle.gd" id="6_fd6lc"]
+[ext_resource type="Texture2D" uid="uid://dkhvgs4m8tdu" path="res://assets/sprites/enemies/slime/slime-take-damage.png" id="7_at850"]
 [ext_resource type="Script" uid="uid://bcjjn4g2nva4f" path="res://scripts/states/enemy_states/slime_fall.gd" id="7_gstla"]
 [ext_resource type="Script" uid="uid://cj5m4q4fchcg5" path="res://scripts/states/enemy_states/slime_attack.gd" id="8_vnioy"]
 
@@ -47,6 +49,54 @@ region = Rect2(48, 0, 48, 32)
 [sub_resource type="AtlasTexture" id="AtlasTexture_ru012"]
 atlas = ExtResource("2_ikdmk")
 region = Rect2(0, 0, 48, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yti0t"]
+atlas = ExtResource("3_wfyvu")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jdcy1"]
+atlas = ExtResource("3_wfyvu")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dmcpi"]
+atlas = ExtResource("3_wfyvu")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_062ni"]
+atlas = ExtResource("3_wfyvu")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pvdkb"]
+atlas = ExtResource("3_wfyvu")
+region = Rect2(128, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1ukv7"]
+atlas = ExtResource("3_wfyvu")
+region = Rect2(160, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c26xy"]
+atlas = ExtResource("3_wfyvu")
+region = Rect2(192, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y1i7t"]
+atlas = ExtResource("3_wfyvu")
+region = Rect2(224, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s3ip3"]
+atlas = ExtResource("3_wfyvu")
+region = Rect2(256, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h77oy"]
+atlas = ExtResource("3_wfyvu")
+region = Rect2(288, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3v221"]
+atlas = ExtResource("3_wfyvu")
+region = Rect2(320, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ayoef"]
+atlas = ExtResource("3_wfyvu")
+region = Rect2(352, 0, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ikdmk"]
 atlas = ExtResource("3_jjup5")
@@ -148,6 +198,22 @@ region = Rect2(32, 0, 32, 32)
 atlas = ExtResource("5_ikdmk")
 region = Rect2(0, 0, 32, 32)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_3mvx0"]
+atlas = ExtResource("7_at850")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_41lxs"]
+atlas = ExtResource("7_at850")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jx6p5"]
+atlas = ExtResource("7_at850")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ig2y7"]
+atlas = ExtResource("7_at850")
+region = Rect2(96, 0, 32, 32)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_a1j1j"]
 animations = [{
 "frames": [{
@@ -181,6 +247,47 @@ animations = [{
 "loop": false,
 "name": &"slime_attack",
 "speed": 15.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yti0t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jdcy1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dmcpi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_062ni")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pvdkb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1ukv7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c26xy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y1i7t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s3ip3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h77oy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3v221")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ayoef")
+}],
+"loop": true,
+"name": &"slime_death",
+"speed": 8.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -271,6 +378,23 @@ animations = [{
 "loop": true,
 "name": &"slime_patrol",
 "speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3mvx0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_41lxs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jx6p5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ig2y7")
+}],
+"loop": true,
+"name": &"slime_take_damage",
+"speed": 5.0
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gstla"]
@@ -298,10 +422,8 @@ target_position = Vector2(-13, 0)
 position = Vector2(4.76837e-07, -4)
 scale = Vector2(0.671875, 0.671875)
 sprite_frames = SubResource("SpriteFrames_a1j1j")
-animation = &"slime_attack"
+animation = &"slime_take_damage"
 autoplay = "slime_idle"
-frame = 8
-frame_progress = 1.0
 script = ExtResource("5_w3amv")
 slime_idle = NodePath("../StateMachine/SlimeIdle")
 slime_fall = NodePath("../StateMachine/SlimeFall")
