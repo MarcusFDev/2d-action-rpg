@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" uid="uid://7v4hvbqgqr1l" path="res://scripts/ui/hud.gd" id="1_8qguk"]
 [ext_resource type="FontFile" uid="uid://be18v7te12m5p" path="res://assets/fonts/PixelOperator8-Bold.ttf" id="2_bo48s"]
-[ext_resource type="Texture2D" uid="uid://82bld10iaeel" path="res://assets/sprites/hearts.png" id="3_8qguk"]
-[ext_resource type="Texture2D" uid="uid://cqm0r02sn7u1j" path="res://assets/sprites/coin.png" id="3_bo48s"]
+[ext_resource type="Texture2D" uid="uid://82bld10iaeel" path="res://assets/sprites/player/hearts.png" id="3_8qguk"]
+[ext_resource type="Texture2D" uid="uid://cqm0r02sn7u1j" path="res://assets/sprites/world/coin.png" id="3_bo48s"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_8qguk"]
 atlas = ExtResource("3_bo48s")
