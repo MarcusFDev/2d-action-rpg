@@ -1,4 +1,4 @@
-[gd_scene load_steps=67 format=3 uid="uid://chptbuqgr7qyt"]
+[gd_scene load_steps=69 format=3 uid="uid://chptbuqgr7qyt"]
 
 [ext_resource type="Script" uid="uid://n35k36oc5i6u" path="res://scripts/enemies/slime.gd" id="1_68p8s"]
 [ext_resource type="PackedScene" uid="uid://bg7nrwxlpxf3p" path="res://scenes/core/base_damage_zone.tscn" id="2_68p8s"]
@@ -13,6 +13,8 @@
 [ext_resource type="Texture2D" uid="uid://dkhvgs4m8tdu" path="res://assets/sprites/enemies/slime/slime-take-damage.png" id="7_at850"]
 [ext_resource type="Script" uid="uid://bcjjn4g2nva4f" path="res://scripts/states/enemy_states/slime_fall.gd" id="7_gstla"]
 [ext_resource type="Script" uid="uid://cj5m4q4fchcg5" path="res://scripts/states/enemy_states/slime_attack.gd" id="8_vnioy"]
+[ext_resource type="Script" uid="uid://cmv0hyy1vpln2" path="res://scripts/states/enemy_states/slime_take_damage.gd" id="14_wbf5k"]
+[ext_resource type="Script" uid="uid://fisrtfageena" path="res://scripts/states/enemy_states/slime_death.gd" id="15_tvrjd"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_wbf5k"]
 atlas = ExtResource("2_ikdmk")
@@ -467,3 +469,9 @@ animation_name = "slime_patrol"
 script = ExtResource("7_gstla")
 slime_patrol = NodePath("../SlimePatrol")
 animation_name = "slime_fall"
+
+[node name="SlimeTakeDamage" type="Node" parent="StateMachine"]
+script = ExtResource("14_wbf5k")
+
+[node name="SlimeDeath" type="Node" parent="StateMachine"]
+script = ExtResource("15_tvrjd")
