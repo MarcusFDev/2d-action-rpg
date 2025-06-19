@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=4 uid="uid://sei36ou55kby"]
+[gd_scene load_steps=25 format=4 uid="uid://sei36ou55kby"]
 
 [ext_resource type="Script" uid="uid://cxn04bicrxv54" path="res://scripts/core/game_manager.gd" id="1_q4ie4"]
 [ext_resource type="Texture2D" uid="uid://cdltmf4lb4tbb" path="res://assets/sprites/world/world_tileset.png" id="2_d4sha"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://3qwe5nmnoejx" path="res://scenes/ui/pause_menu.tscn" id="7_g4vw6"]
 [ext_resource type="PackedScene" uid="uid://ddx81y73wlc8s" path="res://scenes/ui/game_over_menu.tscn" id="7_m1gkr"]
 [ext_resource type="PackedScene" uid="uid://bf8leam20pyk" path="res://scenes/core/coin.tscn" id="8_2ocmr"]
+[ext_resource type="PackedScene" uid="uid://dpg6pyjck4uj5" path="res://scenes/core/heart_crystal.tscn" id="9_05q6o"]
 [ext_resource type="PackedScene" uid="uid://chptbuqgr7qyt" path="res://scenes/enemies/slime.tscn" id="9_lnjxb"]
 [ext_resource type="PackedScene" uid="uid://dcvg187d11cce" path="res://scenes/core/platform.tscn" id="10_56c0c"]
 [ext_resource type="PackedScene" uid="uid://bg7nrwxlpxf3p" path="res://scenes/core/base_damage_zone.tscn" id="11_d4sha"]
@@ -552,7 +553,7 @@ tile_set = SubResource("TileSet_bgnkb")
 [node name="Player" type="Node" parent="Core"]
 
 [node name="Player" parent="Core/Player" instance=ExtResource("4_05q6o")]
-position = Vector2(168, -512)
+position = Vector2(-72, -536)
 collision_mask = 30
 
 [node name="PlayerCamera" type="Camera2D" parent="Core/Player/Player"]
@@ -582,6 +583,10 @@ size_flags_vertical = 4
 [node name="GameOverMenu" parent="Core/Interfaces/CanvasLayer/Menus" instance=ExtResource("7_m1gkr")]
 visible = false
 
+[node name="GameOverDelayTimer" type="Timer" parent="Core/Interfaces/CanvasLayer/Menus"]
+wait_time = 0.5
+one_shot = true
+
 [node name="Collectables" type="Node" parent="."]
 
 [node name="Coins" type="Node" parent="Collectables"]
@@ -601,12 +606,44 @@ position = Vector2(173, -57)
 [node name="Coin5" parent="Collectables/Coins" instance=ExtResource("8_2ocmr")]
 position = Vector2(649, -63)
 
+[node name="HeartCrystals" type="Node" parent="Collectables"]
+
+[node name="HeartCrystal" parent="Collectables/HeartCrystals" instance=ExtResource("9_05q6o")]
+position = Vector2(288, -640)
+
+[node name="HeartCrystal2" parent="Collectables/HeartCrystals" instance=ExtResource("9_05q6o")]
+position = Vector2(352, -592)
+
+[node name="HeartCrystal3" parent="Collectables/HeartCrystals" instance=ExtResource("9_05q6o")]
+position = Vector2(224, -688)
+
+[node name="HeartCrystal4" parent="Collectables/HeartCrystals" instance=ExtResource("9_05q6o")]
+position = Vector2(160, -736)
+
+[node name="HeartCrystal5" parent="Collectables/HeartCrystals" instance=ExtResource("9_05q6o")]
+position = Vector2(96, -784)
+
+[node name="HeartCrystal6" parent="Collectables/HeartCrystals" instance=ExtResource("9_05q6o")]
+position = Vector2(32, -832)
+
+[node name="HeartCrystal7" parent="Collectables/HeartCrystals" instance=ExtResource("9_05q6o")]
+position = Vector2(-24, -880)
+
+[node name="HeartCrystal8" parent="Collectables/HeartCrystals" instance=ExtResource("9_05q6o")]
+position = Vector2(-96, -928)
+
+[node name="HeartCrystal9" parent="Collectables/HeartCrystals" instance=ExtResource("9_05q6o")]
+position = Vector2(-160, -976)
+
+[node name="HeartCrystal10" parent="Collectables/HeartCrystals" instance=ExtResource("9_05q6o")]
+position = Vector2(-224, -1024)
+
 [node name="Enemies" type="Node" parent="."]
 
 [node name="Slimes" type="Node" parent="Enemies"]
 
 [node name="Slime" parent="Enemies/Slimes" instance=ExtResource("9_lnjxb")]
-position = Vector2(120, -512)
+position = Vector2(336, -504)
 
 [node name="Platforms" type="Node" parent="."]
 
@@ -669,3 +706,5 @@ script = ExtResource("12_m1gkr")
 position = Vector2(0, 144)
 shape = SubResource("WorldBoundaryShape2D_05q6o")
 debug_color = Color(0.971997, 0, 0.444106, 0.42)
+
+[connection signal="timeout" from="Core/Interfaces/CanvasLayer/Menus/GameOverDelayTimer" to="Core/GameManager" method="_on_game_over_delay_timer_timeout"]
