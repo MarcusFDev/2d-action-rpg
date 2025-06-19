@@ -1,22 +1,98 @@
-[gd_scene load_steps=4 format=3 uid="uid://dpg6pyjck4uj5"]
+[gd_scene load_steps=15 format=3 uid="uid://dpg6pyjck4uj5"]
 
 [ext_resource type="Script" uid="uid://brje2iuhmwpn7" path="res://scripts/core/heart_crystal.gd" id="1_5eakc"]
 [ext_resource type="AudioStream" uid="uid://bbm14ntpa0q46" path="res://assets/sounds/power_up.wav" id="2_adck5"]
+[ext_resource type="Texture2D" uid="uid://ch8tr0wrc7sfs" path="res://assets/sprites/world/heart-crystal.png" id="2_fxog8"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rqm48"]
+atlas = ExtResource("2_fxog8")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aq5yv"]
+atlas = ExtResource("2_fxog8")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ntbyo"]
+atlas = ExtResource("2_fxog8")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h672c"]
+atlas = ExtResource("2_fxog8")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ccq1s"]
+atlas = ExtResource("2_fxog8")
+region = Rect2(128, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mr50p"]
+atlas = ExtResource("2_fxog8")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w4eqj"]
+atlas = ExtResource("2_fxog8")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5mxup"]
+atlas = ExtResource("2_fxog8")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q1xqn"]
+atlas = ExtResource("2_fxog8")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_dlm1y"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rqm48")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_aq5yv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ntbyo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h672c")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ccq1s")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mr50p")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w4eqj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5mxup")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q1xqn")
+}],
+"loop": true,
+"name": &"crystal_idle",
+"speed": 5.0
+}]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3ghpg"]
-size = Vector2(11, 16)
+size = Vector2(23, 22)
 
-[node name="Heart" type="Area2D"]
+[node name="HeartCrystal" type="Area2D"]
 script = ExtResource("1_5eakc")
 
-[node name="Heart" type="Sprite2D" parent="."]
+[node name="Animations" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_dlm1y")
+animation = &"crystal_idle"
+autoplay = "crystal_idle"
+frame_progress = 0.829423
 
 [node name="PickupSound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("2_adck5")
 bus = &"SFX"
 
-[node name="HeartCollision" type="CollisionShape2D" parent="."]
-position = Vector2(0.5, 0)
+[node name="HeartCrystalCollision" type="CollisionShape2D" parent="."]
+position = Vector2(-0.5, 0)
 shape = SubResource("RectangleShape2D_3ghpg")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
