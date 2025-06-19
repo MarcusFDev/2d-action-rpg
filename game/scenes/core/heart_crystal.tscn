@@ -85,7 +85,7 @@ script = ExtResource("1_5eakc")
 sprite_frames = SubResource("SpriteFrames_dlm1y")
 animation = &"crystal_idle"
 autoplay = "crystal_idle"
-frame_progress = 0.829423
+frame_progress = 0.0335604
 
 [node name="PickupSound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("2_adck5")
