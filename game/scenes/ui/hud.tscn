@@ -326,3 +326,39 @@ position = Vector2(1712, 64)
 scale = Vector2(4, 4)
 sprite_frames = SubResource("SpriteFrames_27rlx")
 animation = &"lose_health"
+
+[node name="Heart4" type="AnimatedSprite2D" parent="HealthBar"]
+position = Vector2(1640, 64)
+scale = Vector2(4, 4)
+sprite_frames = SubResource("SpriteFrames_27rlx")
+animation = &"lose_health"
+
+[node name="Heart5" type="AnimatedSprite2D" parent="HealthBar"]
+position = Vector2(1568, 64)
+scale = Vector2(4, 4)
+sprite_frames = SubResource("SpriteFrames_27rlx")
+animation = &"lose_health"
+
+[node name="Heart6" type="AnimatedSprite2D" parent="HealthBar"]
+position = Vector2(1496, 64)
+scale = Vector2(4, 4)
+sprite_frames = SubResource("SpriteFrames_27rlx")
+animation = &"lose_health"
+
+[node name="Heart7" type="AnimatedSprite2D" parent="HealthBar"]
+position = Vector2(1424, 64)
+scale = Vector2(4, 4)
+sprite_frames = SubResource("SpriteFrames_27rlx")
+animation = &"lose_health"
+
+[node name="Heart8" type="AnimatedSprite2D" parent="HealthBar"]
+position = Vector2(1352, 64)
+scale = Vector2(4, 4)
+sprite_frames = SubResource("SpriteFrames_27rlx")
+animation = &"lose_health"
+
+[node name="Heart9" type="AnimatedSprite2D" parent="HealthBar"]
+position = Vector2(1280, 64)
+scale = Vector2(4, 4)
+sprite_frames = SubResource("SpriteFrames_27rlx")
+animation = &"lose_health"
