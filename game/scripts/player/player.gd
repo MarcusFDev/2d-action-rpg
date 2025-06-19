@@ -63,6 +63,10 @@ func add_health(_amount: int) -> void:
 	var old_health: int = current_health
 	current_health = min(current_health + _amount, max_health)
 	
+	var player_heal_state: State = state_machine.get_state("PlayerHeal")
+	if player_heal_state:
+		state_machine.change_state(player_heal_state)
+	
 	if hud:
 		hud.update_health(old_health, current_health)
 

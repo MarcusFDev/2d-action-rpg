@@ -302,9 +302,9 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_0ncpa")
 }],
-"loop": true,
+"loop": false,
 "name": &"heal",
-"speed": 5.0
+"speed": 10.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -416,9 +416,8 @@ script = ExtResource("1_g2els")
 [node name="Animations" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -12)
 sprite_frames = SubResource("SpriteFrames_2hs0m")
-animation = &"attack_1"
+animation = &"heal"
 autoplay = "idle"
-frame_progress = 0.444797
 
 [node name="PlayerCollision" type="CollisionShape2D" parent="."]
 position = Vector2(0, -5)
@@ -468,11 +467,17 @@ animation_name = "take_damage"
 script = ExtResource("9_5gtgg")
 animation_name = "death"
 
-[node name="PlayerHeal" type="Node" parent="StateMachine"]
+[node name="PlayerHeal" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle")]
 script = ExtResource("17_uf5tr")
+idle = NodePath("../PlayerIdle")
+animation_name = "heal"
+
+[node name="PlayerHealTimer" type="Timer" parent="StateMachine/PlayerHeal"]
+wait_time = 0.7
 
 [node name="PlayerAttack1" type="Node" parent="StateMachine"]
 script = ExtResource("18_lgqa7")
 
 [connection signal="animation_finished" from="Animations" to="StateMachine/PlayerDeath" method="_on_animations_animation_finished"]
 [connection signal="timeout" from="GameOverDelayTimer" to="." method="_on_game_over_delay_timer_timeout"]
+[connection signal="timeout" from="StateMachine/PlayerHeal/PlayerHealTimer" to="StateMachine/PlayerHeal" method="_on_player_heal_timer_timeout"]
