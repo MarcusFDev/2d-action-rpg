@@ -2,7 +2,7 @@ class_name SlimeAttackState
 extends State
 
 @onready var timer: Timer = $AttackTimer
-@export var slime_idle: SlimeIdleState
+@export var slime_idle: IdleState
 var finished : bool = false
 
 # Called when the node enters the scene tree for the first time.

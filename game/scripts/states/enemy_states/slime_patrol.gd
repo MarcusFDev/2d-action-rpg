@@ -3,7 +3,7 @@ extends State
 
 var direction : int = 1
 @export var speed : float = 60.0
-@export var slime_idle: SlimeIdleState
+@export var slime_idle: IdleState
 @export var slime_fall: SlimeFallState
 
 var ray_cast_right: RayCast2D

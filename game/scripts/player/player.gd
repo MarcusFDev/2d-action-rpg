@@ -7,6 +7,11 @@ extends CharacterBody2D
 @onready var game_over_menu: Control = $"../../Interfaces/CanvasLayer/Menus/GameOverMenu"
 @onready var game_over_timer: Timer = $GameOverDelayTimer
 
+@onready var idle_state: IdleState = $StateMachine/IdleState
+@onready var move_state: State = $StateMachine/PlayerMove
+@onready var jump_state: State = $StateMachine/PlayerJump
+@onready var fall_state: State = $StateMachine/PlayerFall
+
 @export var max_health : int = 9
 @export var starting_health : int = 5
 var current_health : int = starting_health
@@ -18,7 +23,40 @@ func _ready() -> void:
 	# Intialize the state machine, passing a reference of the player to the states,
 	# that way they can move and react accordingly
 	add_to_group("player")
+	_setup_states()
 	state_machine.init(self, animations)
+	call_deferred("_post_ready_check")
+
+func _post_ready_check():
+	if not is_on_floor():
+		state_machine.change_state(fall_state)
+
+# ==============================
+# ===== Player State Setup =====
+# ==============================
+
+func _setup_states():
+	_idle_state()
+
+func _idle_state():
+	idle_state.handle_input = func(event):
+		if Input.is_action_just_pressed("jump") and is_on_floor():
+			velocity.y = idle_state.jump_force
+			return jump_state
+		if Input.is_action_pressed("move_left") or Input.is_action_pressed("move_right"):
+			return move_state
+		return null
+	
+	idle_state.handle_physics = func(delta):
+		print("Idle physics for player running")
+		if not is_on_floor():
+			return fall_state
+		velocity.y += idle_state.gravity * delta
+		move_and_slide()
+		return null
+	
+	idle_state.enter_callback = func():
+		animations.play("idle")
 
 func _unhandled_input(event: InputEvent) -> void:
 	state_machine.process_input(event)
