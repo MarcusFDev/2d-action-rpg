@@ -1,7 +1,7 @@
 class_name SlimeFallState
 extends State
 
-@export var slime_patrol: SlimePatrolState
+@export var slime_patrol: MoveState
 
 func enter() -> void:
 	super.enter()

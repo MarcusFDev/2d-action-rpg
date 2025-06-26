@@ -7,6 +7,7 @@ extends State
 @export var jump_force: float = -300
 @export var jump_duration: float = 1.0
 
+var move_speed: float = 120.0
 var jump_timer: float = 0.0
 var has_applied_jump : bool = false
 

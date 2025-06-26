@@ -1,10 +1,10 @@
 class_name PlayerFallState
 extends State
 
-@export
-var move: State
-@export
-var idle: State
+@export var move: State
+@export var idle: State
+
+var move_speed: float = 120
 
 func process_physics(delta: float) -> State:
 	parent.velocity.y += gravity * delta

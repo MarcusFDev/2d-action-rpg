@@ -1,8 +1,7 @@
 class_name State
 extends Node
 
-@export var animation_name: String
-@export var move_speed: float = 120
+var animation_name: String
 
 var gravity: int = ProjectSettings.get_setting("physics/2d/default_gravity")
 
