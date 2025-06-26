@@ -643,7 +643,7 @@ position = Vector2(-224, -1024)
 [node name="Slimes" type="Node" parent="Enemies"]
 
 [node name="Slime" parent="Enemies/Slimes" instance=ExtResource("9_lnjxb")]
-position = Vector2(248, -504)
+position = Vector2(-16, -504)
 
 [node name="Platforms" type="Node" parent="."]
 
