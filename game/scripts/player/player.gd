@@ -8,7 +8,7 @@ extends CharacterBody2D
 @onready var game_over_timer: Timer = $GameOverDelayTimer
 
 @onready var idle_state: IdleState = $StateMachine/IdleState
-@onready var move_state: State = $StateMachine/PlayerMove
+@onready var move_state: MoveState = $StateMachine/MoveState
 @onready var jump_state: State = $StateMachine/PlayerJump
 @onready var fall_state: State = $StateMachine/PlayerFall
 
@@ -37,6 +37,7 @@ func _post_ready_check():
 
 func _setup_states():
 	_idle_state()
+	_move_state()
 
 func _idle_state():
 	idle_state.handle_input = func(event):
@@ -57,6 +58,35 @@ func _idle_state():
 	
 	idle_state.enter_callback = func():
 		animations.play("idle")
+
+func _move_state():
+
+	move_state.handle_input = func(event): return null
+
+	move_state.handle_physics = func(delta):
+		if not is_on_floor():
+			return fall_state
+
+		velocity.y += move_state.gravity * delta
+
+		var input_direction: float = Input.get_axis("move_left", "move_right")
+		var movement: float = input_direction * move_state.move_speed
+
+		if movement == 0:
+			return idle_state
+
+		animations.flip_h = movement < 0
+		velocity.x = movement
+
+		if Input.is_action_just_pressed("jump") and is_on_floor():
+			velocity.y = -300  # or use a property if you want to export it
+			return jump_state
+
+		move_and_slide()
+		return null
+
+	move_state.enter_callback = func():
+		animations.play("move")
 
 func _unhandled_input(event: InputEvent) -> void:
 	state_machine.process_input(event)

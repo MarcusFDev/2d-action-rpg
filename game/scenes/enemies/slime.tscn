@@ -422,16 +422,12 @@ visible = false
 position = Vector2(0, 6)
 target_position = Vector2(-13, 0)
 
-[node name="Animations" type="AnimatedSprite2D" parent="." node_paths=PackedStringArray("slime_idle", "slime_fall")]
+[node name="Animations" type="AnimatedSprite2D" parent="."]
 position = Vector2(4.76837e-07, -4)
 scale = Vector2(0.671875, 0.671875)
 sprite_frames = SubResource("SpriteFrames_a1j1j")
 animation = &"slime_take_damage"
 autoplay = "slime_idle"
-script = ExtResource("5_w3amv")
-slime_idle = NodePath("../StateMachine/IdleState")
-slime_fall = NodePath("../StateMachine/SlimeFall")
-animation_name = "slime_attack"
 
 [node name="EnemyDamageZone" parent="." instance=ExtResource("2_68p8s")]
 position = Vector2(0, -0.5)
@@ -446,36 +442,37 @@ shape = SubResource("RectangleShape2D_6axq5")
 
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("starting_state")]
 script = ExtResource("4_v083o")
-starting_state = NodePath("SlimePatrol")
+starting_state = NodePath("PatrolState")
 
 [node name="IdleState" type="Node" parent="StateMachine" node_paths=PackedStringArray("next_state")]
 script = ExtResource("11_tvrjd")
 use_idle_timer = true
-next_state = NodePath("../SlimePatrol")
+next_state = NodePath("../PatrolState")
 
 [node name="SlimeIdle" type="Node" parent="StateMachine"]
 script = ExtResource("6_fd6lc")
 
-[node name="PatrolState" type="Node" parent="StateMachine"]
+[node name="PatrolState" type="Node" parent="StateMachine" node_paths=PackedStringArray("fall_state", "idle_state")]
 script = ExtResource("13_nx7r3")
+move_animation = "slime_patrol"
+fall_state = NodePath("../SlimeFall")
+idle_state = NodePath("../IdleState")
+use_idle_timer = true
+raycast_right_path = NodePath("../../RayCastRight")
+raycast_left_path = NodePath("../../RayCastLeft")
 
-[node name="SlimePatrol" type="Node" parent="StateMachine" node_paths=PackedStringArray("slime_idle", "slime_fall")]
+[node name="SlimePatrol" type="Node" parent="StateMachine"]
 script = ExtResource("5_w3amv")
-slime_idle = NodePath("../IdleState")
-slime_fall = NodePath("../SlimeFall")
-animation_name = "slime_patrol"
 
 [node name="SlimeAttack" type="Node" parent="StateMachine" node_paths=PackedStringArray("slime_idle")]
 script = ExtResource("8_vnioy")
 slime_idle = NodePath("../IdleState")
-animation_name = "slime_attack"
 
 [node name="AttackTimer" type="Timer" parent="StateMachine/SlimeAttack"]
 
 [node name="SlimeFall" type="Node" parent="StateMachine" node_paths=PackedStringArray("slime_patrol")]
 script = ExtResource("7_gstla")
-slime_patrol = NodePath("../SlimePatrol")
-animation_name = "slime_fall"
+slime_patrol = NodePath("../PatrolState")
 
 [node name="SlimeTakeDamage" type="Node" parent="StateMachine"]
 script = ExtResource("14_wbf5k")

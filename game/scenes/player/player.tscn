@@ -1,4 +1,4 @@
-[gd_scene load_steps=71 format=3 uid="uid://beftgbphk8tt3"]
+[gd_scene load_steps=72 format=3 uid="uid://beftgbphk8tt3"]
 
 [ext_resource type="Script" uid="uid://dc7is6nsd35mi" path="res://scripts/player/player.gd" id="1_g2els"]
 [ext_resource type="Texture2D" uid="uid://nuicatwvk6p6" path="res://assets/sprites/player/knight-attack1.png" id="2_myrg7"]
@@ -17,6 +17,7 @@
 [ext_resource type="Script" uid="uid://bx46domvi6xu4" path="res://scripts/states/player_states/player_take_damage.gd" id="8_smehm"]
 [ext_resource type="Script" uid="uid://caqbivosmm5lo" path="res://scripts/states/player_states/player_death.gd" id="9_5gtgg"]
 [ext_resource type="Script" uid="uid://ct14p13yajhmc" path="res://scripts/states/idle_state.gd" id="11_lgqa7"]
+[ext_resource type="Script" uid="uid://dl4e74spycbcb" path="res://scripts/states/move_state.gd" id="13_8ydkj"]
 [ext_resource type="Script" uid="uid://cieubtfucf8q5" path="res://scripts/states/player_states/player_heal.gd" id="17_uf5tr"]
 [ext_resource type="Script" uid="uid://bggrehmnomedp" path="res://scripts/states/player_states/player_attack_1.gd" id="18_lgqa7"]
 
@@ -438,39 +439,35 @@ script = ExtResource("11_lgqa7")
 [node name="PlayerIdle" type="Node" parent="StateMachine"]
 script = ExtResource("4_dqkch")
 
+[node name="MoveState" type="Node" parent="StateMachine"]
+script = ExtResource("13_8ydkj")
+use_internal_logic = false
+move_animation = "move"
+move_speed = 120.0
+
+[node name="PlayerMove" type="Node" parent="StateMachine"]
+script = ExtResource("7_smehm")
+
 [node name="PlayerJump" type="Node" parent="StateMachine" node_paths=PackedStringArray("fall", "idle", "move")]
 script = ExtResource("5_qlg0r")
 fall = NodePath("../PlayerFall")
 idle = NodePath("../IdleState")
-move = NodePath("../PlayerMove")
-animation_name = "jump"
+move = NodePath("../MoveState")
 
 [node name="PlayerFall" type="Node" parent="StateMachine" node_paths=PackedStringArray("move", "idle")]
 script = ExtResource("6_fjrip")
-move = NodePath("../PlayerMove")
+move = NodePath("../MoveState")
 idle = NodePath("../IdleState")
-animation_name = "fall"
-
-[node name="PlayerMove" type="Node" parent="StateMachine" node_paths=PackedStringArray("jump", "fall", "idle")]
-script = ExtResource("7_smehm")
-jump = NodePath("../PlayerJump")
-fall = NodePath("../PlayerFall")
-idle = NodePath("../IdleState")
-animation_name = "move"
-move_speed = 150.0
 
 [node name="PlayerTakeDamage" type="Node" parent="StateMachine"]
 script = ExtResource("8_smehm")
-animation_name = "take_damage"
 
 [node name="PlayerDeath" type="Node" parent="StateMachine"]
 script = ExtResource("9_5gtgg")
-animation_name = "death"
 
 [node name="PlayerHeal" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle")]
 script = ExtResource("17_uf5tr")
 idle = NodePath("../IdleState")
-animation_name = "heal"
 
 [node name="PlayerHealTimer" type="Timer" parent="StateMachine/PlayerHeal"]
 wait_time = 0.7
