@@ -41,11 +41,11 @@ func _setup_states():
 
 func _idle_state():
 	idle_state.handle_input = func(event):
-		if Input.is_action_just_pressed("jump") and is_on_floor():
+		if InputManager.is_jump_pressed() and is_on_floor():
 			if idle_state.enable_debug:
 				print("Player Jump Key detected. Switching to: ", jump_state)
 			return jump_state
-		if Input.is_action_pressed("move_left") or Input.is_action_pressed("move_right"):
+		if InputManager.get_movement_axis() != 0:
 			if idle_state.enable_debug:
 				print("Player Move Key detected. Switching to: ", move_state)
 			return move_state
@@ -70,7 +70,7 @@ func _move_state():
 
 		velocity.y += move_state.gravity * delta
 
-		var input_direction: float = Input.get_axis("move_left", "move_right")
+		var input_direction: float = InputManager.get_movement_axis()
 		if input_direction != 0:
 			move_state.direction = sign(input_direction)
 		var movement: float = input_direction * move_state.move_speed
@@ -83,7 +83,7 @@ func _move_state():
 		velocity.x = movement
 		animations.flip_h = velocity.x < 0
 
-		if Input.is_action_just_pressed("jump") and is_on_floor():
+		if InputManager.is_jump_pressed() and is_on_floor():
 			if move_state.enable_debug:
 				print("Player Jump Key detected. Switching to: ", jump_state)
 			return jump_state
