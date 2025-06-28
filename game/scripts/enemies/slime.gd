@@ -28,7 +28,6 @@ func _setup_states():
 func _idle_state():
 	idle_state.enter_callback = func():
 		idle_state.set_direction()
-		animations.play("slime_idle")
 
 func _patrol_state():
 	patrol_state.enter_callback = func():

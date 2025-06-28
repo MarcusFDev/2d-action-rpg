@@ -42,51 +42,53 @@ func _setup_states():
 func _idle_state():
 	idle_state.handle_input = func(event):
 		if Input.is_action_just_pressed("jump") and is_on_floor():
-			velocity.y = idle_state.jump_force
+			if idle_state.enable_debug:
+				print("Player Jump Key detected. Switching to: ", jump_state)
 			return jump_state
 		if Input.is_action_pressed("move_left") or Input.is_action_pressed("move_right"):
+			if idle_state.enable_debug:
+				print("Player Move Key detected. Switching to: ", move_state)
 			return move_state
 		return null
 	
 	idle_state.handle_physics = func(delta):
-		print("Idle physics for player running")
 		if not is_on_floor():
+			if idle_state.enable_debug:
+				print("Cannot detect floor. Switching to: ", fall_state)
 			return fall_state
 		velocity.y += idle_state.gravity * delta
 		move_and_slide()
 		return null
-	
-	idle_state.enter_callback = func():
-		animations.play("idle")
 
 func _move_state():
-
 	move_state.handle_input = func(event): return null
-
 	move_state.handle_physics = func(delta):
 		if not is_on_floor():
+			if move_state.enable_debug:
+				print("Cannot detect floor. Switching to: ", fall_state)
 			return fall_state
 
 		velocity.y += move_state.gravity * delta
 
 		var input_direction: float = Input.get_axis("move_left", "move_right")
+		if input_direction != 0:
+			move_state.direction = sign(input_direction)
 		var movement: float = input_direction * move_state.move_speed
 
 		if movement == 0:
+			if move_state.enable_debug:
+				print("Movement ended. Switching to:", idle_state)
 			return idle_state
 
-		animations.flip_h = movement < 0
 		velocity.x = movement
+		animations.flip_h = velocity.x < 0
 
 		if Input.is_action_just_pressed("jump") and is_on_floor():
-			velocity.y = -300  # or use a property if you want to export it
+			if move_state.enable_debug:
+				print("Player Jump Key detected. Switching to: ", jump_state)
 			return jump_state
-
 		move_and_slide()
 		return null
-
-	move_state.enter_callback = func():
-		animations.play("move")
 
 func _unhandled_input(event: InputEvent) -> void:
 	state_machine.process_input(event)

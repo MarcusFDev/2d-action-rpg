@@ -444,10 +444,12 @@ shape = SubResource("RectangleShape2D_6axq5")
 script = ExtResource("4_v083o")
 starting_state = NodePath("PatrolState")
 
-[node name="IdleState" type="Node" parent="StateMachine" node_paths=PackedStringArray("next_state")]
+[node name="IdleState" type="Node" parent="StateMachine" node_paths=PackedStringArray("next_state", "fall_state")]
 script = ExtResource("11_tvrjd")
-use_idle_timer = true
+idle_animation = "slime_idle"
 next_state = NodePath("../PatrolState")
+fall_state = NodePath("../SlimeFall")
+use_idle_timer = true
 
 [node name="SlimeIdle" type="Node" parent="StateMachine"]
 script = ExtResource("6_fd6lc")

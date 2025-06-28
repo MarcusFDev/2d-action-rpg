@@ -435,6 +435,8 @@ starting_state = NodePath("IdleState")
 
 [node name="IdleState" type="Node" parent="StateMachine"]
 script = ExtResource("11_lgqa7")
+use_internal_logic = false
+idle_animation = "idle"
 
 [node name="PlayerIdle" type="Node" parent="StateMachine"]
 script = ExtResource("4_dqkch")
@@ -444,6 +446,8 @@ script = ExtResource("13_8ydkj")
 use_internal_logic = false
 move_animation = "move"
 move_speed = 120.0
+use_direction_flip = true
+enable_debug = true
 
 [node name="PlayerMove" type="Node" parent="StateMachine"]
 script = ExtResource("7_smehm")
