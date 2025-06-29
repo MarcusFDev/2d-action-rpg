@@ -447,7 +447,6 @@ use_internal_logic = false
 move_animation = "move"
 move_speed = 120.0
 use_direction_flip = true
-enable_debug = true
 
 [node name="PlayerMove" type="Node" parent="StateMachine"]
 script = ExtResource("7_smehm")

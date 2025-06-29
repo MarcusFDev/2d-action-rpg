@@ -27,7 +27,7 @@ func _ready() -> void:
 	state_machine.init(self, animations)
 	call_deferred("_post_ready_check")
 
-func _post_ready_check():
+func _post_ready_check() -> void:
 	if not is_on_floor():
 		state_machine.change_state(fall_state)
 
@@ -35,23 +35,23 @@ func _post_ready_check():
 # ===== Player State Setup =====
 # ==============================
 
-func _setup_states():
+func _setup_states() -> void:
 	_idle_state()
 	_move_state()
 
-func _idle_state():
-	idle_state.handle_input = func(event):
-		if InputManager.is_jump_pressed() and is_on_floor():
+func _idle_state() -> void:
+	idle_state.handle_input = func(_event: InputEvent) -> State:
+		if InputManagerClass.is_jump_pressed() and is_on_floor():
 			if idle_state.enable_debug:
 				print("Player Jump Key detected. Switching to: ", jump_state)
 			return jump_state
-		if InputManager.get_movement_axis() != 0:
+		if InputManagerClass.get_movement_axis() != 0:
 			if idle_state.enable_debug:
 				print("Player Move Key detected. Switching to: ", move_state)
 			return move_state
 		return null
 	
-	idle_state.handle_physics = func(delta):
+	idle_state.handle_physics = func(delta: float) -> State:
 		if not is_on_floor():
 			if idle_state.enable_debug:
 				print("Cannot detect floor. Switching to: ", fall_state)
@@ -60,9 +60,8 @@ func _idle_state():
 		move_and_slide()
 		return null
 
-func _move_state():
-	move_state.handle_input = func(event): return null
-	move_state.handle_physics = func(delta):
+func _move_state() -> void:
+	move_state.handle_physics = func(delta: float) -> State:
 		if not is_on_floor():
 			if move_state.enable_debug:
 				print("Cannot detect floor. Switching to: ", fall_state)
@@ -70,7 +69,7 @@ func _move_state():
 
 		velocity.y += move_state.gravity * delta
 
-		var input_direction: float = InputManager.get_movement_axis()
+		var input_direction: float = InputManagerClass.get_movement_axis()
 		if input_direction != 0:
 			move_state.direction = sign(input_direction)
 		var movement: float = input_direction * move_state.move_speed
@@ -83,7 +82,7 @@ func _move_state():
 		velocity.x = movement
 		animations.flip_h = velocity.x < 0
 
-		if InputManager.is_jump_pressed() and is_on_floor():
+		if InputManagerClass.is_jump_pressed() and is_on_floor():
 			if move_state.enable_debug:
 				print("Player Jump Key detected. Switching to: ", jump_state)
 			return jump_state

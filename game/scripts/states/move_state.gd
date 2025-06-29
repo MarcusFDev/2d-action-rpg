@@ -47,13 +47,19 @@ var delay_timer: float = 0.15
 var idle_chance_timer: float = 0.0
 var direction: int = 1
 
-# Callbacks
-var enter_callback: Callable = func(): return
-var handle_frame: Callable = func(_delta): return null
-var handle_input: Callable = func(_event): return null
-var handle_physics: Callable = func(_delta): return null
+# Callback Functions
+func _on_enter() -> void: pass
+func _on_input(_event: InputEvent) -> void: pass
+func _on_physics(_delta: float) -> void: pass
+func _on_frame(_delta: float) -> void: pass
 
-func enter():
+# Callback Variables
+var enter_callback: Callable = _on_enter
+var handle_input: Callable = _on_input
+var handle_physics: Callable = _on_physics
+var handle_frame: Callable = _on_frame
+
+func enter() -> void:
 	super.enter()
 	init_move()
 	

@@ -17,22 +17,21 @@ func _ready() -> void:
 	state_machine.init(self, animations)
 	call_deferred("_post_ready_check")
 
-func _post_ready_check():
+func _post_ready_check() -> void:
 	if not is_on_floor():
 		state_machine.change_state(fall_state)
 
-func _setup_states():
+func _setup_states() -> void:
 	_idle_state()
 	_patrol_state()
 
-func _idle_state():
-	idle_state.enter_callback = func():
+func _idle_state() -> void:
+	idle_state.enter_callback = func() -> void:
 		idle_state.set_direction()
 
-func _patrol_state():
-	patrol_state.enter_callback = func():
+func _patrol_state() -> void:
+	patrol_state.enter_callback = func() -> void:
 		animations.flip_h = patrol_state.direction < 0
-
 
 func _process(delta: float) -> void:
 	state_machine.process_frame(delta)
