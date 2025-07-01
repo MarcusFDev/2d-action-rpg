@@ -1,16 +1,13 @@
 class_name State
 extends Node
 
-var animation_name: String
-
-var gravity: int = ProjectSettings.get_setting("physics/2d/default_gravity")
-
-# Hold a reference to the parent so that it can be controlled by the state
+# Script Variables.
+var gravity: float = ProjectSettings.get_setting("physics/2d/default_gravity")
 var parent: Node2D
 var animations: AnimatedSprite2D
 
 func enter() -> void:
-	animations.play(animation_name)
+	pass
 
 func exit() -> void:
 	pass
