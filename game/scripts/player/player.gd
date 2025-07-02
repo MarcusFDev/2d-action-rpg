@@ -10,7 +10,7 @@ extends CharacterBody2D
 @onready var idle_state: IdleState = $StateMachine/IdleState
 @onready var move_state: MoveState = $StateMachine/MoveState
 @onready var jump_state: JumpState = $StateMachine/JumpState
-@onready var fall_state: State = $StateMachine/PlayerFall
+@onready var fall_state: FallState = $StateMachine/FallState
 
 @export var max_health : int = 9
 @export var starting_health : int = 5
@@ -41,6 +41,7 @@ func _setup_states() -> void:
 	_idle_state()
 	_move_state()
 	_jump_state()
+	_fall_state()
 
 func _idle_state() -> void:
 	idle_state.handle_input = func(_event: InputEvent) -> State:
@@ -94,6 +95,27 @@ func _move_state() -> void:
 
 func _jump_state() -> void:
 	pass
+
+func _fall_state() -> void:
+	fall_state.handle_physics = func(delta: float) -> State:
+		velocity.y += fall_state.gravity * delta
+
+		var input_direction: float = InputManagerClass.get_movement_axis()
+		var movement: float = input_direction * move_state.move_speed
+		velocity.x = movement
+
+		move_and_slide()
+
+		if is_on_floor():
+			if movement != 0:
+				if fall_state.enable_debug:
+					print("Player landed and is moving. Switching to: ", move_state)
+				return move_state
+			if fall_state.enable_debug:
+				print("Player landed and is idle. Switching to: ", idle_state)
+			return idle_state
+
+		return null
 
 func _unhandled_input(event: InputEvent) -> void:
 	state_machine.process_input(event)

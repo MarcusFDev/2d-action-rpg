@@ -1,4 +1,4 @@
-[gd_scene load_steps=73 format=3 uid="uid://beftgbphk8tt3"]
+[gd_scene load_steps=74 format=3 uid="uid://beftgbphk8tt3"]
 
 [ext_resource type="Script" uid="uid://dc7is6nsd35mi" path="res://scripts/player/player.gd" id="1_g2els"]
 [ext_resource type="Texture2D" uid="uid://nuicatwvk6p6" path="res://assets/sprites/player/knight-attack1.png" id="2_myrg7"]
@@ -19,6 +19,7 @@
 [ext_resource type="Script" uid="uid://ct14p13yajhmc" path="res://scripts/states/idle_state.gd" id="11_lgqa7"]
 [ext_resource type="Script" uid="uid://ccjqnofia5vo0" path="res://scripts/states/jump_state.gd" id="13_3j4b4"]
 [ext_resource type="Script" uid="uid://dl4e74spycbcb" path="res://scripts/states/move_state.gd" id="13_8ydkj"]
+[ext_resource type="Script" uid="uid://clv1jjvxgs12w" path="res://scripts/states/fall_state.gd" id="14_yj68g"]
 [ext_resource type="Script" uid="uid://cieubtfucf8q5" path="res://scripts/states/player_states/player_heal.gd" id="17_uf5tr"]
 [ext_resource type="Script" uid="uid://bggrehmnomedp" path="res://scripts/states/player_states/player_attack_1.gd" id="18_lgqa7"]
 
@@ -454,7 +455,21 @@ jump_animation = "jump"
 jump_time = 0.4
 jump_height = 80.0
 next_state = NodePath("../IdleState")
-fall_state = NodePath("../PlayerFall")
+fall_state = NodePath("../FallState")
+
+[node name="FallState" type="Node" parent="StateMachine" node_paths=PackedStringArray("next_state")]
+script = ExtResource("14_yj68g")
+use_internal_logic = false
+fall_animation = "fall"
+next_state = NodePath("../IdleState")
+
+[node name="HurtState" type="Node" parent="StateMachine"]
+
+[node name="HealState" type="Node" parent="StateMachine"]
+
+[node name="AttackState" type="Node" parent="StateMachine"]
+
+[node name="DeathState" type="Node" parent="StateMachine"]
 
 [node name="PlayerIdle" type="Node" parent="StateMachine"]
 script = ExtResource("4_dqkch")
@@ -465,10 +480,8 @@ script = ExtResource("7_smehm")
 [node name="PlayerJump" type="Node" parent="StateMachine"]
 script = ExtResource("5_qlg0r")
 
-[node name="PlayerFall" type="Node" parent="StateMachine" node_paths=PackedStringArray("move", "idle")]
+[node name="PlayerFall" type="Node" parent="StateMachine"]
 script = ExtResource("6_fjrip")
-move = NodePath("../MoveState")
-idle = NodePath("../IdleState")
 
 [node name="PlayerTakeDamage" type="Node" parent="StateMachine"]
 script = ExtResource("8_smehm")

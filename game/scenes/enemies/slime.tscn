@@ -1,4 +1,4 @@
-[gd_scene load_steps=71 format=3 uid="uid://chptbuqgr7qyt"]
+[gd_scene load_steps=73 format=3 uid="uid://chptbuqgr7qyt"]
 
 [ext_resource type="Script" uid="uid://n35k36oc5i6u" path="res://scripts/enemies/slime.gd" id="1_68p8s"]
 [ext_resource type="PackedScene" uid="uid://bg7nrwxlpxf3p" path="res://scenes/core/base_damage_zone.tscn" id="2_68p8s"]
@@ -14,6 +14,8 @@
 [ext_resource type="Script" uid="uid://cj5m4q4fchcg5" path="res://scripts/states/enemy_states/slime_attack.gd" id="8_vnioy"]
 [ext_resource type="Script" uid="uid://bcoqv8smpfvig" path="res://scripts/states/state_machines/state_machine.gd" id="9_nx7r3"]
 [ext_resource type="Script" uid="uid://ct14p13yajhmc" path="res://scripts/states/idle_state.gd" id="11_tvrjd"]
+[ext_resource type="Script" uid="uid://ccjqnofia5vo0" path="res://scripts/states/jump_state.gd" id="12_rdhaw"]
+[ext_resource type="Script" uid="uid://clv1jjvxgs12w" path="res://scripts/states/fall_state.gd" id="13_m4uwr"]
 [ext_resource type="Script" uid="uid://dl4e74spycbcb" path="res://scripts/states/move_state.gd" id="13_nx7r3"]
 [ext_resource type="Script" uid="uid://cmv0hyy1vpln2" path="res://scripts/states/enemy_states/slime_take_damage.gd" id="14_wbf5k"]
 [ext_resource type="Script" uid="uid://fisrtfageena" path="res://scripts/states/enemy_states/slime_death.gd" id="15_tvrjd"]
@@ -440,27 +442,37 @@ shape = SubResource("RectangleShape2D_gstla")
 position = Vector2(0, -1)
 shape = SubResource("RectangleShape2D_6axq5")
 
-[node name="StateMachine" type="Node" parent="."]
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("starting_state")]
 script = ExtResource("9_nx7r3")
+starting_state = NodePath("IdleState")
 
 [node name="IdleState" type="Node" parent="StateMachine" node_paths=PackedStringArray("next_state", "fall_state")]
 script = ExtResource("11_tvrjd")
 idle_animation = "slime_idle"
+enable_debug = true
 next_state = NodePath("../PatrolState")
-fall_state = NodePath("../SlimeFall")
+fall_state = NodePath("../FallState")
 use_idle_timer = true
-
-[node name="SlimeIdle" type="Node" parent="StateMachine"]
-script = ExtResource("6_fd6lc")
 
 [node name="PatrolState" type="Node" parent="StateMachine" node_paths=PackedStringArray("fall_state", "idle_state")]
 script = ExtResource("13_nx7r3")
 move_animation = "slime_patrol"
-fall_state = NodePath("../SlimeFall")
+fall_state = NodePath("../FallState")
 idle_state = NodePath("../IdleState")
 use_idle_timer = true
 raycast_right_path = NodePath("../../RayCastRight")
 raycast_left_path = NodePath("../../RayCastLeft")
+
+[node name="JumpState" type="Node" parent="StateMachine"]
+script = ExtResource("12_rdhaw")
+
+[node name="FallState" type="Node" parent="StateMachine" node_paths=PackedStringArray("next_state")]
+script = ExtResource("13_m4uwr")
+fall_animation = "slime_fall"
+next_state = NodePath("../IdleState")
+
+[node name="SlimeIdle" type="Node" parent="StateMachine"]
+script = ExtResource("6_fd6lc")
 
 [node name="SlimePatrol" type="Node" parent="StateMachine"]
 script = ExtResource("5_w3amv")
@@ -471,9 +483,8 @@ slime_idle = NodePath("../IdleState")
 
 [node name="AttackTimer" type="Timer" parent="StateMachine/SlimeAttack"]
 
-[node name="SlimeFall" type="Node" parent="StateMachine" node_paths=PackedStringArray("slime_patrol")]
+[node name="SlimeFall" type="Node" parent="StateMachine"]
 script = ExtResource("7_gstla")
-slime_patrol = NodePath("../PatrolState")
 
 [node name="SlimeTakeDamage" type="Node" parent="StateMachine"]
 script = ExtResource("14_wbf5k")

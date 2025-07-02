@@ -4,8 +4,8 @@ extends CharacterBody2D
 @onready var state_machine: Node = $StateMachine
 @onready var idle_state: IdleState = $StateMachine/IdleState
 @onready var patrol_state: MoveState = $StateMachine/PatrolState
-#@onready var jump_state: JumpState = $StateMachine/JumpState
-@onready var fall_state: State = $StateMachine/SlimeFall
+@onready var jump_state: JumpState = $StateMachine/JumpState
+@onready var fall_state: FallState = $StateMachine/FallState
 
 @export var damage: int = 1
 
@@ -23,7 +23,8 @@ func _post_ready_check() -> void:
 func _setup_states() -> void:
 	_idle_state()
 	_patrol_state()
-#	_jump_state()
+	_jump_state()
+	_fall_state()
 
 func _idle_state() -> void:
 	idle_state.enter_callback = func() -> void:
@@ -33,9 +34,12 @@ func _patrol_state() -> void:
 	patrol_state.enter_callback = func() -> void:
 		animations.flip_h = patrol_state.direction < 0
 
-#func _jump_state() -> void:
-	#jump_state.enter_callback = func() -> void:
-		#pass
+func _jump_state() -> void:
+	jump_state.enter_callback = func() -> void:
+		pass
+
+func _fall_state() -> void:
+	pass
 
 func _process(delta: float) -> void:
 	state_machine.process_frame(delta)
