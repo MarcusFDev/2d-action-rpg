@@ -1,4 +1,4 @@
-[gd_scene load_steps=74 format=3 uid="uid://beftgbphk8tt3"]
+[gd_scene load_steps=75 format=3 uid="uid://beftgbphk8tt3"]
 
 [ext_resource type="Script" uid="uid://dc7is6nsd35mi" path="res://scripts/player/player.gd" id="1_g2els"]
 [ext_resource type="Texture2D" uid="uid://nuicatwvk6p6" path="res://assets/sprites/player/knight-attack1.png" id="2_myrg7"]
@@ -20,6 +20,7 @@
 [ext_resource type="Script" uid="uid://ccjqnofia5vo0" path="res://scripts/states/jump_state.gd" id="13_3j4b4"]
 [ext_resource type="Script" uid="uid://dl4e74spycbcb" path="res://scripts/states/move_state.gd" id="13_8ydkj"]
 [ext_resource type="Script" uid="uid://clv1jjvxgs12w" path="res://scripts/states/fall_state.gd" id="14_yj68g"]
+[ext_resource type="Script" uid="uid://b0ewsejienp4o" path="res://scripts/states/death_state.gd" id="15_ioxgp"]
 [ext_resource type="Script" uid="uid://cieubtfucf8q5" path="res://scripts/states/player_states/player_heal.gd" id="17_uf5tr"]
 [ext_resource type="Script" uid="uid://bggrehmnomedp" path="res://scripts/states/player_states/player_attack_1.gd" id="18_lgqa7"]
 
@@ -470,6 +471,10 @@ next_state = NodePath("../IdleState")
 [node name="AttackState" type="Node" parent="StateMachine"]
 
 [node name="DeathState" type="Node" parent="StateMachine"]
+script = ExtResource("15_ioxgp")
+death_animation = "death"
+post_death_method = "trigger_game_over"
+enable_debug = true
 
 [node name="PlayerIdle" type="Node" parent="StateMachine"]
 script = ExtResource("4_dqkch")
@@ -499,6 +504,6 @@ wait_time = 0.7
 [node name="PlayerAttack1" type="Node" parent="StateMachine"]
 script = ExtResource("18_lgqa7")
 
-[connection signal="animation_finished" from="Animations" to="StateMachine/PlayerDeath" method="_on_animations_animation_finished"]
+[connection signal="animation_finished" from="Animations" to="StateMachine/DeathState" method="animation_finished"]
 [connection signal="timeout" from="GameOverDelayTimer" to="." method="_on_game_over_delay_timer_timeout"]
 [connection signal="timeout" from="StateMachine/PlayerHeal/PlayerHealTimer" to="StateMachine/PlayerHeal" method="_on_player_heal_timer_timeout"]

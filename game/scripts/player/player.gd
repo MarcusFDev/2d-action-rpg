@@ -11,6 +11,7 @@ extends CharacterBody2D
 @onready var move_state: MoveState = $StateMachine/MoveState
 @onready var jump_state: JumpState = $StateMachine/JumpState
 @onready var fall_state: FallState = $StateMachine/FallState
+@onready var death_state: DeathState = $StateMachine/DeathState
 
 @export var max_health : int = 9
 @export var starting_health : int = 5
@@ -42,6 +43,7 @@ func _setup_states() -> void:
 	_move_state()
 	_jump_state()
 	_fall_state()
+	_death_state()
 
 func _idle_state() -> void:
 	idle_state.handle_input = func(_event: InputEvent) -> State:
@@ -117,6 +119,9 @@ func _fall_state() -> void:
 
 		return null
 
+func _death_state() -> void:
+	pass
+
 func _unhandled_input(event: InputEvent) -> void:
 	state_machine.process_input(event)
 
@@ -142,11 +147,11 @@ func take_damage(_amount: int, enemy_velocity: Vector2) -> void:
 		hud.update_health(old_health, current_health)
 	
 	if current_health <= 0:
-		var player_death_state: State = state_machine.get_state("PlayerDeath")
+		var player_death_state: State = state_machine.get_state("DeathState")
 		if player_death_state:
-			state_machine.change_state(player_death_state)
+			state_machine.change_state(death_state)
 		else:
-			print("Player.gd| Error: Could not find PlayerDeath state!")
+			print("Player.gd| Error: Could not find Death State!")
 		
 	else:
 		var take_damage_state: State = state_machine.get_state("PlayerTakeDamage")
