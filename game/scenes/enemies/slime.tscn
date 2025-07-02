@@ -449,7 +449,6 @@ starting_state = NodePath("IdleState")
 [node name="IdleState" type="Node" parent="StateMachine" node_paths=PackedStringArray("next_state", "fall_state")]
 script = ExtResource("11_tvrjd")
 idle_animation = "slime_idle"
-enable_debug = true
 next_state = NodePath("../PatrolState")
 fall_state = NodePath("../FallState")
 use_idle_timer = true

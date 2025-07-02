@@ -92,7 +92,6 @@ starting_state = NodePath("IdleState")
 [node name="IdleState" type="Node" parent="StateMachine" node_paths=PackedStringArray("next_state", "fall_state")]
 script = ExtResource("4_eo3gx")
 idle_animation = "slime_idle"
-enable_debug = true
 next_state = NodePath(".")
 fall_state = NodePath("../FallState")
 use_idle_timer = true
@@ -102,7 +101,6 @@ script = ExtResource("5_pyuen")
 move_animation = "slime_idle"
 move_speed = 40.0
 use_direction_flip = true
-enable_debug = true
 fall_state = NodePath("../FallState")
 idle_state = NodePath("../IdleState")
 use_idle_timer = true
