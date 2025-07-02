@@ -1,0 +1,121 @@
+[gd_scene load_steps=16 format=3 uid="uid://c7gvf6d2ofd3d"]
+
+[ext_resource type="Script" uid="uid://djxs0565osbkq" path="res://scripts/enemies/boom_slime.gd" id="1_eo3gx"]
+[ext_resource type="Texture2D" uid="uid://6fe2cx8btcng" path="res://assets/sprites/enemies/boom_slime/boom-slime-idle.png" id="1_oggdf"]
+[ext_resource type="PackedScene" uid="uid://bg7nrwxlpxf3p" path="res://scenes/core/base_damage_zone.tscn" id="2_b7oqg"]
+[ext_resource type="Script" uid="uid://bcoqv8smpfvig" path="res://scripts/states/state_machines/state_machine.gd" id="3_c5vq7"]
+[ext_resource type="Script" uid="uid://ct14p13yajhmc" path="res://scripts/states/idle_state.gd" id="4_eo3gx"]
+[ext_resource type="Script" uid="uid://dl4e74spycbcb" path="res://scripts/states/move_state.gd" id="5_pyuen"]
+[ext_resource type="Script" uid="uid://ccjqnofia5vo0" path="res://scripts/states/jump_state.gd" id="6_r8tp6"]
+[ext_resource type="Script" uid="uid://clv1jjvxgs12w" path="res://scripts/states/fall_state.gd" id="8_eo3gx"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tm751"]
+atlas = ExtResource("1_oggdf")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_21lfa"]
+atlas = ExtResource("1_oggdf")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7e87r"]
+atlas = ExtResource("1_oggdf")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c5vq7"]
+atlas = ExtResource("1_oggdf")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_eo3gx"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tm751")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_21lfa")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7e87r")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c5vq7")
+}],
+"loop": true,
+"name": &"slime_idle",
+"speed": 4.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pyuen"]
+size = Vector2(22, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_r8tp6"]
+size = Vector2(29.7674, 14)
+
+[node name="BoomSlime" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 11
+script = ExtResource("1_eo3gx")
+
+[node name="RayCastRight" type="RayCast2D" parent="."]
+position = Vector2(7, -5)
+target_position = Vector2(2, 0)
+
+[node name="RayCastLeft" type="RayCast2D" parent="."]
+position = Vector2(-7, -5)
+target_position = Vector2(-2, 0)
+
+[node name="Animations" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -11)
+scale = Vector2(0.671875, 0.671875)
+sprite_frames = SubResource("SpriteFrames_eo3gx")
+animation = &"slime_idle"
+autoplay = "slime_idle"
+
+[node name="EnemyDamageZone" parent="." instance=ExtResource("2_b7oqg")]
+position = Vector2(4.76837e-07, 7.66406)
+scale = Vector2(0.671875, 0.671875)
+script = null
+
+[node name="AttackCollision" type="CollisionShape2D" parent="EnemyDamageZone"]
+position = Vector2(-7.09711e-07, -20.3372)
+shape = SubResource("RectangleShape2D_pyuen")
+
+[node name="SlimeCollision" type="CollisionShape2D" parent="."]
+position = Vector2(2.98023e-07, -4.67187)
+scale = Vector2(0.671875, 0.671875)
+shape = SubResource("RectangleShape2D_r8tp6")
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("starting_state")]
+script = ExtResource("3_c5vq7")
+starting_state = NodePath("IdleState")
+
+[node name="IdleState" type="Node" parent="StateMachine" node_paths=PackedStringArray("next_state", "fall_state")]
+script = ExtResource("4_eo3gx")
+idle_animation = "slime_idle"
+enable_debug = true
+next_state = NodePath(".")
+fall_state = NodePath("../FallState")
+use_idle_timer = true
+
+[node name="PatrolState" type="Node" parent="StateMachine" node_paths=PackedStringArray("fall_state", "idle_state")]
+script = ExtResource("5_pyuen")
+move_animation = "slime_idle"
+move_speed = 40.0
+use_direction_flip = true
+enable_debug = true
+fall_state = NodePath("../FallState")
+idle_state = NodePath("../IdleState")
+use_idle_timer = true
+raycast_right_path = NodePath("../../RayCastRight")
+raycast_left_path = NodePath("../../RayCastLeft")
+
+[node name="JumpState" type="Node" parent="StateMachine" node_paths=PackedStringArray("next_state", "fall_state")]
+script = ExtResource("6_r8tp6")
+use_internal_logic = false
+jump_animation = "slime_idle"
+next_state = NodePath("../IdleState")
+fall_state = NodePath("../FallState")
+
+[node name="FallState" type="Node" parent="StateMachine"]
+script = ExtResource("8_eo3gx")
+fall_animation = "slime_idle"
