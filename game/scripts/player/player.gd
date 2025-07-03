@@ -12,6 +12,7 @@ extends CharacterBody2D
 @onready var jump_state: JumpState = $StateMachine/JumpState
 @onready var fall_state: FallState = $StateMachine/FallState
 @onready var heal_state: HealState = $StateMachine/HealState
+@onready var hurt_state: HurtState = $StateMachine/HurtState
 @onready var death_state: DeathState = $StateMachine/DeathState
 
 @export var max_health : int = 9
@@ -148,7 +149,7 @@ func _process(delta: float) -> void:
 # ==============================
 # ===== Player Health =====
 # ==============================
-func take_damage(_amount: int, enemy_velocity: Vector2) -> void:
+func take_damage(_amount: int, enemy_position: Vector2) -> void:
 	if current_health <= 0:
 		return
 	
@@ -159,19 +160,18 @@ func take_damage(_amount: int, enemy_velocity: Vector2) -> void:
 		hud.update_health(old_health, current_health)
 	
 	if current_health <= 0:
-		var player_death_state: State = state_machine.get_state("DeathState")
-		if player_death_state:
+		if death_state:
 			state_machine.change_state(death_state)
 		else:
 			print("Player.gd| Error: Could not find Death State!")
 		
 	else:
-		var take_damage_state: State = state_machine.get_state("PlayerTakeDamage")
-		if take_damage_state:
-			take_damage_state.knockback_source_velocity = enemy_velocity
-			state_machine.change_state(take_damage_state)
+		if hurt_state:
+			var knockback_dir : Vector2 = (global_position - enemy_position).normalized()
+			hurt_state.set_knockback_data(knockback_dir)
+			state_machine.change_state(hurt_state)
 		else:
-			print("Player.gd| Error: Could not find PlayerTakeDamage state!")
+			print("Player.gd| Error: Could not find Hurt state!")
 
 func add_health(_amount: int) -> void:
 	var old_health: int = current_health
@@ -182,6 +182,13 @@ func add_health(_amount: int) -> void:
 	if hud:
 		hud.update_health(old_health, current_health)
 
+func apply_knockback(direction: Vector2, force: float) -> void:
+	velocity += direction.normalized() * force
+
+func apply_immunity(_duration: float) -> void:
+	#is_immune = true
+	#$ImmunityTimer.start(duration)
+	pass
 # ==============================
 # ===== GameOver Trigger =====
 # ==============================

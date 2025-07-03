@@ -1,4 +1,4 @@
-[gd_scene load_steps=76 format=3 uid="uid://beftgbphk8tt3"]
+[gd_scene load_steps=77 format=3 uid="uid://beftgbphk8tt3"]
 
 [ext_resource type="Script" uid="uid://dc7is6nsd35mi" path="res://scripts/player/player.gd" id="1_g2els"]
 [ext_resource type="Texture2D" uid="uid://nuicatwvk6p6" path="res://assets/sprites/player/knight-attack1.png" id="2_myrg7"]
@@ -20,6 +20,7 @@
 [ext_resource type="Script" uid="uid://ccjqnofia5vo0" path="res://scripts/states/jump_state.gd" id="13_3j4b4"]
 [ext_resource type="Script" uid="uid://dl4e74spycbcb" path="res://scripts/states/move_state.gd" id="13_8ydkj"]
 [ext_resource type="Script" uid="uid://clv1jjvxgs12w" path="res://scripts/states/fall_state.gd" id="14_yj68g"]
+[ext_resource type="Script" uid="uid://cvmt4g1070nqn" path="res://scripts/states/hurt_state.gd" id="15_007i1"]
 [ext_resource type="Script" uid="uid://c05o5nbmpwovi" path="res://scripts/states/heal_state.gd" id="15_cnsyf"]
 [ext_resource type="Script" uid="uid://b0ewsejienp4o" path="res://scripts/states/death_state.gd" id="15_ioxgp"]
 [ext_resource type="Script" uid="uid://cieubtfucf8q5" path="res://scripts/states/player_states/player_heal.gd" id="17_uf5tr"]
@@ -406,7 +407,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_vo27k")
 }],
-"loop": true,
+"loop": false,
 "name": &"take_damage",
 "speed": 8.0
 }]
@@ -422,10 +423,8 @@ script = ExtResource("1_g2els")
 [node name="Animations" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -12)
 sprite_frames = SubResource("SpriteFrames_2hs0m")
-animation = &"jump"
+animation = &"take_damage"
 autoplay = "idle"
-frame = 3
-frame_progress = 1.0
 
 [node name="PlayerCollision" type="CollisionShape2D" parent="."]
 position = Vector2(0, -5)
@@ -466,7 +465,12 @@ use_internal_logic = false
 fall_animation = "fall"
 next_state = NodePath("../IdleState")
 
-[node name="HurtState" type="Node" parent="StateMachine"]
+[node name="HurtState" type="Node" parent="StateMachine" node_paths=PackedStringArray("next_state")]
+script = ExtResource("15_007i1")
+hurt_animation = "take_damage"
+next_state = NodePath("../IdleState")
+enable_knockback = true
+knockback_force = 132.5
 
 [node name="HealState" type="Node" parent="StateMachine" node_paths=PackedStringArray("next_state")]
 script = ExtResource("15_cnsyf")
@@ -479,7 +483,6 @@ next_state = NodePath("../IdleState")
 script = ExtResource("15_ioxgp")
 death_animation = "death"
 post_death_method = "trigger_game_over"
-enable_debug = true
 
 [node name="PlayerIdle" type="Node" parent="StateMachine"]
 script = ExtResource("4_dqkch")
@@ -505,6 +508,7 @@ script = ExtResource("17_uf5tr")
 [node name="PlayerAttack1" type="Node" parent="StateMachine"]
 script = ExtResource("18_lgqa7")
 
+[connection signal="animation_finished" from="Animations" to="StateMachine/HurtState" method="animation_finished"]
 [connection signal="animation_finished" from="Animations" to="StateMachine/HealState" method="animation_finished"]
 [connection signal="animation_finished" from="Animations" to="StateMachine/DeathState" method="animation_finished"]
 [connection signal="timeout" from="GameOverDelayTimer" to="." method="_on_game_over_delay_timer_timeout"]
