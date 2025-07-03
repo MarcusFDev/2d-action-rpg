@@ -72,7 +72,8 @@ func init_idle() -> void:
 					"Idle timer enabled.\n",
 					"Target idle time: ", target_idle_time, " seconds.")
 		else:
-			print("Idle Timer disabled.")
+			if enable_debug:
+				print("Idle Timer disabled.")
 	else:
 		if enable_debug:
 			print("Internal logic disabled.")	

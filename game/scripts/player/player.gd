@@ -117,9 +117,9 @@ func _fall_state() -> void:
 		velocity.y += fall_state.gravity * delta
 
 		var input_direction: float = InputManagerClass.get_movement_axis()
-		var target_speed := input_direction * move_state.move_speed
+		var target_speed : float = input_direction * move_state.move_speed
 		velocity.x = lerp(velocity.x, target_speed, 0.1)
-		var movement = velocity.x
+		var movement: float = velocity.x
 
 		move_and_slide()
 
