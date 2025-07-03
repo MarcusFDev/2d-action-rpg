@@ -75,6 +75,7 @@ func process_physics(delta: float) -> State:
 	else:
 		return handle_physics.call(delta)
 
+
 func process_input(event: InputEvent) -> State:
 	if not use_internal_logic:
 		return handle_input.call(event)

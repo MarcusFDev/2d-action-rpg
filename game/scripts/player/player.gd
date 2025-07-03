@@ -96,15 +96,30 @@ func _move_state() -> void:
 		return null
 
 func _jump_state() -> void:
-	pass
+	jump_state.handle_physics = func(delta: float) -> State:
+		var input_direction: float = InputManagerClass.get_movement_axis()
+		if input_direction != 0:
+			var movement: float = input_direction * move_state.move_speed 
+			velocity.x = lerp(velocity.x, movement, 0.1)
+			animations.flip_h = velocity.x < 0
+		velocity.y += jump_state.gravity * delta
+		move_and_slide()
+
+		if velocity.y > 0:
+			if jump_state.enable_debug:
+				print("Player is falling. Switching to: ", fall_state)
+			return fall_state
+		return null
+
 
 func _fall_state() -> void:
 	fall_state.handle_physics = func(delta: float) -> State:
 		velocity.y += fall_state.gravity * delta
 
 		var input_direction: float = InputManagerClass.get_movement_axis()
-		var movement: float = input_direction * move_state.move_speed
-		velocity.x = movement
+		var target_speed := input_direction * move_state.move_speed
+		velocity.x = lerp(velocity.x, target_speed, 0.1)
+		var movement = velocity.x
 
 		move_and_slide()
 

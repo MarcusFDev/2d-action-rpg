@@ -452,6 +452,7 @@ use_direction_flip = true
 
 [node name="JumpState" type="Node" parent="StateMachine" node_paths=PackedStringArray("next_state", "fall_state")]
 script = ExtResource("13_3j4b4")
+use_internal_logic = false
 jump_animation = "jump"
 jump_time = 0.4
 jump_height = 80.0
