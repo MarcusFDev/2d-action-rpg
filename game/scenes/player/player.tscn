@@ -1,4 +1,4 @@
-[gd_scene load_steps=75 format=3 uid="uid://beftgbphk8tt3"]
+[gd_scene load_steps=76 format=3 uid="uid://beftgbphk8tt3"]
 
 [ext_resource type="Script" uid="uid://dc7is6nsd35mi" path="res://scripts/player/player.gd" id="1_g2els"]
 [ext_resource type="Texture2D" uid="uid://nuicatwvk6p6" path="res://assets/sprites/player/knight-attack1.png" id="2_myrg7"]
@@ -20,6 +20,7 @@
 [ext_resource type="Script" uid="uid://ccjqnofia5vo0" path="res://scripts/states/jump_state.gd" id="13_3j4b4"]
 [ext_resource type="Script" uid="uid://dl4e74spycbcb" path="res://scripts/states/move_state.gd" id="13_8ydkj"]
 [ext_resource type="Script" uid="uid://clv1jjvxgs12w" path="res://scripts/states/fall_state.gd" id="14_yj68g"]
+[ext_resource type="Script" uid="uid://c05o5nbmpwovi" path="res://scripts/states/heal_state.gd" id="15_cnsyf"]
 [ext_resource type="Script" uid="uid://b0ewsejienp4o" path="res://scripts/states/death_state.gd" id="15_ioxgp"]
 [ext_resource type="Script" uid="uid://cieubtfucf8q5" path="res://scripts/states/player_states/player_heal.gd" id="17_uf5tr"]
 [ext_resource type="Script" uid="uid://bggrehmnomedp" path="res://scripts/states/player_states/player_attack_1.gd" id="18_lgqa7"]
@@ -467,7 +468,10 @@ next_state = NodePath("../IdleState")
 
 [node name="HurtState" type="Node" parent="StateMachine"]
 
-[node name="HealState" type="Node" parent="StateMachine"]
+[node name="HealState" type="Node" parent="StateMachine" node_paths=PackedStringArray("next_state")]
+script = ExtResource("15_cnsyf")
+heal_animation = "heal"
+next_state = NodePath("../IdleState")
 
 [node name="AttackState" type="Node" parent="StateMachine"]
 
@@ -495,16 +499,12 @@ script = ExtResource("8_smehm")
 [node name="PlayerDeath" type="Node" parent="StateMachine"]
 script = ExtResource("9_5gtgg")
 
-[node name="PlayerHeal" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle")]
+[node name="PlayerHeal" type="Node" parent="StateMachine"]
 script = ExtResource("17_uf5tr")
-idle = NodePath("../IdleState")
-
-[node name="PlayerHealTimer" type="Timer" parent="StateMachine/PlayerHeal"]
-wait_time = 0.7
 
 [node name="PlayerAttack1" type="Node" parent="StateMachine"]
 script = ExtResource("18_lgqa7")
 
+[connection signal="animation_finished" from="Animations" to="StateMachine/HealState" method="animation_finished"]
 [connection signal="animation_finished" from="Animations" to="StateMachine/DeathState" method="animation_finished"]
 [connection signal="timeout" from="GameOverDelayTimer" to="." method="_on_game_over_delay_timer_timeout"]
-[connection signal="timeout" from="StateMachine/PlayerHeal/PlayerHealTimer" to="StateMachine/PlayerHeal" method="_on_player_heal_timer_timeout"]
