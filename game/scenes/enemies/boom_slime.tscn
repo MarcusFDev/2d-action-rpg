@@ -4,10 +4,10 @@
 [ext_resource type="Texture2D" uid="uid://6fe2cx8btcng" path="res://assets/sprites/enemies/boom_slime/boom-slime-idle.png" id="1_oggdf"]
 [ext_resource type="PackedScene" uid="uid://bg7nrwxlpxf3p" path="res://scenes/core/base_damage_zone.tscn" id="2_b7oqg"]
 [ext_resource type="Script" uid="uid://bcoqv8smpfvig" path="res://scripts/states/state_machines/state_machine.gd" id="3_c5vq7"]
-[ext_resource type="Script" uid="uid://ct14p13yajhmc" path="res://scripts/states/idle_state.gd" id="4_eo3gx"]
-[ext_resource type="Script" uid="uid://dl4e74spycbcb" path="res://scripts/states/move_state.gd" id="5_pyuen"]
-[ext_resource type="Script" uid="uid://ccjqnofia5vo0" path="res://scripts/states/jump_state.gd" id="6_r8tp6"]
-[ext_resource type="Script" uid="uid://clv1jjvxgs12w" path="res://scripts/states/fall_state.gd" id="8_eo3gx"]
+[ext_resource type="Script" uid="uid://ct14p13yajhmc" path="res://scripts/states/generic_states/idle_state.gd" id="4_eo3gx"]
+[ext_resource type="Script" uid="uid://dl4e74spycbcb" path="res://scripts/states/generic_states/move_state.gd" id="5_pyuen"]
+[ext_resource type="Script" uid="uid://ccjqnofia5vo0" path="res://scripts/states/generic_states/jump_state.gd" id="6_r8tp6"]
+[ext_resource type="Script" uid="uid://clv1jjvxgs12w" path="res://scripts/states/generic_states/fall_state.gd" id="8_eo3gx"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_tm751"]
 atlas = ExtResource("1_oggdf")

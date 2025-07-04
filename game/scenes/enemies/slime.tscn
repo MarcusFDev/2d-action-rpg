@@ -9,11 +9,11 @@
 [ext_resource type="Texture2D" uid="uid://cmiijc04jyy37" path="res://assets/sprites/enemies/slime/slime-patrol.png" id="5_ikdmk"]
 [ext_resource type="Texture2D" uid="uid://dkhvgs4m8tdu" path="res://assets/sprites/enemies/slime/slime-take-damage.png" id="7_at850"]
 [ext_resource type="Script" uid="uid://bcoqv8smpfvig" path="res://scripts/states/state_machines/state_machine.gd" id="9_nx7r3"]
-[ext_resource type="Script" uid="uid://ct14p13yajhmc" path="res://scripts/states/idle_state.gd" id="11_tvrjd"]
-[ext_resource type="Script" uid="uid://ccjqnofia5vo0" path="res://scripts/states/jump_state.gd" id="12_rdhaw"]
-[ext_resource type="Script" uid="uid://clv1jjvxgs12w" path="res://scripts/states/fall_state.gd" id="13_m4uwr"]
-[ext_resource type="Script" uid="uid://dl4e74spycbcb" path="res://scripts/states/move_state.gd" id="13_nx7r3"]
-[ext_resource type="Script" uid="uid://dk74e55d6fp38" path="res://scripts/states/attack_state.gd" id="14_o5sr2"]
+[ext_resource type="Script" uid="uid://ct14p13yajhmc" path="res://scripts/states/generic_states/idle_state.gd" id="11_tvrjd"]
+[ext_resource type="Script" uid="uid://ccjqnofia5vo0" path="res://scripts/states/generic_states/jump_state.gd" id="12_rdhaw"]
+[ext_resource type="Script" uid="uid://clv1jjvxgs12w" path="res://scripts/states/generic_states/fall_state.gd" id="13_m4uwr"]
+[ext_resource type="Script" uid="uid://dl4e74spycbcb" path="res://scripts/states/generic_states/move_state.gd" id="13_nx7r3"]
+[ext_resource type="Script" uid="uid://dk74e55d6fp38" path="res://scripts/states/generic_states/attack_state.gd" id="14_o5sr2"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_wbf5k"]
 atlas = ExtResource("2_ikdmk")
