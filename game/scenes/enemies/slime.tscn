@@ -1,4 +1,4 @@
-[gd_scene load_steps=73 format=3 uid="uid://chptbuqgr7qyt"]
+[gd_scene load_steps=74 format=3 uid="uid://chptbuqgr7qyt"]
 
 [ext_resource type="Script" uid="uid://n35k36oc5i6u" path="res://scripts/enemies/slime.gd" id="1_68p8s"]
 [ext_resource type="PackedScene" uid="uid://bg7nrwxlpxf3p" path="res://scenes/core/base_damage_zone.tscn" id="2_68p8s"]
@@ -17,6 +17,7 @@
 [ext_resource type="Script" uid="uid://ccjqnofia5vo0" path="res://scripts/states/jump_state.gd" id="12_rdhaw"]
 [ext_resource type="Script" uid="uid://clv1jjvxgs12w" path="res://scripts/states/fall_state.gd" id="13_m4uwr"]
 [ext_resource type="Script" uid="uid://dl4e74spycbcb" path="res://scripts/states/move_state.gd" id="13_nx7r3"]
+[ext_resource type="Script" uid="uid://dk74e55d6fp38" path="res://scripts/states/attack_state.gd" id="14_o5sr2"]
 [ext_resource type="Script" uid="uid://cmv0hyy1vpln2" path="res://scripts/states/enemy_states/slime_take_damage.gd" id="14_wbf5k"]
 [ext_resource type="Script" uid="uid://fisrtfageena" path="res://scripts/states/enemy_states/slime_death.gd" id="15_tvrjd"]
 
@@ -470,17 +471,22 @@ script = ExtResource("13_m4uwr")
 fall_animation = "slime_fall"
 next_state = NodePath("../IdleState")
 
+[node name="AttackState" type="Node" parent="StateMachine" node_paths=PackedStringArray("next_state")]
+script = ExtResource("14_o5sr2")
+attack_animation = "slime_attack"
+enable_debug = true
+next_state = NodePath("../IdleState")
+
+[node name="=======================" type="Node" parent="StateMachine"]
+
 [node name="SlimeIdle" type="Node" parent="StateMachine"]
 script = ExtResource("6_fd6lc")
 
 [node name="SlimePatrol" type="Node" parent="StateMachine"]
 script = ExtResource("5_w3amv")
 
-[node name="SlimeAttack" type="Node" parent="StateMachine" node_paths=PackedStringArray("slime_idle")]
+[node name="SlimeAttack" type="Node" parent="StateMachine"]
 script = ExtResource("8_vnioy")
-slime_idle = NodePath("../IdleState")
-
-[node name="AttackTimer" type="Timer" parent="StateMachine/SlimeAttack"]
 
 [node name="SlimeFall" type="Node" parent="StateMachine"]
 script = ExtResource("7_gstla")
@@ -490,3 +496,5 @@ script = ExtResource("14_wbf5k")
 
 [node name="SlimeDeath" type="Node" parent="StateMachine"]
 script = ExtResource("15_tvrjd")
+
+[connection signal="animation_finished" from="Animations" to="StateMachine/AttackState" method="animation_finished"]

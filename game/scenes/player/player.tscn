@@ -1,4 +1,4 @@
-[gd_scene load_steps=77 format=3 uid="uid://beftgbphk8tt3"]
+[gd_scene load_steps=78 format=3 uid="uid://beftgbphk8tt3"]
 
 [ext_resource type="Script" uid="uid://dc7is6nsd35mi" path="res://scripts/player/player.gd" id="1_g2els"]
 [ext_resource type="Texture2D" uid="uid://nuicatwvk6p6" path="res://assets/sprites/player/knight-attack1.png" id="2_myrg7"]
@@ -23,6 +23,7 @@
 [ext_resource type="Script" uid="uid://cvmt4g1070nqn" path="res://scripts/states/hurt_state.gd" id="15_007i1"]
 [ext_resource type="Script" uid="uid://c05o5nbmpwovi" path="res://scripts/states/heal_state.gd" id="15_cnsyf"]
 [ext_resource type="Script" uid="uid://b0ewsejienp4o" path="res://scripts/states/death_state.gd" id="15_ioxgp"]
+[ext_resource type="Script" uid="uid://dk74e55d6fp38" path="res://scripts/states/attack_state.gd" id="17_6cv16"]
 [ext_resource type="Script" uid="uid://cieubtfucf8q5" path="res://scripts/states/player_states/player_heal.gd" id="17_uf5tr"]
 [ext_resource type="Script" uid="uid://bggrehmnomedp" path="res://scripts/states/player_states/player_attack_1.gd" id="18_lgqa7"]
 
@@ -249,9 +250,9 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_hir57")
 }],
-"loop": true,
+"loop": false,
 "name": &"attack_1",
-"speed": 15.0
+"speed": 25.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -423,7 +424,7 @@ script = ExtResource("1_g2els")
 [node name="Animations" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -12)
 sprite_frames = SubResource("SpriteFrames_2hs0m")
-animation = &"take_damage"
+animation = &"attack_1"
 autoplay = "idle"
 
 [node name="PlayerCollision" type="CollisionShape2D" parent="."]
@@ -477,12 +478,17 @@ script = ExtResource("15_cnsyf")
 heal_animation = "heal"
 next_state = NodePath("../IdleState")
 
-[node name="AttackState" type="Node" parent="StateMachine"]
+[node name="AttackState" type="Node" parent="StateMachine" node_paths=PackedStringArray("next_state")]
+script = ExtResource("17_6cv16")
+attack_animation = "attack_1"
+next_state = NodePath("../IdleState")
 
 [node name="DeathState" type="Node" parent="StateMachine"]
 script = ExtResource("15_ioxgp")
 death_animation = "death"
 post_death_method = "trigger_game_over"
+
+[node name="======================" type="Node" parent="StateMachine"]
 
 [node name="PlayerIdle" type="Node" parent="StateMachine"]
 script = ExtResource("4_dqkch")

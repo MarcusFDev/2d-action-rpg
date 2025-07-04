@@ -13,6 +13,7 @@ extends CharacterBody2D
 @onready var fall_state: FallState = $StateMachine/FallState
 @onready var heal_state: HealState = $StateMachine/HealState
 @onready var hurt_state: HurtState = $StateMachine/HurtState
+@onready var attack_state: AttackState =$StateMachine/AttackState
 @onready var death_state: DeathState = $StateMachine/DeathState
 
 @export var max_health : int = 9
@@ -137,6 +138,7 @@ func _fall_state() -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	state_machine.process_input(event)
+	trigger_attack()
 
 func _physics_process(delta: float) -> void:
 	# Trigger 'state_machine' to update movement & physics each frame.
@@ -172,6 +174,11 @@ func take_damage(_amount: int, enemy_position: Vector2) -> void:
 			state_machine.change_state(hurt_state)
 		else:
 			print("Player.gd| Error: Could not find Hurt state!")
+
+func trigger_attack() -> void:
+	if InputManagerClass.is_attack_pressed():
+		if attack_state:
+			state_machine.change_state(attack_state)
 
 func add_health(_amount: int) -> void:
 	var old_health: int = current_health

@@ -6,6 +6,7 @@ extends CharacterBody2D
 @onready var patrol_state: MoveState = $StateMachine/PatrolState
 @onready var jump_state: JumpState = $StateMachine/JumpState
 @onready var fall_state: FallState = $StateMachine/FallState
+@onready var attack_state: AttackState = $StateMachine/AttackState
 
 @export var damage: int = 1
 
@@ -49,8 +50,5 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 func trigger_attack() -> void:
-	if state_machine.current_state.name != "SlimeAttack":
-
-		var attack_state: State = state_machine.get_state("SlimeAttack")
-		if attack_state:
-			state_machine.change_state(attack_state)
+	if attack_state:
+		state_machine.change_state(attack_state)
