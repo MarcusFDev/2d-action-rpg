@@ -1,4 +1,4 @@
-[gd_scene load_steps=78 format=3 uid="uid://beftgbphk8tt3"]
+[gd_scene load_steps=70 format=3 uid="uid://beftgbphk8tt3"]
 
 [ext_resource type="Script" uid="uid://dc7is6nsd35mi" path="res://scripts/player/player.gd" id="1_g2els"]
 [ext_resource type="Texture2D" uid="uid://nuicatwvk6p6" path="res://assets/sprites/player/knight-attack1.png" id="2_myrg7"]
@@ -6,16 +6,10 @@
 [ext_resource type="Texture2D" uid="uid://c5nm6jegwh4n5" path="res://assets/sprites/player/knight-fall.png" id="3_fm80t"]
 [ext_resource type="Texture2D" uid="uid://u680dc0wssdk" path="res://assets/sprites/player/knight-idle.png" id="3_h17s1"]
 [ext_resource type="Script" uid="uid://bcoqv8smpfvig" path="res://scripts/states/state_machines/state_machine.gd" id="3_qhqgy"]
-[ext_resource type="Script" uid="uid://dgwwleo0uj0yk" path="res://scripts/states/player_states/player_idle.gd" id="4_dqkch"]
 [ext_resource type="Texture2D" uid="uid://cnsh3sd5uqtyw" path="res://assets/sprites/player/knight-heal.png" id="4_fcs02"]
 [ext_resource type="Texture2D" uid="uid://db26w6c7qh46q" path="res://assets/sprites/player/knight-run.png" id="4_je7p5"]
 [ext_resource type="Texture2D" uid="uid://dyco7cgw4mdqp" path="res://assets/sprites/player/knight-jump.png" id="5_gx1jg"]
-[ext_resource type="Script" uid="uid://c1j7v7xti3d7l" path="res://scripts/states/player_states/player_jump.gd" id="5_qlg0r"]
-[ext_resource type="Script" uid="uid://cjg5ja5klcfa4" path="res://scripts/states/player_states/player_fall.gd" id="6_fjrip"]
-[ext_resource type="Script" uid="uid://cnnnt2rekswhf" path="res://scripts/states/player_states/player_move.gd" id="7_smehm"]
 [ext_resource type="Texture2D" uid="uid://npo044vxtqee" path="res://assets/sprites/player/knight-take-damage.png" id="7_ugbui"]
-[ext_resource type="Script" uid="uid://bx46domvi6xu4" path="res://scripts/states/player_states/player_take_damage.gd" id="8_smehm"]
-[ext_resource type="Script" uid="uid://caqbivosmm5lo" path="res://scripts/states/player_states/player_death.gd" id="9_5gtgg"]
 [ext_resource type="Script" uid="uid://ct14p13yajhmc" path="res://scripts/states/idle_state.gd" id="11_lgqa7"]
 [ext_resource type="Script" uid="uid://ccjqnofia5vo0" path="res://scripts/states/jump_state.gd" id="13_3j4b4"]
 [ext_resource type="Script" uid="uid://dl4e74spycbcb" path="res://scripts/states/move_state.gd" id="13_8ydkj"]
@@ -24,8 +18,6 @@
 [ext_resource type="Script" uid="uid://c05o5nbmpwovi" path="res://scripts/states/heal_state.gd" id="15_cnsyf"]
 [ext_resource type="Script" uid="uid://b0ewsejienp4o" path="res://scripts/states/death_state.gd" id="15_ioxgp"]
 [ext_resource type="Script" uid="uid://dk74e55d6fp38" path="res://scripts/states/attack_state.gd" id="17_6cv16"]
-[ext_resource type="Script" uid="uid://cieubtfucf8q5" path="res://scripts/states/player_states/player_heal.gd" id="17_uf5tr"]
-[ext_resource type="Script" uid="uid://bggrehmnomedp" path="res://scripts/states/player_states/player_attack_1.gd" id="18_lgqa7"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_upxxc"]
 atlas = ExtResource("2_myrg7")
@@ -487,32 +479,6 @@ next_state = NodePath("../IdleState")
 script = ExtResource("15_ioxgp")
 death_animation = "death"
 post_death_method = "trigger_game_over"
-
-[node name="======================" type="Node" parent="StateMachine"]
-
-[node name="PlayerIdle" type="Node" parent="StateMachine"]
-script = ExtResource("4_dqkch")
-
-[node name="PlayerMove" type="Node" parent="StateMachine"]
-script = ExtResource("7_smehm")
-
-[node name="PlayerJump" type="Node" parent="StateMachine"]
-script = ExtResource("5_qlg0r")
-
-[node name="PlayerFall" type="Node" parent="StateMachine"]
-script = ExtResource("6_fjrip")
-
-[node name="PlayerTakeDamage" type="Node" parent="StateMachine"]
-script = ExtResource("8_smehm")
-
-[node name="PlayerDeath" type="Node" parent="StateMachine"]
-script = ExtResource("9_5gtgg")
-
-[node name="PlayerHeal" type="Node" parent="StateMachine"]
-script = ExtResource("17_uf5tr")
-
-[node name="PlayerAttack1" type="Node" parent="StateMachine"]
-script = ExtResource("18_lgqa7")
 
 [connection signal="animation_finished" from="Animations" to="StateMachine/HurtState" method="animation_finished"]
 [connection signal="animation_finished" from="Animations" to="StateMachine/HealState" method="animation_finished"]
