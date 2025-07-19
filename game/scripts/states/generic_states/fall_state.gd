@@ -1,6 +1,8 @@
 class_name FallState
 extends State
 
+@onready var gravity_component: Node = $"../EnemyAI/Components/GravityComponent"
+@onready var flip_component: Node = $"../EnemyAI/Components/DirectionFlipComponent"
 ## Determines whether this state uses its own internal logic or defers to parent-defined callbacks.[br]
 ## [b]Note:[/b] If set to [code]false[/code], all internal logic settings are ignored.
 @export var use_internal_logic: bool = true
@@ -13,6 +15,8 @@ extends State
 ## Enables debug messages in the output terminal. [br]
 ## [b]Note:[/b] Useful for development and troubleshooting.
 @export var enable_debug: bool = false
+
+@export var use_behavior_tree: bool = true
 
 @export_group("Internal Logic Settings")
 
@@ -40,26 +44,33 @@ func enter() -> void:
 
 func init_fall() -> void:
 	animations.play(fall_animation)
+	if enable_debug:
+		print(
+			"\n===== Fall State: ===== \n", parent,
+			"\nAnimation playing:", fall_animation)
 	pass
 
 func process_physics(_delta: float) -> State:
-	if use_direction_flip:
-		if parent.velocity.x != 0:
-			direction = sign(parent.velocity.x)
-			parent.animations.flip_h = direction < 0
-			if enable_debug:
-				print("Directional flip enabled. Animation flipped.", direction)
+	if not use_behavior_tree:
+		if use_direction_flip:
+			if parent.velocity.x != 0:
+				direction = sign(parent.velocity.x)
+				parent.animations.flip_h = direction < 0
+				if enable_debug:
+					print("Directional flip enabled. Animation flipped.", direction)
 		else:
 			if enable_debug:
 				print("Directional flip disabled.")
 
-	if use_internal_logic:
-		parent.velocity.y += gravity * _delta
-		parent.move_and_slide()
-		if parent.is_on_floor():
-			return next_state
+		if use_internal_logic:
+			parent.velocity.y += gravity * _delta
+			parent.move_and_slide()
+			if parent.is_on_floor():
+				return next_state
+		else:
+			return handle_physics.call(_delta)
 	else:
-		return handle_physics.call(_delta)
+		gravity_component.apply(_delta)
 	return null
 
 func exit() -> void:
