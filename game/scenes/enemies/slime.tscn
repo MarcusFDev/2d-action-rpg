@@ -468,7 +468,6 @@ next_state = NodePath("../IdleState")
 [node name="AttackState" type="Node" parent="StateMachine" node_paths=PackedStringArray("next_state")]
 script = ExtResource("14_o5sr2")
 attack_animation = "slime_attack"
-enable_debug = true
 next_state = NodePath("../IdleState")
 
 [connection signal="animation_finished" from="Animations" to="StateMachine/AttackState" method="animation_finished"]

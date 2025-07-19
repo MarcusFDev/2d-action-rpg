@@ -456,6 +456,7 @@ fall_state = NodePath("../FallState")
 script = ExtResource("14_yj68g")
 use_internal_logic = false
 fall_animation = "fall"
+use_behavior_tree = false
 next_state = NodePath("../IdleState")
 
 [node name="HurtState" type="Node" parent="StateMachine" node_paths=PackedStringArray("next_state")]
