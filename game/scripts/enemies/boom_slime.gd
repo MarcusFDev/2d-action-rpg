@@ -1,22 +1,25 @@
 extends CharacterBody2D
 
 @onready var animations: AnimatedSprite2D = $Animations
-@onready var state_machine: Node = $StateMachine
-@onready var idle_state: IdleState = $StateMachine/IdleState
-@onready var patrol_state: MoveState = $StateMachine/PatrolState
-@onready var jump_state: JumpState = $StateMachine/JumpState
-@onready var fall_state: FallState = $StateMachine/FallState
+@onready var state_machine: Node = $EnemyAI/StateMachine
+@onready var idle_state: IdleState = $EnemyAI/StateMachine/IdleState
+@onready var patrol_state: MoveState = $EnemyAI/StateMachine/PatrolState
+@onready var jump_state: JumpState = $EnemyAI/StateMachine/JumpState
+@onready var fall_state: FallState = $EnemyAI/StateMachine/FallState
+@onready var bb: Node = $EnemyAI/BlackBoard
 
 var patrol_direction: int = 1
 
 func _ready() -> void:
 	_setup_states()
+	_setup_blackboard()
 	state_machine.init(self, animations)
-	call_deferred("_post_ready_check")
 
-func _post_ready_check() -> void:
-	if not is_on_floor():
-		state_machine.change_state(fall_state)
+func _setup_blackboard() -> void:
+	bb.set_value("fsm", state_machine)
+	bb.set_value("is_grounded", false)
+	bb.set_value("can_patrol", true)
+	bb.set_value("can_idle", true)
 
 func _setup_states() -> void:
 	_idle_state()
@@ -25,16 +28,13 @@ func _setup_states() -> void:
 	_fall_state()
 
 func _idle_state() -> void:
-	idle_state.enter_callback = func() -> void:
-		idle_state.set_direction()
+	pass
 
 func _patrol_state() -> void:
-	patrol_state.enter_callback = func() -> void:
-		animations.flip_h = patrol_state.direction < 0
+	pass
 
 func _jump_state() -> void:
-	jump_state.enter_callback = func() -> void:
-		pass
+	pass
 
 func _fall_state() -> void:
 	pass
