@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=4 uid="uid://sei36ou55kby"]
+[gd_scene load_steps=25 format=4 uid="uid://sei36ou55kby"]
 
 [ext_resource type="Script" uid="uid://cxn04bicrxv54" path="res://scripts/core/game_manager.gd" id="1_q4ie4"]
 [ext_resource type="Texture2D" uid="uid://cdltmf4lb4tbb" path="res://assets/sprites/world/world_tileset.png" id="2_d4sha"]
@@ -9,7 +9,6 @@
 [ext_resource type="PackedScene" uid="uid://ddx81y73wlc8s" path="res://scenes/ui/game_over_menu.tscn" id="7_m1gkr"]
 [ext_resource type="PackedScene" uid="uid://bf8leam20pyk" path="res://scenes/core/coin.tscn" id="8_2ocmr"]
 [ext_resource type="PackedScene" uid="uid://dpg6pyjck4uj5" path="res://scenes/core/heart_crystal.tscn" id="9_05q6o"]
-[ext_resource type="PackedScene" uid="uid://chptbuqgr7qyt" path="res://scenes/enemies/slime.tscn" id="9_lnjxb"]
 [ext_resource type="PackedScene" uid="uid://dcvg187d11cce" path="res://scenes/core/platform.tscn" id="10_56c0c"]
 [ext_resource type="PackedScene" uid="uid://bg7nrwxlpxf3p" path="res://scenes/core/base_damage_zone.tscn" id="11_d4sha"]
 [ext_resource type="FontFile" uid="uid://be18v7te12m5p" path="res://assets/fonts/PixelOperator8-Bold.ttf" id="11_f8du0"]
@@ -643,11 +642,8 @@ position = Vector2(-224, -1024)
 
 [node name="Slimes" type="Node" parent="Enemies"]
 
-[node name="Slime" parent="Enemies/Slimes" instance=ExtResource("9_lnjxb")]
-position = Vector2(-3, -533)
-
 [node name="BoomSlime" parent="Enemies/Slimes" instance=ExtResource("11_koahr")]
-position = Vector2(230, -532)
+position = Vector2(226, -622)
 
 [node name="Platforms" type="Node" parent="."]
 
