@@ -14,6 +14,6 @@ func _ready() -> void:
 
 func apply(delta: float) -> void:
 	if actor and blackboard:
-		var is_grounded = blackboard.get_value("is_grounded", true)
+		var is_grounded: bool = blackboard.get_value("is_grounded", true)
 		if not is_grounded:
 			actor.velocity.y += gravity * delta

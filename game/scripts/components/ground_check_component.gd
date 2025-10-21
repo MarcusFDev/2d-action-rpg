@@ -14,5 +14,5 @@ func _ready() -> void:
 
 func _physics_process(_delta: float) -> void:
 	if actor and blackboard:
-		var grounded = actor.is_on_floor()
+		var grounded: bool = actor.is_on_floor()
 		blackboard.set_value(key_name, grounded)

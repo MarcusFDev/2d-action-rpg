@@ -2,11 +2,11 @@ extends BTNode
 
 @export var target_state_node: State
 
-func tick(actor: Node, blackboard_node: Node) -> BTResult:
+func tick(_actor: Node, blackboard_node: Node) -> BTResult:
 	if not target_state_node:
 		return BTResult.FAILURE
 
-	var fsm = blackboard_node.get_value("fsm")
+	var fsm: Variant = blackboard_node.get_value("fsm")
 
 	if not fsm:
 		return BTResult.FAILURE

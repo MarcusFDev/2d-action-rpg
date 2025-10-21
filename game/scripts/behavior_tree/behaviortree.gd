@@ -13,10 +13,10 @@ func _ready() -> void:
 	if actor_node_path != null and has_node(actor_node_path):
 		actor = get_node(actor_node_path)
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if get_child_count() == 0:
 		return
 	
-	var root = get_child(0)
+	var root: Node = get_child(0)
 	if root is BTNode and blackboard_node and actor:
 		root.tick(actor, blackboard_node)

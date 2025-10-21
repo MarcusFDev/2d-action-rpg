@@ -9,5 +9,5 @@ enum BTResult {
 
 var blackboard: Dictionary
 
-func tick(actor: Node, blackboard_node: Node) -> BTResult:
+func tick(_actor: Node, _blackboard_node: Node) -> BTResult:
 	return BTResult.FAILURE
