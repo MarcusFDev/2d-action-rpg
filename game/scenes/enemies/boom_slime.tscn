@@ -278,7 +278,6 @@ fall_state = NodePath("../FallState")
 [node name="FallState" type="Node" parent="EnemyAI/StateMachine"]
 script = ExtResource("8_eo3gx")
 fall_animation = "slime_fall"
-enable_debug = true
 
 [node name="Components" type="Node" parent="EnemyAI"]
 

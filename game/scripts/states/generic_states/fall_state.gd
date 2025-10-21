@@ -1,7 +1,7 @@
 class_name FallState
 extends State
 
-@onready var gravity_component: Node = $"../EnemyAI/Components/GravityComponent"
+@onready var gravity_component: Node = $"../../Components/GravityComponent"
 @onready var flip_component: Node = $"../EnemyAI/Components/DirectionFlipComponent"
 ## Determines whether this state uses its own internal logic or defers to parent-defined callbacks.[br]
 ## [b]Note:[/b] If set to [code]false[/code], all internal logic settings are ignored.
