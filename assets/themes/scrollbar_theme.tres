@@ -1,0 +1,21 @@
+[gd_resource type="Theme" load_steps=3 format=3 uid="uid://dct1adrtx53me"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6lt46"]
+bg_color = Color(1, 0.619608, 0.101961, 1)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j1ev1"]
+bg_color = Color(0.77138, 0.556803, 0.116757, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0.839545, 0.833917, 0, 1)
+border_blend = true
+
+[resource]
+ScrollBar/styles/grabber = SubResource("StyleBoxFlat_6lt46")
+ScrollBar/styles/scroll = SubResource("StyleBoxFlat_j1ev1")
