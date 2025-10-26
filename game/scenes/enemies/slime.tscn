@@ -1,4 +1,4 @@
-[gd_scene load_steps=71 format=3 uid="uid://chptbuqgr7qyt"]
+[gd_scene load_steps=72 format=3 uid="uid://chptbuqgr7qyt"]
 
 [ext_resource type="Script" uid="uid://n35k36oc5i6u" path="res://scripts/enemies/slime.gd" id="1_68p8s"]
 [ext_resource type="PackedScene" uid="uid://bg7nrwxlpxf3p" path="res://scenes/core/base_damage_zone.tscn" id="2_68p8s"]
@@ -13,6 +13,7 @@
 [ext_resource type="Script" uid="uid://c5ae5naepgxn2" path="res://scripts/components/gravity_component.gd" id="10_m4uwr"]
 [ext_resource type="Script" uid="uid://d2ncc58simucl" path="res://scripts/components/direction_flip_component.gd" id="11_o5sr2"]
 [ext_resource type="Script" uid="uid://ct14p13yajhmc" path="res://scripts/states/generic_states/idle_state.gd" id="11_tvrjd"]
+[ext_resource type="Script" uid="uid://b320oyar5gjaj" path="res://scripts/components/edge_detector_component.gd" id="12_m4uwr"]
 [ext_resource type="Script" uid="uid://ccjqnofia5vo0" path="res://scripts/states/generic_states/jump_state.gd" id="12_rdhaw"]
 [ext_resource type="Script" uid="uid://clv1jjvxgs12w" path="res://scripts/states/generic_states/fall_state.gd" id="13_m4uwr"]
 [ext_resource type="Script" uid="uid://dl4e74spycbcb" path="res://scripts/states/generic_states/move_state.gd" id="13_nx7r3"]
@@ -458,6 +459,11 @@ script = ExtResource("11_o5sr2")
 actor_path = NodePath("../..")
 animations_path = NodePath("../../Animations")
 
+[node name="EdgeDetectorComponent" type="Node" parent="Components"]
+script = ExtResource("12_m4uwr")
+raycast_right_path = NodePath("../../RayCastRight")
+raycast_left_path = NodePath("../../RayCastLeft")
+
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("starting_state")]
 script = ExtResource("9_nx7r3")
 starting_state = NodePath("IdleState")
@@ -469,14 +475,10 @@ next_state = NodePath("../PatrolState")
 fall_state = NodePath("../FallState")
 use_idle_timer = true
 
-[node name="PatrolState" type="Node" parent="StateMachine" node_paths=PackedStringArray("fall_state", "idle_state")]
+[node name="PatrolState" type="Node" parent="StateMachine"]
 script = ExtResource("13_nx7r3")
 move_animation = "slime_patrol"
-fall_state = NodePath("../FallState")
-idle_state = NodePath("../IdleState")
-use_idle_timer = true
-raycast_right_path = NodePath("../../RayCastRight")
-raycast_left_path = NodePath("../../RayCastLeft")
+use_behavior_tree = true
 
 [node name="JumpState" type="Node" parent="StateMachine"]
 script = ExtResource("12_rdhaw")

@@ -16,6 +16,7 @@ extends CharacterBody2D
 
 # Components
 @onready var ground_check_component: Node = $Components/GroundCheckComponent
+@onready var direction_flip_component: Node = $Components/DirectionFlipComponent
 
 var patrol_direction: int = 1
 
@@ -104,6 +105,7 @@ func _physics_process(delta: float) -> void:
 	state_machine.process_physics(delta)
 	move_and_slide()
 	ground_check_component.apply(delta)
+	direction_flip_component.apply(delta)
 
 func trigger_attack() -> void:
 	if attack_state:

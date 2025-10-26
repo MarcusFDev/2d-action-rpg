@@ -461,10 +461,9 @@ idle_animation = "idle"
 
 [node name="MoveState" type="Node" parent="StateMachine"]
 script = ExtResource("13_8ydkj")
-use_internal_logic = false
 move_animation = "move"
-move_speed = 120.0
-use_direction_flip = true
+move_speed = 70.0
+use_parent_logic = true
 
 [node name="JumpState" type="Node" parent="StateMachine" node_paths=PackedStringArray("next_state", "fall_state")]
 script = ExtResource("13_3j4b4")
