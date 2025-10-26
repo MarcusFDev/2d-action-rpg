@@ -9,10 +9,10 @@
 [ext_resource type="PackedScene" uid="uid://ddx81y73wlc8s" path="res://scenes/ui/game_over_menu.tscn" id="7_m1gkr"]
 [ext_resource type="PackedScene" uid="uid://bf8leam20pyk" path="res://scenes/core/coin.tscn" id="8_2ocmr"]
 [ext_resource type="PackedScene" uid="uid://dpg6pyjck4uj5" path="res://scenes/core/heart_crystal.tscn" id="9_05q6o"]
+[ext_resource type="PackedScene" uid="uid://chptbuqgr7qyt" path="res://scenes/enemies/slime.tscn" id="10_05q6o"]
 [ext_resource type="PackedScene" uid="uid://dcvg187d11cce" path="res://scenes/core/platform.tscn" id="10_56c0c"]
 [ext_resource type="PackedScene" uid="uid://bg7nrwxlpxf3p" path="res://scenes/core/base_damage_zone.tscn" id="11_d4sha"]
 [ext_resource type="FontFile" uid="uid://be18v7te12m5p" path="res://assets/fonts/PixelOperator8-Bold.ttf" id="11_f8du0"]
-[ext_resource type="PackedScene" uid="uid://c7gvf6d2ofd3d" path="res://scenes/enemies/boom_slime.tscn" id="11_koahr"]
 [ext_resource type="Script" uid="uid://dxvil1un2kg0e" path="res://scripts/core/world_damage_zone.gd" id="12_m1gkr"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_iywne"]
@@ -642,8 +642,8 @@ position = Vector2(-224, -1024)
 
 [node name="Slimes" type="Node" parent="Enemies"]
 
-[node name="BoomSlime" parent="Enemies/Slimes" instance=ExtResource("11_koahr")]
-position = Vector2(213, -609)
+[node name="Slime" parent="Enemies/Slimes" instance=ExtResource("10_05q6o")]
+position = Vector2(212, -582)
 
 [node name="Platforms" type="Node" parent="."]
 

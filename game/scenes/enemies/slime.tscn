@@ -1,4 +1,4 @@
-[gd_scene load_steps=68 format=3 uid="uid://chptbuqgr7qyt"]
+[gd_scene load_steps=71 format=3 uid="uid://chptbuqgr7qyt"]
 
 [ext_resource type="Script" uid="uid://n35k36oc5i6u" path="res://scripts/enemies/slime.gd" id="1_68p8s"]
 [ext_resource type="PackedScene" uid="uid://bg7nrwxlpxf3p" path="res://scenes/core/base_damage_zone.tscn" id="2_68p8s"]
@@ -9,6 +9,9 @@
 [ext_resource type="Texture2D" uid="uid://cmiijc04jyy37" path="res://assets/sprites/enemies/slime/slime-patrol.png" id="5_ikdmk"]
 [ext_resource type="Texture2D" uid="uid://dkhvgs4m8tdu" path="res://assets/sprites/enemies/slime/slime-take-damage.png" id="7_at850"]
 [ext_resource type="Script" uid="uid://bcoqv8smpfvig" path="res://scripts/states/state_machines/state_machine.gd" id="9_nx7r3"]
+[ext_resource type="Script" uid="uid://dvj15x0yx6poy" path="res://scripts/components/ground_check_component.gd" id="9_rdhaw"]
+[ext_resource type="Script" uid="uid://c5ae5naepgxn2" path="res://scripts/components/gravity_component.gd" id="10_m4uwr"]
+[ext_resource type="Script" uid="uid://d2ncc58simucl" path="res://scripts/components/direction_flip_component.gd" id="11_o5sr2"]
 [ext_resource type="Script" uid="uid://ct14p13yajhmc" path="res://scripts/states/generic_states/idle_state.gd" id="11_tvrjd"]
 [ext_resource type="Script" uid="uid://ccjqnofia5vo0" path="res://scripts/states/generic_states/jump_state.gd" id="12_rdhaw"]
 [ext_resource type="Script" uid="uid://clv1jjvxgs12w" path="res://scripts/states/generic_states/fall_state.gd" id="13_m4uwr"]
@@ -437,6 +440,24 @@ shape = SubResource("RectangleShape2D_gstla")
 position = Vector2(0, -1)
 shape = SubResource("RectangleShape2D_6axq5")
 
+[node name="Components" type="Node" parent="."]
+
+[node name="HealthComponent" type="Node" parent="Components"]
+
+[node name="GroundCheckComponent" type="Node" parent="Components"]
+script = ExtResource("9_rdhaw")
+actor_path = NodePath("../..")
+
+[node name="GravityComponent" type="Node" parent="Components"]
+script = ExtResource("10_m4uwr")
+actor_path = NodePath("../..")
+gravity = 1000.0
+
+[node name="DirectionFlipComponent" type="Node" parent="Components"]
+script = ExtResource("11_o5sr2")
+actor_path = NodePath("../..")
+animations_path = NodePath("../../Animations")
+
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("starting_state")]
 script = ExtResource("9_nx7r3")
 starting_state = NodePath("IdleState")
@@ -463,6 +484,7 @@ script = ExtResource("12_rdhaw")
 [node name="FallState" type="Node" parent="StateMachine"]
 script = ExtResource("13_m4uwr")
 fall_animation = "slime_fall"
+use_behavior_tree = true
 
 [node name="AttackState" type="Node" parent="StateMachine" node_paths=PackedStringArray("next_state")]
 script = ExtResource("14_o5sr2")
