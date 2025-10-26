@@ -30,7 +30,7 @@ func change_state(new_state: State) -> void:
 	current_state.enter()
 
 func get_state(state_name: String) -> State:
-	var key = state_name.to_lower()
+	var key: String = state_name.to_lower()
 	return state_map.get(key, null)
 
 func process_input(event: InputEvent) -> void:
@@ -47,7 +47,7 @@ func process_frame(delta: float) -> void:
 	if blackboard and blackboard.has("intent"):
 		var intent: String = blackboard["intent"]
 		if intent:
-			var key = (intent + "state").to_lower()
+			var key: String = (intent + "state").to_lower()
 			if state_map.has(key):
 				var desired_state: State = state_map[key]
 				if desired_state != current_state:

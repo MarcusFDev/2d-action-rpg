@@ -3,12 +3,12 @@ extends BTNode
 
 var children: Array = []
 
-func _init(_children: Array):
+func _init(_children: Array) -> void:
 	children = _children
 
 func tick(actor: Node, blackboard: Dictionary) -> int:
-	for child in children:
-		var result = child.tick(actor, blackboard)
+	for child: BTNode in children:
+		var result: int = child.tick(actor, blackboard)
 		match result:
 			BTNode.BTResult.SUCCESS:
 				return BTNode.BTResult.SUCCESS
