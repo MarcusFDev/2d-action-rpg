@@ -1,9 +1,0 @@
-[gd_resource type="Theme" load_steps=2 format=3 uid="uid://kmndp1tcmq6f"]
-
-[ext_resource type="FontFile" uid="uid://be18v7te12m5p" path="res://assets/fonts/PixelOperator8-Bold.ttf" id="1_unrrd"]
-
-[resource]
-Label/colors/font_outline_color = Color(0.978555, 0.603998, 0.193593, 1)
-Label/colors/font_shadow_color = Color(0.978555, 0.603998, 0.193593, 1)
-Label/font_sizes/font_size = 120
-Label/fonts/font = ExtResource("1_unrrd")
