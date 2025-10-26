@@ -1,9 +1,6 @@
 class_name FallState
 extends State
 
-@onready var gravity_component: Node = $"../../Components/GravityComponent"
-@onready var flip_component: Node = $"../../Components/DirectionFlipComponent"
-
 ## Determines the animation that plays during the Fall State.[br]
 ## [b]Note:[/b] Must match an animation name in  [code]AnimatedSprite2D[/code]  or  [code]AnimationPlayer[/code].
 @export var fall_animation : String
@@ -18,6 +15,10 @@ extends State
 ## [b]Note:[/b] Useful for development and troubleshooting.
 @export var enable_debug: bool = false
 
+@onready var gravity_component: Node = $"../../Components/GravityComponent"
+@onready var flip_component: Node = $"../../Components/DirectionFlipComponent"
+
+# Script Variables
 var direction: int = 1
 
 # Callback Functions
@@ -38,11 +39,12 @@ func enter() -> void:
 
 func init_fall() -> void:
 	animations.play(fall_animation)
+	enter_callback.call()
+	
 	if enable_debug:
 		print(
 			"\n===== Fall State: ===== \n", parent,
 			"\nAnimation playing:", fall_animation)
-	pass
 
 func process_physics(_delta: float) -> State:
 	if use_direction_flip:
