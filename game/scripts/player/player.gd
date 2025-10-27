@@ -75,31 +75,29 @@ func _idle_state() -> void:
 		return null
 
 func _move_state() -> void:
-	move_state.handle_physics = func(delta: float) -> State:
-		if not is_on_floor():
+	move_state.handle_physics = func(_delta: float) -> State:
+		var is_grounded: bool = ground_check_component.is_grounded
+		if not is_grounded:
 			if move_state.enable_debug:
-				print("Cannot detect floor. Switching to: ", fall_state)
+				print("Player cannot detect floor. Switching to: ", fall_state)
 			return fall_state
-
-		velocity.y += move_state.gravity * delta
-
+		
 		var input_direction: float = InputManagerClass.get_movement_axis()
 		if input_direction != 0:
 			move_state.direction = sign(input_direction)
-		var movement: float = input_direction * move_state.move_speed
 
+		var movement: float = input_direction * move_state.move_speed
 		if movement == 0:
 			if move_state.enable_debug:
-				print("Movement ended. Switching to:", idle_state)
+				print("Player Movement ended. Switching to:", idle_state)
 			return idle_state
-
-		velocity.x = movement
-		animations.flip_h = velocity.x < 0
-
-		if InputManagerClass.is_jump_pressed() and is_on_floor():
+		
+		if InputManagerClass.is_jump_pressed() and is_grounded:
 			if move_state.enable_debug:
 				print("Player Jump Key detected. Switching to: ", jump_state)
 			return jump_state
+	
+		velocity.x = movement
 		move_and_slide()
 		return null
 
@@ -123,17 +121,13 @@ func _fall_state() -> void:
 	fall_state.handle_physics = func(delta: float) -> State:
 		gravity_component.apply(delta)
 
-		if fall_state.use_direction_flip:
-			flip_component.apply(delta)
-
 		var input_direction: float = InputManagerClass.get_movement_axis()
 		var target_speed: float = input_direction * move_state.move_speed
 		velocity.x = lerp(velocity.x, target_speed, 0.1)
-
+		
 		move_and_slide()
 		
 		var is_grounded: bool = ground_check_component.is_grounded
-		
 		if is_grounded:
 			var movement: float = velocity.x
 			if movement != 0:
@@ -153,6 +147,7 @@ func _unhandled_input(event: InputEvent) -> void:
 func _physics_process(delta: float) -> void:
 	# Trigger 'state_machine' to update movement & physics each frame.
 	ground_check_component.apply(delta)
+	flip_component.apply(delta)
 	state_machine.process_physics(delta)
 
 func _process(delta: float) -> void:
