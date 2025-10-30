@@ -8,18 +8,11 @@ extends State
 ## Determines whether this state uses parent-defined callbacks.[br]
 ## [b]Note:[/b] If set to [code]false[/code], all parent logic settings are ignored.
 @export var use_parent_logic: bool = false
-## Determines whether the entity's animation flips horizontally while moving using  [code]flip_h[/code].[br]
-## [b]Note:[/b] Useful to set  [code]false[/code]  for symmetric & direction-agnostic entities.
-@export var use_direction_flip: bool = false
 ## Enables debug messages in the output terminal. [br]
 ## [b]Note:[/b] Useful for development and troubleshooting.
 @export var enable_debug: bool = false
 
 @onready var gravity_component: Node = $"../../Components/GravityComponent"
-@onready var flip_component: Node = $"../../Components/DirectionFlipComponent"
-
-# Script Variables
-var direction: int = 1
 
 # Callback Functions
 func _on_enter() -> void: pass
@@ -47,21 +40,11 @@ func init_fall() -> void:
 			"\nAnimation playing:", fall_animation)
 
 func process_physics(_delta: float) -> State:
-	if use_direction_flip:
-		flip_component.apply(_delta)
-
-		if enable_debug:
-			print("Directional flip enabled. Animation flipped.", direction)
-
+	gravity_component.apply(_delta)
 	if use_behavior_tree:
-		gravity_component.apply(_delta)
-		if parent.has_method("get_blackboard"):
-			var bb: Variant = parent.get_blackboard()
-			if bb:
-				bb["is_grounded"] = parent.is_on_floor()
-				if parent.is_on_floor():
-					if enable_debug:
-						print("FallState: Grounded, behavior tree will handle intent change.")
+		if parent.is_on_floor():
+			var bb: Dictionary = parent.get_blackboard()
+			bb["can_patrol"] = true
 
 	if use_parent_logic:
 		return handle_physics.call(_delta)
