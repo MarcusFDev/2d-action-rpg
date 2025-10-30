@@ -1,4 +1,4 @@
-[gd_scene load_steps=72 format=3 uid="uid://chptbuqgr7qyt"]
+[gd_scene load_steps=73 format=3 uid="uid://chptbuqgr7qyt"]
 
 [ext_resource type="Script" uid="uid://n35k36oc5i6u" path="res://scripts/enemies/slime.gd" id="1_68p8s"]
 [ext_resource type="PackedScene" uid="uid://bg7nrwxlpxf3p" path="res://scenes/core/base_damage_zone.tscn" id="2_68p8s"]
@@ -17,6 +17,7 @@
 [ext_resource type="Script" uid="uid://ccjqnofia5vo0" path="res://scripts/states/generic_states/jump_state.gd" id="12_rdhaw"]
 [ext_resource type="Script" uid="uid://clv1jjvxgs12w" path="res://scripts/states/generic_states/fall_state.gd" id="13_m4uwr"]
 [ext_resource type="Script" uid="uid://dl4e74spycbcb" path="res://scripts/states/generic_states/move_state.gd" id="13_nx7r3"]
+[ext_resource type="Script" uid="uid://ceuavkjqc2ngt" path="res://scripts/components/idle_timer_component.gd" id="13_o5sr2"]
 [ext_resource type="Script" uid="uid://dk74e55d6fp38" path="res://scripts/states/generic_states/attack_state.gd" id="14_o5sr2"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_wbf5k"]
@@ -448,6 +449,7 @@ shape = SubResource("RectangleShape2D_6axq5")
 [node name="GroundCheckComponent" type="Node" parent="Components"]
 script = ExtResource("9_rdhaw")
 actor_path = NodePath("../..")
+grounded_buffer_time = 0.0
 
 [node name="GravityComponent" type="Node" parent="Components"]
 script = ExtResource("10_m4uwr")
@@ -461,19 +463,25 @@ animations_path = NodePath("../../Animations")
 
 [node name="EdgeDetectorComponent" type="Node" parent="Components"]
 script = ExtResource("12_m4uwr")
+actor_path = NodePath("../..")
 raycast_right_path = NodePath("../../RayCastRight")
 raycast_left_path = NodePath("../../RayCastLeft")
+enable_debug = true
+
+[node name="IdleTimerComponent" type="Node" parent="Components"]
+script = ExtResource("13_o5sr2")
+actor_path = NodePath("../..")
+enable_debug = true
 
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("starting_state")]
 script = ExtResource("9_nx7r3")
 starting_state = NodePath("IdleState")
+enable_debug = true
 
-[node name="IdleState" type="Node" parent="StateMachine" node_paths=PackedStringArray("next_state", "fall_state")]
+[node name="IdleState" type="Node" parent="StateMachine"]
 script = ExtResource("11_tvrjd")
 idle_animation = "slime_idle"
-next_state = NodePath("../PatrolState")
-fall_state = NodePath("../FallState")
-use_idle_timer = true
+use_behavior_tree = true
 
 [node name="PatrolState" type="Node" parent="StateMachine"]
 script = ExtResource("13_nx7r3")
