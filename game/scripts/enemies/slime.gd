@@ -17,8 +17,7 @@ extends CharacterBody2D
 # Components
 @onready var ground_check_component: Node = $Components/GroundCheckComponent
 @onready var direction_flip_component: Node = $Components/DirectionFlipComponent
-
-var patrol_direction: int = 1
+@onready var edge_detector_component: Node = $Components/EdgeDetectorComponent
 
 var blackboard: Dictionary = {
 	"fsm": null,
@@ -28,6 +27,7 @@ var blackboard: Dictionary = {
 	"intent": "Idle"
 }
 
+var _prev_state_name: String = ""
 var bt_root: BTNode
 var bt: BehaviorTree
 
@@ -42,10 +42,39 @@ func get_blackboard() -> Dictionary:
 
 func _setup_blackboard() -> void:
 	blackboard["fsm"] = state_machine
+	
 	blackboard["is_grounded"] = false
+	blackboard["hit_wall"] = false
+
 	blackboard["can_patrol"] = true
 	blackboard["can_idle"] = true
+	
+	blackboard["move_direction"] = 1
 	blackboard["intent"] = "Idle"
+
+func _setup_behavior_tree() -> void:
+	bt_root = BTSelector.new([
+		# Priority 1: Fall if not grounded
+		BTSequence.new([
+			BTCondition.new("is_grounded", false),
+			BTAction.new("Fall")
+		]),
+		# Priority 2: Patrol if grounded and allowed
+		BTSequence.new([
+			BTCondition.new("is_grounded", true),
+			BTCondition.new("hit_wall", false),
+			BTCondition.new("can_patrol", true),
+			BTAction.new("Patrol")
+		]),
+		# Priority 3: Idle if grounded and allowed
+		BTSequence.new([
+			BTCondition.new("is_grounded", true),
+			BTCondition.new("hit_wall", true),
+			BTCondition.new("can_idle", true),
+			BTAction.new("Idle")
+		])
+	])
+	bt = BehaviorTree.new(bt_root, blackboard, self)
 
 func _setup_states() -> void:
 	_idle_state()
@@ -55,7 +84,7 @@ func _setup_states() -> void:
 
 func _idle_state() -> void:
 	idle_state.enter_callback = func() -> void:
-		idle_state.set_direction()
+		pass
 
 func _patrol_state() -> void:
 	patrol_state.enter_callback = func() -> void:
@@ -68,38 +97,20 @@ func _jump_state() -> void:
 func _fall_state() -> void:
 	pass
 
-func _setup_behavior_tree() -> void:
-	bt_root = BTSelector.new([
-		# Priority 1: Fall if not grounded
-		BTSequence.new([
-			BTCondition.new("is_grounded", false),
-			BTAction.new("Fall")
-		]),
-		# Priority 2: Patrol if grounded and allowed
-		BTSequence.new([
-			BTCondition.new("is_grounded", true),
-			BTCondition.new("can_patrol", true),
-			BTAction.new("Patrol")
-		]),
-		# Priority 3: Idle if grounded and allowed
-		BTSequence.new([
-			BTCondition.new("is_grounded", true),
-			BTCondition.new("can_idle", true),
-			BTAction.new("Idle")
-		])
-	])
-	bt = BehaviorTree.new(bt_root, blackboard, self)
-
 func _process(delta: float) -> void:
 	if bt:
 		bt.tick()
 	state_machine.process_frame(delta)
+	
 	if enable_debug:
-		print(
-		"Intent:", blackboard["intent"],
-		" | Grounded:", blackboard["is_grounded"],
-		" | State:", state_machine.current_state.name
-	)
+		var current_state_name : Variant = state_machine.current_state.name
+		if current_state_name != _prev_state_name:
+			_prev_state_name = current_state_name
+			print("==============================")
+			print("[STATE CHANGE] →", current_state_name)
+			for key: Variant in blackboard.keys():
+				print(" ", key, ":", blackboard[key])
+			print("==============================")
 
 func _physics_process(delta: float) -> void:
 	state_machine.process_physics(delta)
