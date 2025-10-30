@@ -19,6 +19,7 @@ extends State
 
 @onready var gravity_component: Node = $"../../Components/GravityComponent"
 @onready var edge_detector_component: Node = $"../../Components/EdgeDetectorComponent"
+@onready var idle_timer_component: Node = $"../../Components/IdleTimerComponent"
 
 # Script Variables
 var direction: int = 1
@@ -42,32 +43,37 @@ func enter() -> void:
 func init_move() -> void:
 	parent.animations.play(move_animation)
 	enter_callback.call()
-
+	if use_behavior_tree:
+		idle_timer_component.start()
 	if enable_debug:
 		print(
 			"\n===== Move State: ===== \n", parent,
 			"\nAnimation playing:", move_animation)
 
-func process_physics(_delta: float) -> State:
-	if gravity_component:
-		gravity_component.apply(_delta)
+func process_physics(delta: float) -> State:
+	if use_behavior_tree:
+		idle_timer_component.update(delta)
+		var bb: Dictionary = parent.get_blackboard()
+		if bb and bb.has("move_direction"):
+			direction = bb["move_direction"]
 
 	parent.velocity.x = direction * move_speed
 	parent.move_and_slide()
 	
-	if use_behavior_tree:
-		pass
-
 	if use_parent_logic:
-		return handle_physics.call(_delta)
+		return handle_physics.call(delta)
 	
 	return null
 
 func process_frame(delta: float) -> State:
 	if use_behavior_tree:
-		var turn_dir : int = edge_detector_component.update(delta)
-		if turn_dir != 0:
-			direction = turn_dir
+		edge_detector_component.apply(delta)
+		var move_dir : int = edge_detector_component.update(delta)
+		if move_dir != 0:
+			direction = move_dir
+			var bb : Dictionary = parent.get_blackboard()
+			if bb:
+				bb["move_direction"] = direction
 	
 	if use_parent_logic:
 		return handle_frame.call(delta)
