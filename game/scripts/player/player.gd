@@ -118,9 +118,7 @@ func _jump_state() -> void:
 		return null
 
 func _fall_state() -> void:
-	fall_state.handle_physics = func(delta: float) -> State:
-		gravity_component.apply(delta)
-
+	fall_state.handle_physics = func(_delta: float) -> State:
 		var input_direction: float = InputManagerClass.get_movement_axis()
 		var target_speed: float = input_direction * move_state.move_speed
 		velocity.x = lerp(velocity.x, target_speed, 0.1)

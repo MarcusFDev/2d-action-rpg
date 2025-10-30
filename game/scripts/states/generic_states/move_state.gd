@@ -54,7 +54,7 @@ func process_physics(delta: float) -> State:
 	if use_behavior_tree:
 		idle_timer_component.update(delta)
 		var bb: Dictionary = parent.get_blackboard()
-		if bb and bb.has("move_direction"):
+		if bb:
 			direction = bb["move_direction"]
 
 	parent.velocity.x = direction * move_speed
@@ -67,13 +67,17 @@ func process_physics(delta: float) -> State:
 
 func process_frame(delta: float) -> State:
 	if use_behavior_tree:
-		edge_detector_component.apply(delta)
+		#edge_detector_component.apply(delta)
 		var move_dir : int = edge_detector_component.update(delta)
+		var bb : Dictionary = parent.get_blackboard()
 		if move_dir != 0:
 			direction = move_dir
-			var bb : Dictionary = parent.get_blackboard()
 			if bb:
 				bb["move_direction"] = direction
+				bb["hit_wall"] = true
+		else:
+			if bb:
+				bb["hit_wall"] = false
 	
 	if use_parent_logic:
 		return handle_frame.call(delta)

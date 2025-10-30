@@ -116,6 +116,8 @@ func _physics_process(delta: float) -> void:
 	state_machine.process_physics(delta)
 	move_and_slide()
 	ground_check_component.apply(delta)
+	var grounded: bool = ground_check_component.is_grounded
+	blackboard["is_grounded"] = grounded
 	direction_flip_component.apply(delta)
 
 func trigger_attack() -> void:

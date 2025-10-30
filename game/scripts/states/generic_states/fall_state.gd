@@ -42,9 +42,13 @@ func init_fall() -> void:
 func process_physics(_delta: float) -> State:
 	gravity_component.apply(_delta)
 	if use_behavior_tree:
+		var bb: Dictionary = parent.get_blackboard()
 		if parent.is_on_floor():
-			var bb: Dictionary = parent.get_blackboard()
 			bb["can_patrol"] = true
+			bb["is_grounded"] = true
+		else:
+			bb["can_patrol"] = false
+			bb["is_grounded"] = false
 
 	if use_parent_logic:
 		return handle_physics.call(_delta)

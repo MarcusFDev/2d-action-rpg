@@ -35,7 +35,10 @@ func init_idle() -> void:
 	enter_callback.call()
 	
 	if use_behavior_tree:
+		var bb: Dictionary = parent.get_blackboard()
 		idle_timer_component.start()
+		bb["can_idle"] = true
+		bb["can_patrol"] = false
 	
 	if enable_debug:
 		print(
@@ -55,11 +58,13 @@ func process_physics(_delta: float) -> State:
 
 func process_frame(delta: float) -> State:
 	if use_behavior_tree:
+		var bb: Dictionary = parent.get_blackboard()
 		idle_timer_component.update(delta)
 		
 		if not idle_timer_component.is_active:
-			var bb: Dictionary = parent.get_blackboard()
 			bb["hit_wall"] = false
+			bb["can_idle"] = true
+			bb["can_patrol"] = true
 
 	if use_parent_logic:
 		return handle_frame.call(delta)
