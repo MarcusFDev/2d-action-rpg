@@ -49,6 +49,7 @@ func _setup_blackboard() -> void:
 	
 	blackboard["can_patrol"] = true
 	blackboard["can_idle"] = true
+	blackboard["can_jump"] = true
 	
 	blackboard["move_direction"] = 1
 	blackboard["intent"] = "Idle"
@@ -77,8 +78,17 @@ func _setup_behavior_tree() -> void:
 		BTSequence.new([
 			BTCondition.new("is_grounded", true),
 			BTCondition.new("hit_wall", true),
-			BTCondition.new("can_idle", true),
-			BTAction.new("Idle")
+			BTSelector.new([
+				BTSequence.new([
+					BTCondition.new("can_jump", true),
+					BTCondition.new("random_chance", 0.01),
+					BTAction.new("Jump"),
+				]),
+				BTSequence.new([
+					BTCondition.new("can_idle", true),
+					BTAction.new("Idle")
+				])
+			])
 		])
 	])
 	bt = BehaviorTree.new(bt_root, blackboard, self)
