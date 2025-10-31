@@ -1,4 +1,4 @@
-[gd_scene load_steps=73 format=3 uid="uid://beftgbphk8tt3"]
+[gd_scene load_steps=74 format=3 uid="uid://beftgbphk8tt3"]
 
 [ext_resource type="Script" uid="uid://dc7is6nsd35mi" path="res://scripts/player/player.gd" id="1_g2els"]
 [ext_resource type="Texture2D" uid="uid://nuicatwvk6p6" path="res://assets/sprites/player/knight-attack1.png" id="2_myrg7"]
@@ -16,6 +16,7 @@
 [ext_resource type="Script" uid="uid://d2ncc58simucl" path="res://scripts/components/direction_flip_component.gd" id="12_ioxgp"]
 [ext_resource type="Script" uid="uid://ccjqnofia5vo0" path="res://scripts/states/generic_states/jump_state.gd" id="13_3j4b4"]
 [ext_resource type="Script" uid="uid://dl4e74spycbcb" path="res://scripts/states/generic_states/move_state.gd" id="13_8ydkj"]
+[ext_resource type="Script" uid="uid://dr7fn1f0pllf6" path="res://scripts/components/jump_component.gd" id="13_yj68g"]
 [ext_resource type="Script" uid="uid://clv1jjvxgs12w" path="res://scripts/states/generic_states/fall_state.gd" id="14_yj68g"]
 [ext_resource type="Script" uid="uid://cvmt4g1070nqn" path="res://scripts/states/generic_states/hurt_state.gd" id="15_007i1"]
 [ext_resource type="Script" uid="uid://c05o5nbmpwovi" path="res://scripts/states/generic_states/heal_state.gd" id="15_cnsyf"]
@@ -437,8 +438,6 @@ one_shot = true
 [node name="GroundCheckComponent" type="Node" parent="Components"]
 script = ExtResource("10_3j4b4")
 actor_path = NodePath("../..")
-key_name = ""
-grounded_buffer_time = 0.0
 
 [node name="GravityComponent" type="Node" parent="Components"]
 script = ExtResource("11_yj68g")
@@ -450,14 +449,20 @@ script = ExtResource("12_ioxgp")
 actor_path = NodePath("../..")
 animations_path = NodePath("../../Animations")
 
+[node name="JumpComponent" type="Node" parent="Components"]
+script = ExtResource("13_yj68g")
+actor_path = NodePath("../..")
+jump_time = 0.4
+jump_height = 70.0
+
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("starting_state")]
 script = ExtResource("3_qhqgy")
 starting_state = NodePath("IdleState")
 
 [node name="IdleState" type="Node" parent="StateMachine"]
 script = ExtResource("11_lgqa7")
-use_internal_logic = false
 idle_animation = "idle"
+use_parent_logic = true
 
 [node name="MoveState" type="Node" parent="StateMachine"]
 script = ExtResource("13_8ydkj")
@@ -465,20 +470,16 @@ move_animation = "move"
 move_speed = 70.0
 use_parent_logic = true
 
-[node name="JumpState" type="Node" parent="StateMachine" node_paths=PackedStringArray("next_state", "fall_state")]
+[node name="JumpState" type="Node" parent="StateMachine"]
 script = ExtResource("13_3j4b4")
-use_internal_logic = false
 jump_animation = "jump"
-jump_time = 0.4
-jump_height = 80.0
-next_state = NodePath("../IdleState")
-fall_state = NodePath("../FallState")
+use_parent_logic = true
+enable_debug = true
 
 [node name="FallState" type="Node" parent="StateMachine"]
 script = ExtResource("14_yj68g")
 fall_animation = "fall"
 use_parent_logic = true
-use_direction_flip = true
 
 [node name="HurtState" type="Node" parent="StateMachine" node_paths=PackedStringArray("next_state")]
 script = ExtResource("15_007i1")

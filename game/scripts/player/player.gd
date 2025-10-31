@@ -55,7 +55,8 @@ func _setup_states() -> void:
 
 func _idle_state() -> void:
 	idle_state.handle_input = func(_event: InputEvent) -> State:
-		if InputManagerClass.is_jump_pressed() and is_on_floor():
+		var is_grounded: bool = ground_check_component.is_grounded
+		if InputManagerClass.is_jump_pressed() and is_grounded:
 			if idle_state.enable_debug:
 				print("Player Jump Key detected. Switching to: ", jump_state)
 			return jump_state
@@ -65,12 +66,12 @@ func _idle_state() -> void:
 			return move_state
 		return null
 	
-	idle_state.handle_physics = func(delta: float) -> State:
-		if not is_on_floor():
+	idle_state.handle_physics = func(_delta: float) -> State:
+		var is_grounded: bool = ground_check_component.is_grounded
+		if not is_grounded:
 			if idle_state.enable_debug:
-				print("Cannot detect floor. Switching to: ", fall_state)
+				print("Player cannot detect floor. Switching to: ", fall_state)
 			return fall_state
-		velocity.y += idle_state.gravity * delta
 		move_and_slide()
 		return null
 
@@ -102,14 +103,11 @@ func _move_state() -> void:
 		return null
 
 func _jump_state() -> void:
-	jump_state.handle_physics = func(delta: float) -> State:
+	jump_state.handle_physics = func(_delta: float) -> State:
 		var input_direction: float = InputManagerClass.get_movement_axis()
 		if input_direction != 0:
 			var movement: float = input_direction * move_state.move_speed 
 			velocity.x = lerp(velocity.x, movement, 0.1)
-			animations.flip_h = velocity.x < 0
-		velocity.y += jump_state.gravity * delta
-		move_and_slide()
 
 		if velocity.y > 0:
 			if jump_state.enable_debug:
