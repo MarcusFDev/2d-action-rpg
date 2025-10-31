@@ -21,7 +21,6 @@ extends State
 ## [b]Note:[/b] Useful for development and troubleshooting.
 @export var enable_debug: bool = false
 
-@onready var gravity_component: Node = $"../../Components/GravityComponent"
 @onready var edge_detector_component: Node = $"../../Components/EdgeDetectorComponent"
 @onready var idle_timer_component: Node = $"../../Components/IdleTimerComponent"
 
