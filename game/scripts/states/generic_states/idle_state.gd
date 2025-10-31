@@ -65,6 +65,7 @@ func process_frame(delta: float) -> State:
 			bb["hit_wall"] = false
 			bb["can_idle"] = true
 			bb["can_patrol"] = true
+			bb["force_idle"] = false
 
 	if use_parent_logic:
 		return handle_frame.call(delta)

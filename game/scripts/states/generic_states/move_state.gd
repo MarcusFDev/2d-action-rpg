@@ -7,6 +7,10 @@ extends State
 ## Determines entity movement speed during the Move State. [br]
 ## [b]Note:[/b] Can exceed 200 with manual input.
 @export_range(0, 200, 1, "suffix:px/s", "or_greater") var move_speed: float = 30.0
+## Determines if entity can randomly idle during movement. [br]
+## [b]Note:[/b] Only impacts BehaviorTree driven entities. [br]
+## [b]Tip:[/b] Detailed settings found in  [code]IdleTimerComponent[/code].
+@export var use_random_idle: bool = false
 ## Determines whether the entity's animation flips horizontally while moving using  [code]flip_h[/code].[br]
 ## [b]Note:[/b] Useful to set  [code]false[/code]  for symmetric & direction-agnostic entities.
 @export var use_behavior_tree: bool = false
@@ -43,8 +47,7 @@ func enter() -> void:
 func init_move() -> void:
 	parent.animations.play(move_animation)
 	enter_callback.call()
-	if use_behavior_tree:
-		idle_timer_component.start()
+
 	if enable_debug:
 		print(
 			"\n===== Move State: ===== \n", parent,
@@ -52,11 +55,9 @@ func init_move() -> void:
 
 func process_physics(delta: float) -> State:
 	if use_behavior_tree:
-		idle_timer_component.update(delta)
 		var bb: Dictionary = parent.get_blackboard()
-		if bb:
-			direction = bb["move_direction"]
-
+		direction = bb["move_direction"]
+	
 	parent.velocity.x = direction * move_speed
 	parent.move_and_slide()
 	
@@ -67,18 +68,28 @@ func process_physics(delta: float) -> State:
 
 func process_frame(delta: float) -> State:
 	if use_behavior_tree:
-		#edge_detector_component.apply(delta)
 		var move_dir : int = edge_detector_component.update(delta)
 		var bb : Dictionary = parent.get_blackboard()
 		if move_dir != 0:
 			direction = move_dir
-			if bb:
-				bb["move_direction"] = direction
-				bb["hit_wall"] = true
+			bb["move_direction"] = direction
+			bb["hit_wall"] = true
 		else:
-			if bb:
-				bb["hit_wall"] = false
+			bb["hit_wall"] = false
 	
+	if use_random_idle:
+		var bb: Dictionary = parent.get_blackboard()
+		if idle_timer_component.randomize_idle(delta):
+			idle_timer_component.start()
+			bb["force_idle"] = true
+			bb["can_patrol"] = false
+
+		if idle_timer_component.is_active:
+			idle_timer_component.update(delta)
+		else:
+			bb["force_idle"] = false
+			bb["can_patrol"] = true
+
 	if use_parent_logic:
 		return handle_frame.call(delta)
 	
