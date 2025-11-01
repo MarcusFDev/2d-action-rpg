@@ -11,6 +11,7 @@ extends CharacterBody2D
 @onready var gravity_component: Node = $Components/GravityComponent
 @onready var ground_check_component: Node = $Components/GroundCheckComponent
 @onready var flip_component: Node = $Components/DirectionFlipComponent
+@onready var movement_component: Node = $"Components/MovementComponent"
 
 # Generic States
 @onready var idle_state: IdleState = $StateMachine/IdleState
@@ -32,16 +33,8 @@ var current_health : int = starting_health
 # ===== Intialization =====
 # ==============================
 func _ready() -> void:
-	# Intialize the state machine, passing a reference of the player to the states,
-	# that way they can move and react accordingly
-	add_to_group("player")
 	_setup_states()
 	state_machine.init(self, animations)
-	call_deferred("_post_ready_check")
-
-func _post_ready_check() -> void:
-	if not is_on_floor():
-		state_machine.change_state(fall_state)
 
 # ==============================
 # ===== Player State Setup =====
@@ -85,10 +78,13 @@ func _move_state() -> void:
 		
 		var input_direction: float = InputManagerClass.get_movement_axis()
 		if input_direction != 0:
-			move_state.direction = sign(input_direction)
-
-		var movement: float = input_direction * move_state.move_speed
-		if movement == 0:
+			movement_component.set_direction(Vector2((input_direction), 0))
+		else:
+			movement_component.set_direction(Vector2.ZERO)
+		
+		movement_component.apply(_delta)
+		
+		if input_direction == 0:
 			if move_state.enable_debug:
 				print("Player Movement ended. Switching to:", idle_state)
 			return idle_state
@@ -97,16 +93,14 @@ func _move_state() -> void:
 			if move_state.enable_debug:
 				print("Player Jump Key detected. Switching to: ", jump_state)
 			return jump_state
-	
-		velocity.x = movement
-		move_and_slide()
+
 		return null
 
 func _jump_state() -> void:
 	jump_state.handle_physics = func(_delta: float) -> State:
 		var input_direction: float = InputManagerClass.get_movement_axis()
 		if input_direction != 0:
-			var movement: float = input_direction * move_state.move_speed 
+			var movement: float = input_direction * movement_component.move_speed 
 			velocity.x = lerp(velocity.x, movement, 0.1)
 
 		if velocity.y > 0:
@@ -118,7 +112,7 @@ func _jump_state() -> void:
 func _fall_state() -> void:
 	fall_state.handle_physics = func(_delta: float) -> State:
 		var input_direction: float = InputManagerClass.get_movement_axis()
-		var target_speed: float = input_direction * move_state.move_speed
+		var target_speed: float = input_direction * movement_component.move_speed
 		velocity.x = lerp(velocity.x, target_speed, 0.1)
 		
 		move_and_slide()
@@ -141,13 +135,11 @@ func _unhandled_input(event: InputEvent) -> void:
 	trigger_attack()
 
 func _physics_process(delta: float) -> void:
-	# Trigger 'state_machine' to update movement & physics each frame.
 	ground_check_component.apply(delta)
 	flip_component.apply(delta)
 	state_machine.process_physics(delta)
 
 func _process(delta: float) -> void:
-	# Trigger 'state_machine' to update non-physics each frame.
 	state_machine.process_frame(delta)
 
 # ==============================
