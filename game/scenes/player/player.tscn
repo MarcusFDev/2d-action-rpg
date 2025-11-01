@@ -1,4 +1,4 @@
-[gd_scene load_steps=74 format=3 uid="uid://beftgbphk8tt3"]
+[gd_scene load_steps=75 format=3 uid="uid://beftgbphk8tt3"]
 
 [ext_resource type="Script" uid="uid://dc7is6nsd35mi" path="res://scripts/player/player.gd" id="1_g2els"]
 [ext_resource type="Texture2D" uid="uid://nuicatwvk6p6" path="res://assets/sprites/player/knight-attack1.png" id="2_myrg7"]
@@ -17,6 +17,7 @@
 [ext_resource type="Script" uid="uid://ccjqnofia5vo0" path="res://scripts/states/generic_states/jump_state.gd" id="13_3j4b4"]
 [ext_resource type="Script" uid="uid://dl4e74spycbcb" path="res://scripts/states/generic_states/move_state.gd" id="13_8ydkj"]
 [ext_resource type="Script" uid="uid://dr7fn1f0pllf6" path="res://scripts/components/jump_component.gd" id="13_yj68g"]
+[ext_resource type="Script" uid="uid://biecfhjepus73" path="res://scripts/components/movement_component.gd" id="14_ioxgp"]
 [ext_resource type="Script" uid="uid://clv1jjvxgs12w" path="res://scripts/states/generic_states/fall_state.gd" id="14_yj68g"]
 [ext_resource type="Script" uid="uid://cvmt4g1070nqn" path="res://scripts/states/generic_states/hurt_state.gd" id="15_007i1"]
 [ext_resource type="Script" uid="uid://c05o5nbmpwovi" path="res://scripts/states/generic_states/heal_state.gd" id="15_cnsyf"]
@@ -455,6 +456,12 @@ actor_path = NodePath("../..")
 jump_time = 0.4
 jump_height = 70.0
 
+[node name="MovementComponent" type="Node" parent="Components"]
+script = ExtResource("14_ioxgp")
+actor_path = NodePath("../..")
+move_speed = 110.0
+metadata/_custom_type_script = "uid://biecfhjepus73"
+
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("starting_state")]
 script = ExtResource("3_qhqgy")
 starting_state = NodePath("IdleState")
@@ -467,7 +474,6 @@ use_parent_logic = true
 [node name="MoveState" type="Node" parent="StateMachine"]
 script = ExtResource("13_8ydkj")
 move_animation = "move"
-move_speed = 70.0
 use_parent_logic = true
 
 [node name="JumpState" type="Node" parent="StateMachine"]
