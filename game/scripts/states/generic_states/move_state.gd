@@ -4,9 +4,6 @@ extends State
 ## Determines the animation that plays during the Move State.[br]
 ## [b]Note:[/b] Must match an animation name in  [code]AnimatedSprite2D[/code]  or  [code]AnimationPlayer[/code].
 @export var move_animation: String
-## Determines entity movement speed during the Move State. [br]
-## [b]Note:[/b] Can exceed 200 with manual input.
-@export_range(0, 200, 1, "suffix:px/s", "or_greater") var move_speed: float = 30.0
 ## Determines if entity can randomly idle during movement. [br]
 ## [b]Note:[/b] Only impacts BehaviorTree driven entities. [br]
 ## [b]Tip:[/b] Detailed settings found in  [code]IdleTimerComponent[/code].
@@ -23,9 +20,10 @@ extends State
 
 @onready var edge_detector_component: Node = $"../../Components/EdgeDetectorComponent"
 @onready var idle_timer_component: Node = $"../../Components/IdleTimerComponent"
+@onready var movement_component: Node = $"../../Components/MovementComponent"
 
 # Script Variables
-var direction: int = 1
+var direction: int = 0
 
 # Callback Functions
 func _on_enter() -> void: pass
@@ -53,16 +51,16 @@ func init_move() -> void:
 			"\nAnimation playing:", move_animation)
 
 func process_physics(delta: float) -> State:
+	if use_parent_logic:
+		return handle_physics.call(delta)
+	
 	if use_behavior_tree:
 		var bb: Dictionary = parent.get_blackboard()
 		direction = bb["move_direction"]
 	
-	parent.velocity.x = direction * move_speed
-	parent.move_and_slide()
-	
-	if use_parent_logic:
-		return handle_physics.call(delta)
-	
+	movement_component.set_direction(Vector2(direction, 0))
+	movement_component.apply(delta)
+
 	return null
 
 func process_frame(delta: float) -> State:
