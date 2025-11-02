@@ -26,6 +26,8 @@ var handle_input: Callable = _on_input
 var handle_physics: Callable = _on_physics
 var handle_frame: Callable = _on_frame
 
+var direction: int = 0
+
 func enter() -> void:
 	super.enter()
 	init_jump()
@@ -35,10 +37,16 @@ func init_jump() -> void:
 	jump_component.start_jump()
 
 func process_physics(delta: float) -> State:
-	jump_component.apply(delta)
+	if use_behavior_tree:
+		var bb: Dictionary = parent.get_blackboard()
+		direction = bb["move_direction"]
+		var jump_target: Variant = parent.global_position + Vector2(64 * direction, -32)
+		jump_component.jump_to(jump_target)
+	
 	parent.move_and_slide()
 	
 	if use_parent_logic:
+		jump_component.apply(delta)
 		return handle_physics.call(delta)
 	
 	return null
