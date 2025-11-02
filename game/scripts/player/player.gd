@@ -12,6 +12,7 @@ extends CharacterBody2D
 @onready var ground_check_component: Node = $Components/GroundCheckComponent
 @onready var flip_component: Node = $Components/DirectionFlipComponent
 @onready var movement_component: Node = $"Components/MovementComponent"
+@onready var jump_component: Node = $Components/JumpComponent
 
 # Generic States
 @onready var idle_state: IdleState = $StateMachine/IdleState

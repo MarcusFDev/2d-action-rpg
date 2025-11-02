@@ -453,13 +453,14 @@ animations_path = NodePath("../../Animations")
 [node name="JumpComponent" type="Node" parent="Components"]
 script = ExtResource("13_yj68g")
 actor_path = NodePath("../..")
+enable_debug = true
 jump_time = 0.4
 jump_height = 70.0
 
 [node name="MovementComponent" type="Node" parent="Components"]
 script = ExtResource("14_ioxgp")
 actor_path = NodePath("../..")
-move_speed = 110.0
+move_speed = 120.0
 metadata/_custom_type_script = "uid://biecfhjepus73"
 
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("starting_state")]
@@ -480,7 +481,6 @@ use_parent_logic = true
 script = ExtResource("13_3j4b4")
 jump_animation = "jump"
 use_parent_logic = true
-enable_debug = true
 
 [node name="FallState" type="Node" parent="StateMachine"]
 script = ExtResource("14_yj68g")
