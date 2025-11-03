@@ -139,6 +139,7 @@ func _physics_process(delta: float) -> void:
 	ground_check_component.apply(delta)
 	flip_component.apply(delta)
 	state_machine.process_physics(delta)
+	jump_component.update_timer(delta)
 
 func _process(delta: float) -> void:
 	state_machine.process_frame(delta)

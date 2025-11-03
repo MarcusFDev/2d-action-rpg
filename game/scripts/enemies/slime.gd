@@ -18,6 +18,7 @@ extends CharacterBody2D
 @onready var ground_check_component: Node = $Components/GroundCheckComponent
 @onready var direction_flip_component: Node = $Components/DirectionFlipComponent
 @onready var edge_detector_component: Node = $Components/EdgeDetectorComponent
+@onready var jump_component: Node = $Components/JumpComponent
 
 var blackboard: Dictionary = {
 	"fsm": null,
@@ -44,7 +45,7 @@ func _setup_blackboard() -> void:
 	blackboard["fsm"] = state_machine
 	
 	blackboard["is_grounded"] = false
-	blackboard["hit_wall"] = false
+	blackboard["has_collided"] = false
 	blackboard["force_idle"] = false
 	
 	blackboard["can_patrol"] = true
@@ -70,14 +71,14 @@ func _setup_behavior_tree() -> void:
 		# Priority 3: Patrol if grounded and allowed
 		BTSequence.new([
 			BTCondition.new("is_grounded", true),
-			BTCondition.new("hit_wall", false),
+			BTCondition.new("has_collided", false),
 			BTCondition.new("can_patrol", true),
 			BTAction.new("Patrol")
 		]),
-		# Priority 4: Idle if grounded and hit wall
+		# Priority 4: Idle if grounded
 		BTSequence.new([
 			BTCondition.new("is_grounded", true),
-			BTCondition.new("hit_wall", true),
+			BTCondition.new("has_collided", true),
 			BTSelector.new([
 				BTSequence.new([
 					BTCondition.new("can_jump", true),
@@ -136,6 +137,8 @@ func _physics_process(delta: float) -> void:
 	var grounded: bool = ground_check_component.is_grounded
 	blackboard["is_grounded"] = grounded
 	direction_flip_component.apply(delta)
+	jump_component.update_timer(delta)
+	blackboard["can_jump"] = jump_component.is_active
 
 func trigger_attack() -> void:
 	if attack_state:
