@@ -62,7 +62,7 @@ func process_frame(delta: float) -> State:
 		idle_timer_component.update(delta)
 		
 		if not idle_timer_component.is_active:
-			bb["hit_wall"] = false
+			bb["has_collided"] = false
 			bb["can_idle"] = true
 			bb["can_patrol"] = true
 			bb["force_idle"] = false

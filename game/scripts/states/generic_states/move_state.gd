@@ -70,9 +70,9 @@ func process_frame(delta: float) -> State:
 		if move_dir != 0:
 			direction = move_dir
 			bb["move_direction"] = direction
-			bb["hit_wall"] = true
+			bb["has_collided"] = true
 		else:
-			bb["hit_wall"] = false
+			bb["has_collided"] = false
 	
 	if use_random_idle:
 		var bb: Dictionary = parent.get_blackboard()
