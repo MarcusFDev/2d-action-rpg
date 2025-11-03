@@ -477,12 +477,14 @@ idle_chance = 20.0
 [node name="JumpComponent" type="Node" parent="Components"]
 script = ExtResource("14_84gbg")
 actor_path = NodePath("../..")
+ground_check_path = NodePath("../GroundCheckComponent")
 jump_time = 0.4
 jump_height = 50.0
 jump_height_offset = true
 export_enable_jump_cooldown = true
 export_jump_cooldown = 0.5
 export_enable_multi_jump = true
+export_jump_count = 5
 metadata/_custom_type_script = "uid://dr7fn1f0pllf6"
 
 [node name="MovementComponent" type="Node" parent="Components"]
