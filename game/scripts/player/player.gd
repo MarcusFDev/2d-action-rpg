@@ -29,6 +29,7 @@ extends CharacterBody2D
 
 # Script Variables
 var current_health : int = starting_health
+var was_grounded: bool = false
 
 # ==============================
 # ===== Intialization =====
@@ -49,8 +50,8 @@ func _setup_states() -> void:
 
 func _idle_state() -> void:
 	idle_state.handle_input = func(_event: InputEvent) -> State:
-		var is_grounded: bool = ground_check_component.is_grounded
-		if InputManagerClass.is_jump_pressed() and is_grounded:
+		#var is_grounded: bool = ground_check_component.is_grounded
+		if InputManagerClass.is_jump_pressed() and jump_component.can_jump():
 			if idle_state.enable_debug:
 				print("Player Jump Key detected. Switching to: ", jump_state)
 			return jump_state
@@ -90,7 +91,7 @@ func _move_state() -> void:
 				print("Player Movement ended. Switching to:", idle_state)
 			return idle_state
 		
-		if InputManagerClass.is_jump_pressed() and is_grounded:
+		if InputManagerClass.is_jump_pressed() and jump_component.can_jump():
 			if move_state.enable_debug:
 				print("Player Jump Key detected. Switching to: ", jump_state)
 			return jump_state
@@ -118,6 +119,11 @@ func _fall_state() -> void:
 		
 		move_and_slide()
 		
+		if InputManagerClass.is_jump_pressed() and jump_component.can_jump():
+			if move_state.enable_debug:
+				print("Player Jump Key detected. Switching to: ", jump_state)
+			return jump_state
+		
 		var is_grounded: bool = ground_check_component.is_grounded
 		if is_grounded:
 			var movement: float = velocity.x
@@ -137,9 +143,14 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _physics_process(delta: float) -> void:
 	ground_check_component.apply(delta)
+	if ground_check_component.just_landed():
+		jump_component.reset_jump_counter()
+
 	flip_component.apply(delta)
 	state_machine.process_physics(delta)
 	jump_component.update_timer(delta)
+	
+	ground_check_component.post_update()
 
 func _process(delta: float) -> void:
 	state_machine.process_frame(delta)
