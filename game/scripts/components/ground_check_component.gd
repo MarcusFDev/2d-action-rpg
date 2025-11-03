@@ -15,6 +15,7 @@ extends Node
 var actor: Node
 var grounded_timer: float = 0.0
 var is_grounded: bool = false
+var was_grounded: bool = false
 
 func _ready() -> void:
 	actor = get_node_or_null(actor_path)
@@ -34,3 +35,9 @@ func apply(delta: float) -> void:
 		grounded_timer = 0.0
 		if enable_debug:
 			print(actor.name, " lost ground contact.")
+
+func just_landed() -> bool:
+	return is_grounded and not was_grounded
+
+func post_update() -> void:
+	was_grounded = is_grounded
