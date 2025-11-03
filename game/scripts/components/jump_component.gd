@@ -18,6 +18,11 @@ extends Node
 @export_range(0.0, 100, 1, "or_greater", "suffix:px") var jump_height: float = 0
 @export var jump_height_offset: bool = false
 
+@export_group("Jump Cooldown", "jump_")
+@export_custom(PROPERTY_HINT_GROUP_ENABLE, "") var jump_enable_jump_cooldown: bool = false
+@export_range(0.0, 5.0, 0.1, "suffix:s") var jump_cooldown: float = 0
+
+# Script Variables
 var actor: Node
 var gravity: float
 var initial_velocity: float
@@ -25,9 +30,26 @@ var is_jumping: bool = false
 var target_position: Vector2
 var has_target: bool = false
 var horizontal_velocity: float = 0.0
+var is_active: bool = true
+var cooldown_timer: float = 0.0
 
 func _ready() -> void:
 	actor = get_node_or_null(actor_path)
+
+func update_timer(delta: float) -> void:
+	if not is_active:
+		cooldown_timer -= delta
+		if cooldown_timer <= 0.0:
+			is_active = true
+			cooldown_timer = 0.0
+			if enable_debug:
+				print(actor.name, " jump cooldown complete.")
+
+func start_cooldown() -> void:
+	is_active = false
+	cooldown_timer = jump_cooldown
+	if enable_debug:
+		print(actor.name, " jump cooldown started (", jump_cooldown, "s)")
 
 func calculate_gravity() -> void:
 	if jump_height_offset:
@@ -50,14 +72,24 @@ func calculate_gravity() -> void:
 			print(actor.name, "| Jump Height Offset switched off. Jump Height: ", jump_height)
 
 func start_jump() -> void:
+	if not is_active:
+		if enable_debug:
+			print(actor.name, " tried to jump but cooldown active.")
+		return
 	is_jumping = true
 	has_target = false
 	calculate_gravity()
 	actor.velocity.y = initial_velocity
+	if jump_enable_jump_cooldown:
+		start_cooldown()
 	if enable_debug:
 		print(actor.name, " started jump.")
 
 func jump_to(target: Vector2) -> void:
+	if not is_active:
+		if enable_debug:
+			print(actor.name, " tried to jump_to but cooldown active.")
+		return
 	target_position = target
 	has_target = true
 	is_jumping = true
@@ -68,6 +100,8 @@ func jump_to(target: Vector2) -> void:
 	var total_time : float = jump_time * 2.0
 	horizontal_velocity = displacement.x / total_time
 	actor.velocity = Vector2(horizontal_velocity, initial_velocity)
+	if jump_enable_jump_cooldown:
+		start_cooldown()
 
 	if enable_debug:
 		print(actor.name, " jumping to ", target_position, " with vx=", horizontal_velocity)
