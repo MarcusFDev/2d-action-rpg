@@ -1,8 +1,11 @@
 class_name JumpComponent
 extends Node
 
-## Assign the parent entity to the component.
+## Assign the parent entity path to the component.
 @export var actor_path: NodePath
+## Assign the  [code]GroundCheckComponent[/code]  path to the component.[br]
+## [b]Note:[/b] This is important as some settings require ground contact information to work correctly.
+@export var ground_check_path: NodePath
 ## Enables debug messages in the output terminal. [br]
 ## [b]Note:[/b] Useful for development and troubleshooting.
 @export var enable_debug: bool = false
@@ -25,9 +28,11 @@ extends Node
 @export_group("Enable Multi-Jump", "export_")
 @export_custom(PROPERTY_HINT_GROUP_ENABLE, "") var export_enable_multi_jump: bool = false
 @export_range(0, 5, 1, "suffix:Extra Jumps") var export_jump_count: int = 0
+@export_range(0.0, 10.0, 0.1, "or_greater", "suffix:s") var export_recharge_time: float = 0
 
 # Script Variables
 var actor: Node
+var ground_check: Node = null
 var gravity: float
 var initial_velocity: float
 var is_jumping: bool = false
@@ -36,23 +41,55 @@ var has_target: bool = false
 var horizontal_velocity: float = 0.0
 var is_active: bool = true
 var cooldown_timer: float = 0.0
-var jumps_remaining: int = 0
+var recharge_timer: float = 0.0
+var is_recharging: bool = false
+var base_jumps: int = 1
+var extra_jumps: int = export_jump_count
 
 func _ready() -> void:
 	actor = get_node_or_null(actor_path)
+	ground_check = get_node_or_null(ground_check_path)
 	reset_jump_counter()
+
+func is_grounded() -> bool:
+	if ground_check:
+		return ground_check.is_grounded
+	return false
 
 # -------------------------
 #  TIMER + COOLDOWN
 # -------------------------
 func update_timer(delta: float) -> void:
 	if not is_active:
-		cooldown_timer -= delta
-		if cooldown_timer <= 0.0:
-			is_active = true
-			cooldown_timer = 0.0
-			if enable_debug:
-				print(actor.name, " jump cooldown complete.")
+		if is_grounded():
+			cooldown_timer -= delta
+			if cooldown_timer <= 0.0:
+				is_active = true
+				cooldown_timer = 0.0
+				if enable_debug:
+					print(actor.name, " jump cooldown complete.")
+	
+	if is_recharging:
+		recharge_timer -= delta
+		if recharge_timer <= 0.0:
+			is_recharging = false
+			export_enable_multi_jump = true
+			if is_grounded():
+				reset_jump_counter()
+				if enable_debug:
+					print(actor.name, " multi-jump recharged and available again.")
+			else:
+				if enable_debug:
+					print(actor.name, " multi-jump recharge finished but still mid-air. Will reset on landing.")
+			
+
+func start_recharge() -> void:
+	if export_recharge_time > 0:
+		is_recharging = true
+		recharge_timer = export_recharge_time
+		export_enable_multi_jump = false
+		if enable_debug:
+				print(actor.name, " started multi-jump recharge (", export_recharge_time, "s)")
 
 func start_cooldown() -> void:
 	is_active = false
@@ -95,11 +132,15 @@ func start_jump() -> void:
 	has_target = false
 	calculate_gravity()
 	actor.velocity.y = initial_velocity
+	
+	var was_extra_jump: int = extra_jumps > 0
 	consume_jump()
-	if export_enable_jump_cooldown:
+
+	if export_enable_jump_cooldown and not was_extra_jump:
 		start_cooldown()
+
 	if enable_debug:
-		print(actor.name, " started jump. Jumps remaining: ", jumps_remaining)
+		print(actor.name, " started jump. Base Jumps remaining: ", base_jumps, " Extra Jumps remaining: ", extra_jumps)
 
 func jump_to(target: Vector2) -> void:
 	if not can_jump():
@@ -116,7 +157,11 @@ func jump_to(target: Vector2) -> void:
 	var total_time : float = jump_time * 2.0
 	horizontal_velocity = displacement.x / total_time
 	actor.velocity = Vector2(horizontal_velocity, initial_velocity)
-	consume_jump()
+	
+	var was_extra_jump: int = extra_jumps > 0
+	
+	if export_enable_jump_cooldown and not was_extra_jump:
+		consume_jump()
 	if export_enable_jump_cooldown:
 		start_cooldown()
 
@@ -134,16 +179,26 @@ func apply(delta: float) -> void:
 func can_jump() -> bool:
 	if not is_active:
 		return false
-	return jumps_remaining > 0
+	return base_jumps > 0 or extra_jumps > 0
 
 func consume_jump() -> void:
-	if jumps_remaining > 0:
-		jumps_remaining -= 1
+	if extra_jumps > 0:
+		extra_jumps -= 1
+		if extra_jumps == 0 and export_enable_multi_jump and export_recharge_time > 0:
+			start_recharge()
+	elif base_jumps > 0:
+		base_jumps -= 1
 
 func reset_jump_counter() -> void:
+	if is_recharging and export_enable_multi_jump:
+		return
+	base_jumps = 1
 	if export_enable_multi_jump:
-		jumps_remaining = 1 + export_jump_count
+		if is_grounded():
+			extra_jumps = export_jump_count
+		else:
+			extra_jumps = 0
 	else:
-		jumps_remaining = 1
+		extra_jumps = 0
 	if enable_debug:
-		print(actor.name, " jump counter reset -> ", jumps_remaining, " jumps available.")
+		print(actor.name, " jump counter reset -> Base Jumps: ", base_jumps, " Extra Jumps: ", extra_jumps)
