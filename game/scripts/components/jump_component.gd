@@ -18,9 +18,13 @@ extends Node
 @export_range(0.0, 100, 1, "or_greater", "suffix:px") var jump_height: float = 0
 @export var jump_height_offset: bool = false
 
-@export_group("Jump Cooldown", "jump_")
-@export_custom(PROPERTY_HINT_GROUP_ENABLE, "") var jump_enable_jump_cooldown: bool = false
-@export_range(0.0, 5.0, 0.1, "suffix:s") var jump_cooldown: float = 0
+@export_group("Enable Jump Cooldown", "export_")
+@export_custom(PROPERTY_HINT_GROUP_ENABLE, "") var export_enable_jump_cooldown: bool = false
+@export_range(0.0, 5.0, 0.1, "suffix:s") var export_jump_cooldown: float = 0
+
+@export_group("Enable Multi-Jump", "export_")
+@export_custom(PROPERTY_HINT_GROUP_ENABLE, "") var export_enable_multi_jump: bool = false
+@export_range(0, 5, 1, "suffix:Extra Jumps") var export_jump_count: int = 0
 
 # Script Variables
 var actor: Node
@@ -32,10 +36,15 @@ var has_target: bool = false
 var horizontal_velocity: float = 0.0
 var is_active: bool = true
 var cooldown_timer: float = 0.0
+var jumps_remaining: int = 0
 
 func _ready() -> void:
 	actor = get_node_or_null(actor_path)
+	reset_jump_counter()
 
+# -------------------------
+#  TIMER + COOLDOWN
+# -------------------------
 func update_timer(delta: float) -> void:
 	if not is_active:
 		cooldown_timer -= delta
@@ -47,10 +56,13 @@ func update_timer(delta: float) -> void:
 
 func start_cooldown() -> void:
 	is_active = false
-	cooldown_timer = jump_cooldown
+	cooldown_timer = export_jump_cooldown
 	if enable_debug:
-		print(actor.name, " jump cooldown started (", jump_cooldown, "s)")
+		print(actor.name, " jump cooldown started (", export_jump_cooldown, "s)")
 
+# -------------------------
+#  JUMP PHYSICS
+# -------------------------
 func calculate_gravity() -> void:
 	if jump_height_offset:
 		var height_roll: float = randf()
@@ -71,24 +83,28 @@ func calculate_gravity() -> void:
 		if enable_debug:
 			print(actor.name, "| Jump Height Offset switched off. Jump Height: ", jump_height)
 
+# -------------------------
+#  JUMP LOGIC
+# -------------------------
 func start_jump() -> void:
-	if not is_active:
+	if not can_jump():
 		if enable_debug:
-			print(actor.name, " tried to jump but cooldown active.")
+			print(actor.name, " tried to jump but cooldown active or out of jumps.")
 		return
 	is_jumping = true
 	has_target = false
 	calculate_gravity()
 	actor.velocity.y = initial_velocity
-	if jump_enable_jump_cooldown:
+	consume_jump()
+	if export_enable_jump_cooldown:
 		start_cooldown()
 	if enable_debug:
-		print(actor.name, " started jump.")
+		print(actor.name, " started jump. Jumps remaining: ", jumps_remaining)
 
 func jump_to(target: Vector2) -> void:
-	if not is_active:
+	if not can_jump():
 		if enable_debug:
-			print(actor.name, " tried to jump_to but cooldown active.")
+			print(actor.name, " tried to jump_to but cooldown active or out of jumps.")
 		return
 	target_position = target
 	has_target = true
@@ -100,7 +116,8 @@ func jump_to(target: Vector2) -> void:
 	var total_time : float = jump_time * 2.0
 	horizontal_velocity = displacement.x / total_time
 	actor.velocity = Vector2(horizontal_velocity, initial_velocity)
-	if jump_enable_jump_cooldown:
+	consume_jump()
+	if export_enable_jump_cooldown:
 		start_cooldown()
 
 	if enable_debug:
@@ -110,3 +127,23 @@ func apply(delta: float) -> void:
 	if not is_jumping:
 		return
 	actor.velocity.y += gravity * delta
+
+# -------------------------
+#  MULTI-JUMP SYSTEM
+# -------------------------
+func can_jump() -> bool:
+	if not is_active:
+		return false
+	return jumps_remaining > 0
+
+func consume_jump() -> void:
+	if jumps_remaining > 0:
+		jumps_remaining -= 1
+
+func reset_jump_counter() -> void:
+	if export_enable_multi_jump:
+		jumps_remaining = 1 + export_jump_count
+	else:
+		jumps_remaining = 1
+	if enable_debug:
+		print(actor.name, " jump counter reset -> ", jumps_remaining, " jumps available.")
