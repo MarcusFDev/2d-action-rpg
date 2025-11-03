@@ -34,7 +34,13 @@ func enter() -> void:
 
 func init_jump() -> void:
 	parent.animations.play(jump_animation)
-	jump_component.start_jump()
+	if use_parent_logic:
+		jump_component.start_jump()
+	if enable_debug:
+		print(
+		"===========================\n",
+		"jumpstate entered by: ", parent.name, "\n",
+		"===========================")
 
 func process_physics(delta: float) -> State:
 	if use_behavior_tree:
