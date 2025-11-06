@@ -1,33 +1,61 @@
 class_name Player
 extends CharacterBody2D
 
-@onready var hud: Control = $"../../Interfaces/CanvasLayer/Hud/Hud"
-@onready var animations: AnimatedSprite2D = $Animations
-@onready var state_machine: Node = $StateMachine
-@onready var game_over_menu: Control = $"../../Interfaces/CanvasLayer/Menus/GameOverMenu"
-@onready var game_over_timer: Timer = $GameOverDelayTimer
+@export var actor_path: NodePath
+@export var animations_path: NodePath
+## Enables debug messages in the output terminal. [br]
+## [b]Note:[/b] Useful for development and troubleshooting.
+@export var enable_debug: bool = false
 
-# Player Components
-@onready var gravity_component: Node = $Components/GravityComponent
-@onready var ground_check_component: Node = $Components/GroundCheckComponent
-@onready var flip_component: Node = $Components/DirectionFlipComponent
-@onready var movement_component: Node = $"Components/MovementComponent"
-@onready var jump_component: Node = $Components/JumpComponent
+@export_category("Actor Settings")
 
-# Generic States
-@onready var idle_state: IdleState = $StateMachine/IdleState
-@onready var move_state: MoveState = $StateMachine/MoveState
-@onready var jump_state: JumpState = $StateMachine/JumpState
-@onready var fall_state: FallState = $StateMachine/FallState
-@onready var heal_state: HealState = $StateMachine/HealState
-@onready var hurt_state: HurtState = $StateMachine/HurtState
-@onready var attack_state: AttackState =$StateMachine/AttackState
-@onready var death_state: DeathState = $StateMachine/DeathState
-
+@export_group("Temporary Options")
 @export var max_health : int = 9
 @export var starting_health : int = 5
+@export var hud_path: NodePath
+@export var game_over_menu_path: NodePath
+@export var game_over_timer_path: NodePath
 
-# Script Variables
+@export_group("State Paths")
+@export var state_machine_path: NodePath
+@export var idle_state_path: NodePath
+@export var move_state_path: NodePath
+@export var jump_state_path: NodePath
+@export var fall_state_path: NodePath
+@export var attack_state_path: NodePath
+@export var hurt_state_path: NodePath
+@export var heal_state_path: NodePath
+@export var death_state_path: NodePath
+
+@export_group("Component Paths")
+@export var ground_check_component: NodePath
+@export var direction_flip_component: NodePath
+@export var movement_component: NodePath
+@export var jump_component: NodePath
+@export var gravity_component: NodePath
+
+@onready var actor: CharacterBody2D = get_node_or_null(actor_path)
+@onready var animations: AnimatedSprite2D = get_node_or_null(animations_path)
+@onready var hud: Node = get_node_or_null(hud_path)
+@onready var game_over_menu: Node = get_node_or_null(game_over_menu_path)
+@onready var game_over_timer: Node = get_node_or_null(game_over_timer_path)
+	
+@onready var state_machine: Node = get_node_or_null(state_machine_path)
+@onready var idle_state: Node = get_node_or_null(idle_state_path)
+@onready var move_state: Node = get_node_or_null(move_state_path)
+@onready var jump_state: Node = get_node_or_null(jump_state_path)
+@onready var fall_state: Node = get_node_or_null(fall_state_path)
+@onready var attack_state: Node = get_node_or_null(attack_state_path)
+@onready var hurt_state: Node = get_node_or_null(hurt_state_path)
+@onready var heal_state: Node = get_node_or_null(heal_state_path)
+@onready var death_state: Node = get_node_or_null(death_state_path)
+	
+@onready var ground_check_comp: Node = get_node_or_null(ground_check_component)
+@onready var direction_flip_comp: Node = get_node_or_null(direction_flip_component)
+@onready var movement_comp: Node = get_node_or_null(movement_component)
+@onready var jump_comp: Node = get_node_or_null(jump_component)
+@onready var gravity_comp: Node = get_node_or_null(gravity_component)
+
 var current_health : int = starting_health
 var was_grounded: bool = false
 
@@ -50,8 +78,7 @@ func _setup_states() -> void:
 
 func _idle_state() -> void:
 	idle_state.handle_input = func(_event: InputEvent) -> State:
-		#var is_grounded: bool = ground_check_component.is_grounded
-		if InputManagerClass.is_jump_pressed() and jump_component.can_jump():
+		if InputManagerClass.is_jump_pressed() and jump_comp.can_jump():
 			if idle_state.enable_debug:
 				print("Player Jump Key detected. Switching to: ", jump_state)
 			return jump_state
@@ -62,7 +89,7 @@ func _idle_state() -> void:
 		return null
 	
 	idle_state.handle_physics = func(_delta: float) -> State:
-		var is_grounded: bool = ground_check_component.is_grounded
+		var is_grounded: bool = ground_check_comp.is_grounded
 		if not is_grounded:
 			if idle_state.enable_debug:
 				print("Player cannot detect floor. Switching to: ", fall_state)
@@ -72,7 +99,7 @@ func _idle_state() -> void:
 
 func _move_state() -> void:
 	move_state.handle_physics = func(_delta: float) -> State:
-		var is_grounded: bool = ground_check_component.is_grounded
+		var is_grounded: bool = ground_check_comp.is_grounded
 		if not is_grounded:
 			if move_state.enable_debug:
 				print("Player cannot detect floor. Switching to: ", fall_state)
@@ -80,18 +107,18 @@ func _move_state() -> void:
 		
 		var input_direction: float = InputManagerClass.get_movement_axis()
 		if input_direction != 0:
-			movement_component.set_direction(Vector2((input_direction), 0))
+			movement_comp.set_direction(Vector2((input_direction), 0))
 		else:
-			movement_component.set_direction(Vector2.ZERO)
+			movement_comp.set_direction(Vector2.ZERO)
 		
-		movement_component.apply(_delta)
+		movement_comp.apply(_delta)
 		
 		if input_direction == 0:
 			if move_state.enable_debug:
 				print("Player Movement ended. Switching to:", idle_state)
 			return idle_state
 		
-		if InputManagerClass.is_jump_pressed() and jump_component.can_jump():
+		if InputManagerClass.is_jump_pressed() and jump_comp.can_jump():
 			if move_state.enable_debug:
 				print("Player Jump Key detected. Switching to: ", jump_state)
 			return jump_state
@@ -102,7 +129,7 @@ func _jump_state() -> void:
 	jump_state.handle_physics = func(_delta: float) -> State:
 		var input_direction: float = InputManagerClass.get_movement_axis()
 		if input_direction != 0:
-			var movement: float = input_direction * movement_component.move_speed 
+			var movement: float = input_direction * movement_comp.move_speed 
 			velocity.x = lerp(velocity.x, movement, 0.1)
 
 		if velocity.y > 0:
@@ -114,17 +141,17 @@ func _jump_state() -> void:
 func _fall_state() -> void:
 	fall_state.handle_physics = func(_delta: float) -> State:
 		var input_direction: float = InputManagerClass.get_movement_axis()
-		var target_speed: float = input_direction * movement_component.move_speed
+		var target_speed: float = input_direction * movement_comp.move_speed
 		velocity.x = lerp(velocity.x, target_speed, 0.1)
 		
 		move_and_slide()
 		
-		if InputManagerClass.is_jump_pressed() and jump_component.can_jump():
+		if InputManagerClass.is_jump_pressed() and jump_comp.can_jump():
 			if move_state.enable_debug:
 				print("Player Jump Key detected. Switching to: ", jump_state)
 			return jump_state
 		
-		var is_grounded: bool = ground_check_component.is_grounded
+		var is_grounded: bool = ground_check_comp.is_grounded
 		if is_grounded:
 			var movement: float = velocity.x
 			if movement != 0:
@@ -142,15 +169,15 @@ func _unhandled_input(event: InputEvent) -> void:
 	trigger_attack()
 
 func _physics_process(delta: float) -> void:
-	ground_check_component.apply(delta)
-	if ground_check_component.just_landed():
-		jump_component.reset_jump_counter()
+	ground_check_comp.apply(delta)
+	if ground_check_comp.just_landed():
+		jump_comp.reset_jump_counter()
 
-	flip_component.apply(delta)
+	direction_flip_comp.apply(delta)
 	state_machine.process_physics(delta)
-	jump_component.update_timer(delta)
+	jump_comp.update_timer(delta)
 	
-	ground_check_component.post_update()
+	ground_check_comp.post_update()
 
 func _process(delta: float) -> void:
 	state_machine.process_frame(delta)

@@ -417,6 +417,23 @@ radius = 5.09902
 z_index = 5
 collision_mask = 14
 script = ExtResource("1_g2els")
+actor_path = NodePath(".")
+animations_path = NodePath("Animations")
+game_over_timer_path = NodePath("GameOverDelayTimer")
+state_machine_path = NodePath("StateMachine")
+idle_state_path = NodePath("StateMachine/IdleState")
+move_state_path = NodePath("StateMachine/MoveState")
+jump_state_path = NodePath("StateMachine/JumpState")
+fall_state_path = NodePath("StateMachine/FallState")
+attack_state_path = NodePath("StateMachine/AttackState")
+hurt_state_path = NodePath("StateMachine/HurtState")
+heal_state_path = NodePath("StateMachine/HealState")
+death_state_path = NodePath("StateMachine/DeathState")
+ground_check_component = NodePath("Components/GroundCheckComponent")
+direction_flip_component = NodePath("Components/DirectionFlipComponent")
+movement_component = NodePath("Components/MovementComponent")
+jump_component = NodePath("Components/JumpComponent")
+gravity_component = NodePath("Components/GravityComponent")
 
 [node name="Animations" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -12)
@@ -483,8 +500,13 @@ use_parent_logic = true
 
 [node name="JumpState" type="Node" parent="StateMachine"]
 script = ExtResource("13_3j4b4")
-jump_animation = "jump"
+actor_path = NodePath("../..")
+state_animation = "jump"
 use_parent_logic = true
+gravity_component = NodePath("../../Components/GravityComponent")
+ground_check_component = NodePath("../../Components/GroundCheckComponent")
+jump_component = NodePath("../../Components/JumpComponent")
+movement_component = NodePath("../../Components/MovementComponent")
 
 [node name="FallState" type="Node" parent="StateMachine"]
 script = ExtResource("14_yj68g")
