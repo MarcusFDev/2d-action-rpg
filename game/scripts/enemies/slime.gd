@@ -25,21 +25,19 @@ extends CharacterBody2D
 @export var edge_detector_component: NodePath
 @export var jump_component: NodePath
 
-# Internal State Variables
-var actor: CharacterBody2D
-var animations: AnimatedSprite2D
-var state_machine: Node
-var idle_state: Node
-var patrol_state: Node
-var jump_state: Node
-var fall_state: Node
-var attack_state: Node
-
-# Internal Component Variables
-var ground_check_comp: Node
-var direction_flip_comp: Node
-var edge_detector_comp: Node
-var jump_comp: Node
+@onready var actor: CharacterBody2D = get_node_or_null(actor_path)
+@onready var animations: AnimatedSprite2D = get_node_or_null(animations_path)
+@onready var state_machine: Node = get_node_or_null(state_machine_path)
+@onready var idle_state: Node = get_node_or_null(idle_state_path)
+@onready var patrol_state: Node = get_node_or_null(patrol_state_path)
+@onready var jump_state: Node = get_node_or_null(jump_state_path)
+@onready var fall_state: Node = get_node_or_null(fall_state_path)
+@onready var attack_state: Node = get_node_or_null(attack_state_path)
+	
+@onready var ground_check_comp: Node = get_node_or_null(ground_check_component)
+@onready var direction_flip_comp: Node = get_node_or_null(direction_flip_component)
+@onready var edge_detector_comp: Node = get_node_or_null(edge_detector_component)
+@onready var jump_comp: Node = get_node_or_null(jump_component)
 
 # Internal BehaviorTree Variables
 var _prev_state_name: String = ""
@@ -51,20 +49,6 @@ var blackboard: Dictionary = {}
 var jump_cooldown_timer: float = 0.0
 
 func _ready() -> void:
-	actor = get_node_or_null(actor_path)
-	animations = get_node_or_null(animations_path)
-	state_machine = get_node_or_null(state_machine_path)
-	idle_state = get_node_or_null(idle_state_path)
-	patrol_state = get_node_or_null(patrol_state_path)
-	jump_state = get_node_or_null(jump_state_path)
-	fall_state = get_node_or_null(fall_state_path)
-	attack_state = get_node_or_null(attack_state_path)
-	
-	ground_check_comp = get_node_or_null(ground_check_component)
-	direction_flip_comp = get_node_or_null(direction_flip_component)
-	edge_detector_comp = get_node_or_null(edge_detector_component)
-	jump_comp = get_node_or_null(jump_component)
-	
 	_setup_states()
 	_setup_blackboard()
 	state_machine.init(self, animations, blackboard)
