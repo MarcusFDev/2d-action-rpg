@@ -12,15 +12,16 @@ extends Node
 ## [b]Note:[/b] Can exceed 200 with manual input.
 @export_range(0, 200, 1, "suffix:px/s", "or_greater") var move_speed: float = 0
 
-# Script Variables
-var actor: Node
-var direction: Vector2 = Vector2.ZERO
+@onready var actor: CharacterBody2D = get_node_or_null(actor_path)
 
-func _ready() -> void:
-	actor = get_node_or_null(actor_path)
+# Script Variables
+var direction: Vector2 = Vector2.ZERO
 
 func set_direction(new_direction: Vector2) -> void:
 	direction = new_direction.normalized()
+
+func get_direction() -> Vector2:
+	return direction
 
 func apply(_delta: float) -> void:
 	if enable_debug:

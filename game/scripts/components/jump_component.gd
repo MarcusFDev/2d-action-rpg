@@ -30,9 +30,10 @@ extends Node
 @export_range(0, 5, 1, "suffix:Extra Jumps") var export_jump_count: int = 0
 @export_range(0.0, 10.0, 0.1, "or_greater", "suffix:s") var export_recharge_time: float = 0
 
+@onready var actor: CharacterBody2D = get_node_or_null(actor_path)
+@onready var ground_check: Node = get_node_or_null(ground_check_path)
+
 # Script Variables
-var actor: Node
-var ground_check: Node = null
 var gravity: float
 var initial_velocity: float
 var is_jumping: bool = false
@@ -47,8 +48,6 @@ var base_jumps: int = 1
 var extra_jumps: int = export_jump_count
 
 func _ready() -> void:
-	actor = get_node_or_null(actor_path)
-	ground_check = get_node_or_null(ground_check_path)
 	reset_jump_counter()
 
 func is_grounded() -> bool:

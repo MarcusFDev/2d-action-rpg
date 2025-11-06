@@ -25,15 +25,13 @@ extends Node
 ## [b]Note:[/b] Low values make random idling rare and natural; higher values increase frequency. [br]
 @export_range(0, 100, 1, "suffix:%") var idle_chance: float = 0
 
+@onready var actor: CharacterBody2D = get_node_or_null(actor_path)
+
 # Script Variables
-var actor: Node
 var timer: float = 0.0
 var check_timer: float = 0.0
 var target_time: float = 1.0
 var is_active: bool = false
-
-func _ready() -> void:
-	actor = get_node_or_null(actor_path)
 
 func start() -> void:
 	timer = 0.0
