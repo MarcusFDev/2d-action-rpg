@@ -415,6 +415,18 @@ size = Vector2(20, 14)
 collision_layer = 2
 collision_mask = 11
 script = ExtResource("1_68p8s")
+actor_path = NodePath(".")
+animations_path = NodePath("Animations")
+state_machine_path = NodePath("StateMachine")
+idle_state_path = NodePath("StateMachine/IdleState")
+patrol_state_path = NodePath("StateMachine/PatrolState")
+jump_state_path = NodePath("StateMachine/JumpState")
+fall_state_path = NodePath("StateMachine/FallState")
+attack_state_path = NodePath("StateMachine/AttackState")
+ground_check_component = NodePath("Components/GroundCheckComponent")
+direction_flip_component = NodePath("Components/DirectionFlipComponent")
+edge_detector_component = NodePath("Components/EdgeDetectorComponent")
+jump_component = NodePath("Components/JumpComponent")
 
 [node name="RayCastRight" type="RayCast2D" parent="."]
 visible = false
@@ -446,6 +458,19 @@ shape = SubResource("RectangleShape2D_6axq5")
 
 [node name="Components" type="Node" parent="."]
 
+[node name="JumpComponent" type="Node" parent="Components"]
+script = ExtResource("14_84gbg")
+actor_path = NodePath("../..")
+ground_check_path = NodePath("../GroundCheckComponent")
+jump_time = 0.4
+jump_height = 50.0
+jump_height_offset = true
+export_jump_cooldown = 0.5
+export_enable_multi_jump = true
+export_jump_count = 5
+export_recharge_time = 5.0
+metadata/_custom_type_script = "uid://dr7fn1f0pllf6"
+
 [node name="HealthComponent" type="Node" parent="Components"]
 
 [node name="GroundCheckComponent" type="Node" parent="Components"]
@@ -474,19 +499,6 @@ actor_path = NodePath("../..")
 idle_interval = 5.0
 idle_chance = 20.0
 
-[node name="JumpComponent" type="Node" parent="Components"]
-script = ExtResource("14_84gbg")
-actor_path = NodePath("../..")
-ground_check_path = NodePath("../GroundCheckComponent")
-jump_time = 0.4
-jump_height = 50.0
-jump_height_offset = true
-export_enable_jump_cooldown = true
-export_jump_cooldown = 0.5
-export_enable_multi_jump = true
-export_jump_count = 5
-metadata/_custom_type_script = "uid://dr7fn1f0pllf6"
-
 [node name="MovementComponent" type="Node" parent="Components"]
 script = ExtResource("15_84gbg")
 actor_path = NodePath("../..")
@@ -509,8 +521,13 @@ use_behavior_tree = true
 
 [node name="JumpState" type="Node" parent="StateMachine"]
 script = ExtResource("12_rdhaw")
-jump_animation = "slime_fall"
+actor_path = NodePath("../..")
+state_animation = "slime_fall"
 use_behavior_tree = true
+gravity_component = NodePath("../../Components/GravityComponent")
+ground_check_component = NodePath("../../Components/GroundCheckComponent")
+jump_component = NodePath("../../Components/JumpComponent")
+movement_component = NodePath("../../Components/MovementComponent")
 
 [node name="FallState" type="Node" parent="StateMachine"]
 script = ExtResource("13_m4uwr")
