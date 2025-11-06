@@ -490,13 +490,16 @@ starting_state = NodePath("IdleState")
 
 [node name="IdleState" type="Node" parent="StateMachine"]
 script = ExtResource("11_lgqa7")
-idle_animation = "idle"
+actor_path = NodePath("../..")
+state_animation = "idle"
 use_parent_logic = true
 
 [node name="MoveState" type="Node" parent="StateMachine"]
 script = ExtResource("13_8ydkj")
-move_animation = "move"
+actor_path = NodePath("../..")
+state_animation = "move"
 use_parent_logic = true
+movement_component = NodePath("../../Components/MovementComponent")
 
 [node name="JumpState" type="Node" parent="StateMachine"]
 script = ExtResource("13_3j4b4")
@@ -510,8 +513,10 @@ movement_component = NodePath("../../Components/MovementComponent")
 
 [node name="FallState" type="Node" parent="StateMachine"]
 script = ExtResource("14_yj68g")
-fall_animation = "fall"
+actor_path = NodePath("../..")
+state_animation = "fall"
 use_parent_logic = true
+gravity_component = NodePath("../../Components/GravityComponent")
 
 [node name="HurtState" type="Node" parent="StateMachine" node_paths=PackedStringArray("next_state")]
 script = ExtResource("15_007i1")

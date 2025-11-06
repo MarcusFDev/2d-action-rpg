@@ -510,14 +510,20 @@ starting_state = NodePath("IdleState")
 
 [node name="IdleState" type="Node" parent="StateMachine"]
 script = ExtResource("11_tvrjd")
-idle_animation = "slime_idle"
+actor_path = NodePath("../..")
+state_animation = "slime_idle"
 use_behavior_tree = true
+idle_timer_component = NodePath("../../Components/IdleTimerComponent")
 
 [node name="PatrolState" type="Node" parent="StateMachine"]
 script = ExtResource("13_nx7r3")
-move_animation = "slime_patrol"
-use_random_idle = true
+actor_path = NodePath("../..")
+state_animation = "slime_patrol"
 use_behavior_tree = true
+use_random_idle = true
+edge_detector_component = NodePath("../../Components/EdgeDetectorComponent")
+idle_timer_component = NodePath("../../Components/IdleTimerComponent")
+movement_component = NodePath("../../Components/MovementComponent")
 
 [node name="JumpState" type="Node" parent="StateMachine"]
 script = ExtResource("12_rdhaw")
@@ -531,8 +537,10 @@ movement_component = NodePath("../../Components/MovementComponent")
 
 [node name="FallState" type="Node" parent="StateMachine"]
 script = ExtResource("13_m4uwr")
-fall_animation = "slime_fall"
+actor_path = NodePath("../..")
+state_animation = "slime_fall"
 use_behavior_tree = true
+gravity_component = NodePath("../../Components/GravityComponent")
 
 [node name="AttackState" type="Node" parent="StateMachine" node_paths=PackedStringArray("next_state")]
 script = ExtResource("14_o5sr2")

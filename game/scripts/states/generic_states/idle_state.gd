@@ -1,18 +1,25 @@
 class_name IdleState
 extends State
 
-## Determines the animation that plays during the Idle State.[br]
-## [b]Note:[/b] Must match an animation name in  [code]AnimatedSprite2D[/code]  or  [code]AnimationPlayer[/code].
-@export var idle_animation : String
-@export var use_behavior_tree: bool = false
-## Determines whether this state uses its own internal logic or defers to parent-defined callbacks.[br]
-## [b]Note:[/b] If set to [code]false[/code], all internal logic settings are ignored.
-@export var use_parent_logic: bool = false
+@export var actor_path: NodePath
 ## Enables debug messages in the output terminal. [br]
 ## [b]Note:[/b] Useful for development and troubleshooting.
 @export var enable_debug: bool = false
 
-@onready var idle_timer_component: Node = $"../../Components/IdleTimerComponent"
+@export_category("State Settings")
+## Determines the animation that plays during the Idle State.[br]
+## [b]Note:[/b] Must match an animation name in  [code]AnimatedSprite2D[/code]  or  [code]AnimationPlayer[/code].
+@export var state_animation: String
+@export var use_behavior_tree: bool = false
+## Determines whether this state uses its own internal logic or defers to parent-defined callbacks.[br]
+## [b]Note:[/b] If set to [code]false[/code], all internal logic settings are ignored.
+@export var use_parent_logic: bool = false
+
+@export_group("Component Paths")
+@export var idle_timer_component: NodePath
+
+@onready var actor: Node = get_node_or_null(actor_path)
+@onready var idle_timer_comp: Node = get_node_or_null(idle_timer_component) 
 
 # Callback Functions
 func _on_enter() -> void: pass
@@ -28,25 +35,26 @@ var handle_frame: Callable = _on_frame
 
 func enter() -> void:
 	super.enter()
+	if enable_debug:
+		print(
+		"===========================\n",
+		"IdleState entered by: ", actor.name, "\n",
+		"===========================")
+	
 	init_idle()
 
 func init_idle() -> void:
-	parent.animations.play(idle_animation)
+	actor.animations.play(state_animation)
 	enter_callback.call()
 	
 	if use_behavior_tree:
-		var bb: Dictionary = parent.get_blackboard()
-		idle_timer_component.start()
+		var bb: Dictionary = actor.get_blackboard()
+		idle_timer_comp.start()
 		bb["can_idle"] = true
 		bb["can_patrol"] = false
-	
-	if enable_debug:
-		print(
-			"\n===== Idle State: ===== \n", parent,
-			"\nAnimation playing: ", idle_animation)
 
 func process_physics(_delta: float) -> State:
-	parent.velocity.x = 0
+	actor.velocity.x = 0
 	
 	if use_behavior_tree:
 		pass
@@ -58,10 +66,10 @@ func process_physics(_delta: float) -> State:
 
 func process_frame(delta: float) -> State:
 	if use_behavior_tree:
-		var bb: Dictionary = parent.get_blackboard()
-		idle_timer_component.update(delta)
+		var bb: Dictionary = actor.get_blackboard()
+		idle_timer_comp.update(delta)
 		
-		if not idle_timer_component.is_active:
+		if not idle_timer_comp.is_active:
 			bb["has_collided"] = false
 			bb["can_idle"] = true
 			bb["can_patrol"] = true
