@@ -45,15 +45,11 @@ var bt_root: BTNode
 var bt: BehaviorTree
 var blackboard: Dictionary = {}
 
-# Script Variables
-var jump_cooldown_timer: float = 0.0
-
 func _ready() -> void:
 	_setup_states()
 	_setup_blackboard()
-	state_machine.init(self, animations, blackboard)
 	_setup_behavior_tree()
-	jump_cooldown_timer = 0.0
+	state_machine.init(self, animations, blackboard)
 
 func get_blackboard() -> Dictionary:
 	return blackboard
@@ -64,12 +60,12 @@ func _setup_blackboard() -> void:
 	blackboard["is_grounded"] = false
 	blackboard["has_collided"] = false
 	blackboard["force_idle"] = false
-	blackboard["is_jumping"] = false
 	
 	blackboard["can_patrol"] = true
 	blackboard["can_idle"] = true
 	blackboard["can_jump"] = true
 	
+	blackboard["locked"] = false
 	blackboard["move_direction"] = 1
 	blackboard["intent"] = "Idle"
 
@@ -78,12 +74,14 @@ func _setup_behavior_tree() -> void:
 		# Priority 1: Fall if not grounded
 		BTSequence.new([
 			BTCondition.new("is_grounded", false),
+			BTCondition.new("locked", false),
 			BTAction.new("Fall")
 		]),
 		# Priority 2: Idle if grounded and forced
 		BTSequence.new([
 			BTCondition.new("is_grounded", true),
 			BTCondition.new("force_idle", true),
+			BTCondition.new("locked", false),
 			BTAction.new("Idle")
 		]),
 		# Priority 3: Patrol if grounded and allowed
@@ -91,27 +89,28 @@ func _setup_behavior_tree() -> void:
 			BTCondition.new("is_grounded", true),
 			BTCondition.new("has_collided", false),
 			BTCondition.new("can_patrol", true),
+			BTCondition.new("locked", false),
 			BTAction.new("Patrol")
 		]),
 		# Priority 4: Idle if grounded
 		BTSequence.new([
 			BTCondition.new("is_grounded", true),
 			BTCondition.new("has_collided", true),
+			BTCondition.new("locked", false),
 			BTSelector.new([
 				BTSequence.new([
 					BTCondition.new("can_jump", true),
-					BTCondition.new("is_jumping", false),
-					BTCondition.new("jump_cooldown", false),
 					BTCondition.new("random_chance", 0.01),
+					BTCondition.new("locked", false),
 					BTAction.new("Jump"),
 				]),
 				BTSequence.new([
 					BTCondition.new("can_idle", true),
+					BTCondition.new("locked", false),
 					BTAction.new("Idle")
 				])
 			])
 		]),
-		BTAction.new("Idle")
 	])
 	bt = BehaviorTree.new(bt_root, blackboard, self)
 
@@ -127,7 +126,7 @@ func _idle_state() -> void:
 
 func _patrol_state() -> void:
 	patrol_state.enter_callback = func() -> void:
-		animations.flip_h = patrol_state.direction < 0
+		pass
 
 func _jump_state() -> void:
 	jump_state.enter_callback = func() -> void:
@@ -157,18 +156,7 @@ func _physics_process(delta: float) -> void:
 
 	var grounded : bool = ground_check_comp.is_grounded
 	blackboard["is_grounded"] = grounded
-	blackboard["jump_cooldown"] = jump_cooldown_timer > 0.0
 	
-	# --- Jump cooldown tracking ---
-	if jump_cooldown_timer > 0.0:
-		jump_cooldown_timer -= delta
-		if jump_cooldown_timer <= 0.0:
-			jump_cooldown_timer = 0.0
-			blackboard["jump_cooldown"] = false
-	else:
-		blackboard["jump_cooldown"] = false
-	# ------------------------------
-
 	direction_flip_comp.apply(delta)
 	jump_comp.update_timer(delta)
 	state_machine.process_physics(delta)
