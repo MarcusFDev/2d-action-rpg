@@ -57,7 +57,6 @@ extends CharacterBody2D
 @onready var gravity_comp: Node = get_node_or_null(gravity_component)
 
 var current_health : int = starting_health
-var was_grounded: bool = false
 
 # ==============================
 # ===== Intialization =====
@@ -150,7 +149,7 @@ func _fall_state() -> void:
 			if move_state.enable_debug:
 				print("Player Jump Key detected. Switching to: ", jump_state)
 			return jump_state
-		
+
 		var is_grounded: bool = ground_check_comp.is_grounded
 		if is_grounded:
 			var movement: float = velocity.x

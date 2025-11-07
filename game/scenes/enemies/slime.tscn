@@ -461,14 +461,15 @@ shape = SubResource("RectangleShape2D_6axq5")
 [node name="JumpComponent" type="Node" parent="Components"]
 script = ExtResource("14_84gbg")
 actor_path = NodePath("../..")
-ground_check_path = NodePath("../GroundCheckComponent")
-jump_time = 0.4
-jump_height = 50.0
+jump_time = 0.3
+jump_height = 20.0
 jump_height_offset = true
-export_jump_cooldown = 0.5
+export_enable_jump_cooldown = true
+export_jump_cooldown = 1.0
 export_enable_multi_jump = true
-export_jump_count = 5
+export_jump_count = 3
 export_recharge_time = 5.0
+ground_check_path = NodePath("../GroundCheckComponent")
 metadata/_custom_type_script = "uid://dr7fn1f0pllf6"
 
 [node name="HealthComponent" type="Node" parent="Components"]
@@ -503,6 +504,7 @@ idle_chance = 20.0
 script = ExtResource("15_84gbg")
 actor_path = NodePath("../..")
 move_speed = 30.0
+randomized_chance = 30.0
 
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("starting_state")]
 script = ExtResource("9_nx7r3")
@@ -528,8 +530,9 @@ movement_component = NodePath("../../Components/MovementComponent")
 [node name="JumpState" type="Node" parent="StateMachine"]
 script = ExtResource("12_rdhaw")
 actor_path = NodePath("../..")
-state_animation = "slime_fall"
-use_behavior_tree = true
+state_animation = "slime_idle"
+export_use_behavior_tree = true
+export_enable_randomize_direction = true
 gravity_component = NodePath("../../Components/GravityComponent")
 ground_check_component = NodePath("../../Components/GroundCheckComponent")
 jump_component = NodePath("../../Components/JumpComponent")

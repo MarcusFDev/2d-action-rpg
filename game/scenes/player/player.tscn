@@ -470,18 +470,19 @@ animations_path = NodePath("../../Animations")
 [node name="JumpComponent" type="Node" parent="Components"]
 script = ExtResource("13_yj68g")
 actor_path = NodePath("../..")
-ground_check_path = NodePath("../GroundCheckComponent")
 jump_time = 0.4
 jump_height = 70.0
 export_jump_cooldown = 1.0
 export_enable_multi_jump = true
 export_jump_count = 1
 export_recharge_time = 4.0
+ground_check_path = NodePath("../GroundCheckComponent")
 
 [node name="MovementComponent" type="Node" parent="Components"]
 script = ExtResource("14_ioxgp")
 actor_path = NodePath("../..")
 move_speed = 120.0
+randomized_chance = 30.0
 metadata/_custom_type_script = "uid://biecfhjepus73"
 
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("starting_state")]
