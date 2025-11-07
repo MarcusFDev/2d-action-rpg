@@ -3,9 +3,6 @@ extends Node
 
 ## Assign the parent entity path to the component.
 @export var actor_path: NodePath
-## Assign the  [code]GroundCheckComponent[/code]  path to the component.[br]
-## [b]Note:[/b] This is important as some settings require ground contact information to work correctly.
-@export var ground_check_path: NodePath
 ## Enables debug messages in the output terminal. [br]
 ## [b]Note:[/b] Useful for development and troubleshooting.
 @export var enable_debug: bool = false
@@ -19,16 +16,24 @@ extends Node
 ## [b]Note:[/b] Can exceed 100 pixels with manual input.[br]
 ## [b]Warning:[/b] If time value falls below  [code]jump_time[/code]  value unexpected behavior may occur.
 @export_range(0.0, 100, 1, "or_greater", "suffix:px") var jump_height: float = 0
+## Offsets the jump height based on the entity's  [code]jump_height[/code] value. [br]
 @export var jump_height_offset: bool = false
 
 @export_group("Enable Jump Cooldown", "export_")
+
 @export_custom(PROPERTY_HINT_GROUP_ENABLE, "") var export_enable_jump_cooldown: bool = false
 @export_range(0.0, 5.0, 0.1, "suffix:s") var export_jump_cooldown: float = 0
 
 @export_group("Enable Multi-Jump", "export_")
+
 @export_custom(PROPERTY_HINT_GROUP_ENABLE, "") var export_enable_multi_jump: bool = false
 @export_range(0, 5, 1, "suffix:Extra Jumps") var export_jump_count: int = 0
 @export_range(0.0, 10.0, 0.1, "or_greater", "suffix:s") var export_recharge_time: float = 0
+
+@export_group("Component Paths")
+## Assign the  [code]GroundCheckComponent[/code]  path to the component.[br]
+## [b]Note:[/b] This is important as some settings require ground contact information to work correctly.
+@export var ground_check_path: NodePath
 
 @onready var actor: CharacterBody2D = get_node_or_null(actor_path)
 @onready var ground_check: Node = get_node_or_null(ground_check_path)
@@ -37,36 +42,36 @@ extends Node
 var gravity: float
 var initial_velocity: float
 var is_jumping: bool = false
+
 var target_position: Vector2
-var has_target: bool = false
 var horizontal_velocity: float = 0.0
-var is_active: bool = true
+
+var cooldown_active: bool = false
 var cooldown_timer: float = 0.0
+
 var recharge_timer: float = 0.0
 var is_recharging: bool = false
+
 var base_jumps: int = 1
-var extra_jumps: int = export_jump_count
+var initial_extra_jumps: int:
+	get:
+		return export_jump_count
+var current_extra_jumps: int = 0
 
 func _ready() -> void:
 	reset_jump_counter()
-
-func is_grounded() -> bool:
-	if ground_check:
-		return ground_check.is_grounded
-	return false
 
 # -------------------------
 #  TIMER + COOLDOWN
 # -------------------------
 func update_timer(delta: float) -> void:
-	if not is_active:
-		if is_grounded():
-			cooldown_timer -= delta
-			if cooldown_timer <= 0.0:
-				is_active = true
-				cooldown_timer = 0.0
-				if enable_debug:
-					print(actor.name, " jump cooldown complete.")
+	if cooldown_active and is_grounded():
+		cooldown_timer -= delta
+		if cooldown_timer <= 0.0:
+			cooldown_active = false
+			cooldown_timer = 0.0
+			if enable_debug:
+				print(actor.name, " jump cooldown complete.")
 	
 	if is_recharging:
 		recharge_timer -= delta
@@ -80,10 +85,9 @@ func update_timer(delta: float) -> void:
 			else:
 				if enable_debug:
 					print(actor.name, " multi-jump recharge finished but still mid-air. Will reset on landing.")
-			
 
 func start_recharge() -> void:
-	if export_recharge_time > 0:
+	if export_recharge_time > 0.0:
 		is_recharging = true
 		recharge_timer = export_recharge_time
 		export_enable_multi_jump = false
@@ -91,10 +95,11 @@ func start_recharge() -> void:
 				print(actor.name, " started multi-jump recharge (", export_recharge_time, "s)")
 
 func start_cooldown() -> void:
-	is_active = false
-	cooldown_timer = export_jump_cooldown
-	if enable_debug:
-		print(actor.name, " jump cooldown started (", export_jump_cooldown, "s)")
+	if export_jump_cooldown > 0.0:
+		cooldown_active = true
+		cooldown_timer = export_jump_cooldown
+		if enable_debug:
+			print(actor.name, " jump cooldown started (", export_jump_cooldown, "s)")
 
 # -------------------------
 #  JUMP PHYSICS
@@ -119,35 +124,39 @@ func calculate_gravity() -> void:
 		if enable_debug:
 			print(actor.name, "| Jump Height Offset switched off. Jump Height: ", jump_height)
 
+func is_grounded() -> bool:
+	if ground_check:
+		return ground_check.is_grounded
+	return false
 # -------------------------
 #  JUMP LOGIC
 # -------------------------
-func start_jump() -> void:
+func perform_jump() -> void:
 	if not can_jump():
 		if enable_debug:
 			print(actor.name, " tried to jump but cooldown active or out of jumps.")
 		return
 	is_jumping = true
-	has_target = false
+
 	calculate_gravity()
 	actor.velocity.y = initial_velocity
 	
-	var was_extra_jump: int = extra_jumps > 0
 	consume_jump()
 
-	if export_enable_jump_cooldown and not was_extra_jump:
+	if export_enable_jump_cooldown and not current_extra_jumps > 0:
 		start_cooldown()
 
 	if enable_debug:
-		print(actor.name, " started jump. Base Jumps remaining: ", base_jumps, " Extra Jumps remaining: ", extra_jumps)
+		print(actor.name, " started jump. Base Jumps remaining: ", base_jumps, " Extra Jumps remaining: ", current_extra_jumps)
 
-func jump_to(target: Vector2) -> void:
+func perform_target_jump(direction: int) -> void:
 	if not can_jump():
 		if enable_debug:
 			print(actor.name, " tried to jump_to but cooldown active or out of jumps.")
 		return
-	target_position = target
-	has_target = true
+
+	target_position = actor.global_position + Vector2(24 * direction, -32)
+
 	is_jumping = true
 
 	var displacement : Variant = target_position - actor.global_position
@@ -156,18 +165,11 @@ func jump_to(target: Vector2) -> void:
 	var total_time : float = jump_time * 2.0
 	horizontal_velocity = displacement.x / total_time
 	actor.velocity = Vector2(horizontal_velocity, initial_velocity)
-	
-	var was_extra_jump: int = extra_jumps > 0
-	
-	if export_enable_jump_cooldown and not was_extra_jump:
-		consume_jump()
-	if export_enable_jump_cooldown:
-		start_cooldown()
 
 	if enable_debug:
 		print(actor.name, " jumping to ", target_position, " with vx=", horizontal_velocity)
 
-func apply(delta: float) -> void:
+func apply_physics(delta: float) -> void:
 	if not is_jumping:
 		return
 	actor.velocity.y += gravity * delta
@@ -176,28 +178,32 @@ func apply(delta: float) -> void:
 #  MULTI-JUMP SYSTEM
 # -------------------------
 func can_jump() -> bool:
-	if not is_active:
+	if cooldown_active:
 		return false
-	return base_jumps > 0 or extra_jumps > 0
+	
+	if base_jumps <= 0 and current_extra_jumps <=0:
+		return false
+	
+	return true
 
 func consume_jump() -> void:
-	if extra_jumps > 0:
-		extra_jumps -= 1
-		if extra_jumps == 0 and export_enable_multi_jump and export_recharge_time > 0:
+	if current_extra_jumps > 0:
+		current_extra_jumps -= 1
+		if current_extra_jumps == 0 and export_enable_multi_jump and export_recharge_time > 0:
 			start_recharge()
 	elif base_jumps > 0:
 		base_jumps -= 1
-
+  
 func reset_jump_counter() -> void:
 	if is_recharging and export_enable_multi_jump:
 		return
 	base_jumps = 1
 	if export_enable_multi_jump:
 		if is_grounded():
-			extra_jumps = export_jump_count
+			current_extra_jumps = export_jump_count
 		else:
-			extra_jumps = 0
+			current_extra_jumps = 0
 	else:
-		extra_jumps = 0
+		current_extra_jumps = 0
 	if enable_debug:
-		print(actor.name, " jump counter reset -> Base Jumps: ", base_jumps, " Extra Jumps: ", extra_jumps)
+		print(actor.name, " jump counter reset -> Base Jumps: ", base_jumps, " Extra Jumps: ", current_extra_jumps)
