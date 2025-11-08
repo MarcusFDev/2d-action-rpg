@@ -110,7 +110,7 @@ func _move_state() -> void:
 		else:
 			movement_comp.set_direction(Vector2.ZERO)
 		
-		movement_comp.apply(_delta)
+		movement_comp.apply_physics(_delta)
 		
 		if input_direction == 0:
 			if move_state.enable_debug:

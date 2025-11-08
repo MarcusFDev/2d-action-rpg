@@ -20,13 +20,14 @@ extends Node
 # Script Variables
 var direction: Vector2 = Vector2.ZERO
 
-func randomize_direction(direction: int) -> int:
+func randomize_direction() -> Vector2:
 	var flip_chance: float = randomized_chance / 100.0
 
 	if randf() < flip_chance:
-		direction *= -1
-
+		direction = Vector2(randf_range(-1.0, 1.0), randf_range(-1.0, 1.0)).normalized()
+	
 	return direction
+
 
 func set_direction(new_direction: Vector2) -> void:
 	direction = new_direction.normalized()
@@ -34,8 +35,12 @@ func set_direction(new_direction: Vector2) -> void:
 func get_direction() -> Vector2:
 	return direction
 
-func apply(_delta: float) -> void:
-	if enable_debug:
-		print("MovementComponent: ", actor.name, " | Direction: ", direction, " | Speed: ", move_speed, " | Velocity X before move: ", actor.velocity.x)
+func apply_physics(_delta: float) -> void:
 	actor.velocity = direction * move_speed
 	actor.move_and_slide()
+	if enable_debug:
+		print(
+			"MovementComponent: ", actor.name,
+			" | Direction: ", direction,
+			" | Speed: ", move_speed,
+			" | Velocity X before move: ", actor.velocity.x)
