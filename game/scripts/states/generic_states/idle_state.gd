@@ -16,10 +16,10 @@ extends State
 @export var use_parent_logic: bool = false
 
 @export_group("Component Paths")
-@export var idle_timer_component: NodePath
+@export var idle_component: NodePath
 
 @onready var actor: Node = get_node_or_null(actor_path)
-@onready var idle_timer_comp: Node = get_node_or_null(idle_timer_component) 
+@onready var idle_comp: Node = get_node_or_null(idle_component) 
 
 # Callback Functions
 func _on_enter() -> void: pass
@@ -49,7 +49,7 @@ func init_idle() -> void:
 	
 	if use_behavior_tree:
 		var bb: Dictionary = actor.get_blackboard()
-		idle_timer_comp.start()
+		idle_comp.start()
 		bb["can_idle"] = true
 		bb["can_patrol"] = false
 
@@ -67,9 +67,9 @@ func process_physics(_delta: float) -> State:
 func process_frame(delta: float) -> State:
 	if use_behavior_tree:
 		var bb: Dictionary = actor.get_blackboard()
-		idle_timer_comp.update(delta)
+		idle_comp.update(delta)
 		
-		if not idle_timer_comp.is_active:
+		if not idle_comp.is_active:
 			bb["has_collided"] = false
 			bb["can_idle"] = true
 			bb["can_patrol"] = true
