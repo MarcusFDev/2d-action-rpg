@@ -10,24 +10,46 @@ extends State
 ## Determines the animation that plays during the Idle State.[br]
 ## [b]Note:[/b] Must match an animation name in  [code]AnimatedSprite2D[/code]  or  [code]AnimationPlayer[/code].
 @export var state_animation: String
-@export var use_behavior_tree: bool = false
 ## Determines whether this state uses its own internal logic or defers to parent-defined callbacks.[br]
 ## [b]Note:[/b] If set to [code]false[/code], all internal logic settings are ignored.
 @export var use_parent_logic: bool = false
+
+@export_group("Use Behavior Tree", "export_")
+@export_custom(PROPERTY_HINT_GROUP_ENABLE, "") var export_use_behavior_tree: bool = false
+
+@export_subgroup("Enable Random Idle", "export_")
 ## Determines if entity can randomly idle during movement. [br]
 ## [b]Note:[/b] Only impacts BehaviorTree driven entities. [br]
-## [b]Tip:[/b] Detailed settings found in  [code]IdleTimerComponent[/code].
-@export var use_random_idle: bool = false
+@export_custom(PROPERTY_HINT_GROUP_ENABLE, "") var export_enable_random_idle: bool = false
+## Determines how often the component checks whether the entity should randomly enter an idle state. [br]
+## [b]Tip:[/b] Larger values make random idle checks less frequent. [br]
+## [b]Note:[/b] Setting to [code]0[/code] disables random idle checks entirely.
+@export_range(0, 5, 0.1, "suffix:s", "or_greater") var export_idle_interval: float = 0
+## Determines the percentage chance (0–100%) that the entity will decide to idle each time a random check occurs. [br]
+## [b]Note:[/b] Low values make random idling rare and natural; higher values increase frequency. [br]
+@export_range(0, 100, 1, "suffix:%") var export_idle_chance: float = 0
+
+@export_subgroup("Enable Random Jump", "export_")
+## Determines if entity can randomly jump during movement. [br]
+## [b]Note:[/b] Only impacts BehaviorTree driven entities. [br]
+@export_custom(PROPERTY_HINT_GROUP_ENABLE, "") var export_enable_random_jump: bool = false
+## Determines how often the component checks whether the entity should randomly enter the jump state. [br]
+## [b]Tip:[/b] Larger values make random jump checks less frequent. [br]
+## [b]Note:[/b] Setting to [code]0[/code] disables random jump checks entirely.
+@export_range(0, 5, 0.1, "suffix:s", "or_greater") var export_jump_interval: float = 0
+## Determines the percentage chance (0–100%) that the entity will decide to jump each time a random check occurs. [br]
+## [b]Note:[/b] Low values make random jumping rare and natural; higher values increase frequency. [br]
+@export_range(0, 100, 1, "suffix:%") var export_jump_chance: float = 0
 
 @export_group("Component Paths")
 @export var edge_detector_component: NodePath
-@export var idle_timer_component: NodePath
 @export var movement_component: NodePath
+@export var randomizer_component: NodePath
 
 @onready var actor: CharacterBody2D = get_node_or_null(actor_path)
 @onready var edge_detector_comp: Node = get_node_or_null(edge_detector_component)
-@onready var idle_timer_comp: Node = get_node_or_null(idle_timer_component)
 @onready var movement_comp: Node = get_node_or_null(movement_component)
+@onready var randomizer_comp: Node = get_node_or_null(randomizer_component)
 
 # Script Variables
 var direction: int = 0
@@ -62,17 +84,17 @@ func process_physics(delta: float) -> State:
 	if use_parent_logic:
 		return handle_physics.call(delta)
 	
-	if use_behavior_tree:
+	if export_use_behavior_tree:
 		var bb: Dictionary = actor.get_blackboard()
 		direction = bb["move_direction"]
 	
 	movement_comp.set_direction(Vector2(direction, 0))
-	movement_comp.apply(delta)
+	movement_comp.apply_physics(delta)
 
 	return null
 
 func process_frame(delta: float) -> State:
-	if use_behavior_tree:
+	if export_use_behavior_tree:
 		var move_dir : int = edge_detector_comp.update(delta)
 		var bb : Dictionary = actor.get_blackboard()
 
@@ -84,18 +106,23 @@ func process_frame(delta: float) -> State:
 		else:
 			bb["has_collided"] = false
 	
-	if use_random_idle:
+	if export_enable_random_idle:
 		var bb: Dictionary = actor.get_blackboard()
-		if idle_timer_comp.randomize_idle(delta):
-			idle_timer_comp.start()
+		var can_idle : bool = randomizer_comp.randomizer("idle", export_idle_chance, export_idle_interval, delta)
+		if can_idle:
+			if enable_debug:
+				print(actor.name, "MoveState: Random Idle enabled & can idle.")
 			bb["force_idle"] = true
 			bb["can_patrol"] = false
-
-		if idle_timer_comp.is_active:
-			idle_timer_comp.update(delta)
-		else:
-			bb["force_idle"] = false
-			bb["can_patrol"] = true
+	
+	if export_enable_random_jump:
+		var bb: Dictionary = actor.get_blackboard()
+		var can_jump : bool = randomizer_comp.randomizer("jump", export_jump_chance, export_jump_interval, delta)
+		if can_jump:
+			if enable_debug:
+				print(actor.name, "MoveState: Random Jump enabled & can jump.")
+			bb["force_jump"] = true
+			bb["can_jump"] = false
 
 	if use_parent_logic:
 		return handle_frame.call(delta)
