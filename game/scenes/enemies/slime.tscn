@@ -1,4 +1,4 @@
-[gd_scene load_steps=75 format=3 uid="uid://chptbuqgr7qyt"]
+[gd_scene load_steps=76 format=3 uid="uid://chptbuqgr7qyt"]
 
 [ext_resource type="Script" uid="uid://n35k36oc5i6u" path="res://scripts/enemies/slime.gd" id="1_68p8s"]
 [ext_resource type="PackedScene" uid="uid://bg7nrwxlpxf3p" path="res://scenes/core/base_damage_zone.tscn" id="2_68p8s"]
@@ -17,10 +17,11 @@
 [ext_resource type="Script" uid="uid://ccjqnofia5vo0" path="res://scripts/states/generic_states/jump_state.gd" id="12_rdhaw"]
 [ext_resource type="Script" uid="uid://clv1jjvxgs12w" path="res://scripts/states/generic_states/fall_state.gd" id="13_m4uwr"]
 [ext_resource type="Script" uid="uid://dl4e74spycbcb" path="res://scripts/states/generic_states/move_state.gd" id="13_nx7r3"]
-[ext_resource type="Script" uid="uid://ceuavkjqc2ngt" path="res://scripts/components/idle_timer_component.gd" id="13_o5sr2"]
+[ext_resource type="Script" uid="uid://ceuavkjqc2ngt" path="res://scripts/components/idle_component.gd" id="13_o5sr2"]
 [ext_resource type="Script" uid="uid://dr7fn1f0pllf6" path="res://scripts/components/jump_component.gd" id="14_84gbg"]
 [ext_resource type="Script" uid="uid://dk74e55d6fp38" path="res://scripts/states/generic_states/attack_state.gd" id="14_o5sr2"]
 [ext_resource type="Script" uid="uid://biecfhjepus73" path="res://scripts/components/movement_component.gd" id="15_84gbg"]
+[ext_resource type="Script" uid="uid://c0by7duiifapt" path="res://scripts/components/randomizer_component.gd" id="16_7ji7s"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_wbf5k"]
 atlas = ExtResource("2_ikdmk")
@@ -494,17 +495,19 @@ actor_path = NodePath("../..")
 raycast_right_path = NodePath("../../RayCastRight")
 raycast_left_path = NodePath("../../RayCastLeft")
 
-[node name="IdleTimerComponent" type="Node" parent="Components"]
+[node name="IdleComponent" type="Node" parent="Components"]
 script = ExtResource("13_o5sr2")
 actor_path = NodePath("../..")
-idle_interval = 5.0
-idle_chance = 20.0
 
 [node name="MovementComponent" type="Node" parent="Components"]
 script = ExtResource("15_84gbg")
 actor_path = NodePath("../..")
 move_speed = 30.0
 randomized_chance = 30.0
+
+[node name="RandomizerComponent" type="Node" parent="Components"]
+script = ExtResource("16_7ji7s")
+actor_path = NodePath("../..")
 
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("starting_state")]
 script = ExtResource("9_nx7r3")
@@ -515,17 +518,22 @@ script = ExtResource("11_tvrjd")
 actor_path = NodePath("../..")
 state_animation = "slime_idle"
 use_behavior_tree = true
-idle_timer_component = NodePath("../../Components/IdleTimerComponent")
+idle_component = NodePath("../../Components/IdleComponent")
 
 [node name="PatrolState" type="Node" parent="StateMachine"]
 script = ExtResource("13_nx7r3")
 actor_path = NodePath("../..")
 state_animation = "slime_patrol"
-use_behavior_tree = true
-use_random_idle = true
+export_use_behavior_tree = true
+export_enable_random_idle = true
+export_idle_interval = 1.5
+export_idle_chance = 15.0
+export_enable_random_jump = true
+export_jump_interval = 2.5
+export_jump_chance = 15.0
 edge_detector_component = NodePath("../../Components/EdgeDetectorComponent")
-idle_timer_component = NodePath("../../Components/IdleTimerComponent")
 movement_component = NodePath("../../Components/MovementComponent")
+randomizer_component = NodePath("../../Components/RandomizerComponent")
 
 [node name="JumpState" type="Node" parent="StateMachine"]
 script = ExtResource("12_rdhaw")

@@ -68,13 +68,14 @@ func init_jump() -> void:
 	if export_use_behavior_tree:
 		var bb: Dictionary = actor.get_blackboard()
 		bb["locked"] = true
+		bb["force_jump"] = false
 		bb["is_jumping"] = true
 		bb["can_jump"] = false
 		bb["has_collided"] = false
 		direction = bb["move_direction"]
 
 		if export_enable_randomize_direction:
-			bb["direction"] = movement_comp.randomize_direction(direction)
+			bb["direction"] = movement_comp.randomize_direction()
 		else:
 			direction = bb["move_direction"]
 		

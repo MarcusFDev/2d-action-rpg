@@ -60,6 +60,7 @@ func _setup_blackboard() -> void:
 	blackboard["is_grounded"] = false
 	blackboard["has_collided"] = false
 	blackboard["force_idle"] = false
+	blackboard["force_jump"] = false
 	
 	blackboard["can_patrol"] = true
 	blackboard["can_idle"] = true
@@ -71,20 +72,27 @@ func _setup_blackboard() -> void:
 
 func _setup_behavior_tree() -> void:
 	bt_root = BTSelector.new([
-		# Priority 1: Fall if not grounded
+		# Priority 1
 		BTSequence.new([
 			BTCondition.new("is_grounded", false),
 			BTCondition.new("locked", false),
 			BTAction.new("Fall")
 		]),
-		# Priority 2: Idle if grounded and forced
+		# Priority 2
 		BTSequence.new([
 			BTCondition.new("is_grounded", true),
 			BTCondition.new("force_idle", true),
 			BTCondition.new("locked", false),
 			BTAction.new("Idle")
 		]),
-		# Priority 3: Patrol if grounded and allowed
+		# Priority 3
+		BTSequence.new([
+			BTCondition.new("is_grounded", true),
+			BTCondition.new("force_jump", true),
+			BTCondition.new("locked", false),
+			BTAction.new("Jump")
+		]),
+		# Priority 4
 		BTSequence.new([
 			BTCondition.new("is_grounded", true),
 			BTCondition.new("has_collided", false),
@@ -92,7 +100,7 @@ func _setup_behavior_tree() -> void:
 			BTCondition.new("locked", false),
 			BTAction.new("Patrol")
 		]),
-		# Priority 4: Idle if grounded
+		# Priority 5
 		BTSequence.new([
 			BTCondition.new("is_grounded", true),
 			BTCondition.new("has_collided", true),
