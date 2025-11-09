@@ -149,25 +149,38 @@ func perform_jump() -> void:
 	if enable_debug:
 		print(actor.name, " started jump. Base Jumps remaining: ", base_jumps, " Extra Jumps remaining: ", current_extra_jumps)
 
-func perform_target_jump(direction: int) -> void:
+func perform_target_jump(direction: Variant) -> void:
 	if not can_jump():
 		if enable_debug:
 			print(actor.name, " tried to jump_to but cooldown active or out of jumps.")
 		return
 
-	target_position = actor.global_position + Vector2(24 * direction, -32)
+	var jump_offset: Vector2
+
+	if typeof(direction) == TYPE_VECTOR2:
+		jump_offset = direction.normalized() * 24.0
+	elif typeof(direction) == TYPE_INT or typeof(direction) == TYPE_FLOAT:
+		jump_offset = Vector2(24.0 * float(direction), 0.0)
+
+	target_position = actor.global_position + jump_offset + Vector2(0.0, -32.0)
 
 	is_jumping = true
 
-	var displacement : Variant = target_position - actor.global_position
+	var displacement: Vector2 = target_position - actor.global_position
 	calculate_gravity()
-	
-	var total_time : float = jump_time * 2.0
+
+	var total_time: float = jump_time * 2.0
 	horizontal_velocity = displacement.x / total_time
 	actor.velocity = Vector2(horizontal_velocity, initial_velocity)
 
 	if enable_debug:
-		print(actor.name, " jumping to ", target_position, " with vx=", horizontal_velocity)
+		print(
+			actor.name, 
+			" jumping to ", target_position, 
+			" | vx=", horizontal_velocity, 
+			" | direction type=", typeof(direction)
+		)
+
 
 func apply_physics(delta: float) -> void:
 	if not is_jumping:
