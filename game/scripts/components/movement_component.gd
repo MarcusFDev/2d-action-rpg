@@ -14,6 +14,7 @@ extends Node
 
 @export_group("Randomize Direction")
 @export_range(0, 100, 1, "suffix:%") var randomized_chance: float
+@export var use_vector_direction: bool = false
 
 @onready var actor: CharacterBody2D = get_node_or_null(actor_path)
 
@@ -24,7 +25,10 @@ func randomize_direction() -> Vector2:
 	var flip_chance: float = randomized_chance / 100.0
 
 	if randf() < flip_chance:
-		direction = Vector2(randf_range(-1.0, 1.0), randf_range(-1.0, 1.0)).normalized()
+		if use_vector_direction:
+			direction = Vector2(randf_range(-1.0, 1.0), randf_range(-1.0, 1.0)).normalized()
+		else:
+			direction.x *= -1.0
 	
 	return direction
 
