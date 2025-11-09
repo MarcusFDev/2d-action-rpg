@@ -418,6 +418,7 @@ collision_mask = 11
 script = ExtResource("1_68p8s")
 actor_path = NodePath(".")
 animations_path = NodePath("Animations")
+enable_debug = true
 state_machine_path = NodePath("StateMachine")
 idle_state_path = NodePath("StateMachine/IdleState")
 patrol_state_path = NodePath("StateMachine/PatrolState")
@@ -503,7 +504,7 @@ actor_path = NodePath("../..")
 script = ExtResource("15_84gbg")
 actor_path = NodePath("../..")
 move_speed = 30.0
-randomized_chance = 30.0
+randomized_chance = 50.0
 
 [node name="RandomizerComponent" type="Node" parent="Components"]
 script = ExtResource("16_7ji7s")
@@ -511,14 +512,18 @@ actor_path = NodePath("../..")
 
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("starting_state")]
 script = ExtResource("9_nx7r3")
-starting_state = NodePath("IdleState")
+starting_state = NodePath("FallState")
 
 [node name="IdleState" type="Node" parent="StateMachine"]
 script = ExtResource("11_tvrjd")
 actor_path = NodePath("../..")
 state_animation = "slime_idle"
-use_behavior_tree = true
+export_use_behavior_tree = true
+export_enable_random_jump = true
+export_jump_interval = 1.0
+export_jump_chance = 10.0
 idle_component = NodePath("../../Components/IdleComponent")
+randomizer_component = NodePath("../../Components/RandomizerComponent")
 
 [node name="PatrolState" type="Node" parent="StateMachine"]
 script = ExtResource("13_nx7r3")
@@ -526,10 +531,10 @@ actor_path = NodePath("../..")
 state_animation = "slime_patrol"
 export_use_behavior_tree = true
 export_enable_random_idle = true
-export_idle_interval = 1.5
-export_idle_chance = 15.0
+export_idle_interval = 1.0
+export_idle_chance = 30.0
 export_enable_random_jump = true
-export_jump_interval = 2.5
+export_jump_interval = 2.0
 export_jump_chance = 15.0
 edge_detector_component = NodePath("../../Components/EdgeDetectorComponent")
 movement_component = NodePath("../../Components/MovementComponent")
@@ -541,10 +546,17 @@ actor_path = NodePath("../..")
 state_animation = "slime_idle"
 export_use_behavior_tree = true
 export_enable_randomize_direction = true
+export_enable_random_idle = true
+export_idle_interval = 2.0
+export_idle_chance = 10.0
+export_enable_random_patrol = true
+export_patrol_interval = 2.0
+export_patrol_chance = 10.0
 gravity_component = NodePath("../../Components/GravityComponent")
 ground_check_component = NodePath("../../Components/GroundCheckComponent")
 jump_component = NodePath("../../Components/JumpComponent")
 movement_component = NodePath("../../Components/MovementComponent")
+randomizer_component = NodePath("../../Components/RandomizerComponent")
 
 [node name="FallState" type="Node" parent="StateMachine"]
 script = ExtResource("13_m4uwr")
