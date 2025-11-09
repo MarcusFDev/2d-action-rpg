@@ -57,10 +57,12 @@ func get_blackboard() -> Dictionary:
 func _setup_blackboard() -> void:
 	blackboard["fsm"] = state_machine
 	
-	blackboard["is_grounded"] = false
+	blackboard["is_grounded"] = true
 	blackboard["has_collided"] = false
+	
 	blackboard["force_idle"] = false
 	blackboard["force_jump"] = false
+	blackboard["force_patrol"] = false
 	
 	blackboard["can_patrol"] = true
 	blackboard["can_idle"] = true
@@ -68,7 +70,7 @@ func _setup_blackboard() -> void:
 	
 	blackboard["locked"] = false
 	blackboard["move_direction"] = 1
-	blackboard["intent"] = "Idle"
+	blackboard["intent"] = "Fall" # Note: Must Match StateMachine Starting State
 
 func _setup_behavior_tree() -> void:
 	bt_root = BTSelector.new([
@@ -92,6 +94,12 @@ func _setup_behavior_tree() -> void:
 			BTCondition.new("locked", false),
 			BTAction.new("Jump")
 		]),
+		BTSequence.new([
+			BTCondition.new("is_grounded", true),
+			BTCondition.new("force_patrol", true),
+			BTCondition.new("locked", false),
+			BTAction.new("Patrol")
+		]),
 		# Priority 4
 		BTSequence.new([
 			BTCondition.new("is_grounded", true),
@@ -108,7 +116,7 @@ func _setup_behavior_tree() -> void:
 			BTSelector.new([
 				BTSequence.new([
 					BTCondition.new("can_jump", true),
-					BTCondition.new("random_chance", 0.01),
+					BTCondition.new("random_chance", 0.50),
 					BTCondition.new("locked", false),
 					BTAction.new("Jump"),
 				]),
