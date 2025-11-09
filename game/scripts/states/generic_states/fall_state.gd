@@ -44,6 +44,10 @@ func enter() -> void:
 func init_fall() -> void:
 	animations.play(state_animation)
 	enter_callback.call()
+	
+	if use_behavior_tree:
+		var bb: Dictionary = actor.get_blackboard()
+		bb["locked"] = true
 
 func process_physics(_delta: float) -> State:
 	gravity_comp.apply(_delta)
@@ -52,8 +56,8 @@ func process_physics(_delta: float) -> State:
 		if actor.is_on_floor():
 			bb["can_patrol"] = true
 			bb["is_grounded"] = true
+			bb["locked"] = false
 		else:
-			bb["can_patrol"] = false
 			bb["is_grounded"] = false
 
 	if use_parent_logic:

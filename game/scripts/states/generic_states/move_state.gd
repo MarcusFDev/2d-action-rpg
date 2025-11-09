@@ -79,6 +79,12 @@ func enter() -> void:
 func init_move() -> void:
 	actor.animations.play(state_animation)
 	enter_callback.call()
+	
+	if export_use_behavior_tree:
+		var bb: Dictionary = actor.get_blackboard()
+		bb["can_patrol"] = true
+		bb["force_patrol"] = false
+		bb["locked"] = true
 
 func process_physics(delta: float) -> State:
 	if use_parent_logic:
@@ -103,6 +109,7 @@ func process_frame(delta: float) -> State:
 			bb["move_direction"] = direction
 			bb["has_collided"] = true
 			bb["can_jump"] = true
+			bb["locked"] = false
 		else:
 			bb["has_collided"] = false
 	
@@ -113,7 +120,7 @@ func process_frame(delta: float) -> State:
 			if enable_debug:
 				print(actor.name, "MoveState: Random Idle enabled & can idle.")
 			bb["force_idle"] = true
-			bb["can_patrol"] = false
+			bb["locked"] = false
 	
 	if export_enable_random_jump:
 		var bb: Dictionary = actor.get_blackboard()
@@ -122,7 +129,7 @@ func process_frame(delta: float) -> State:
 			if enable_debug:
 				print(actor.name, "MoveState: Random Jump enabled & can jump.")
 			bb["force_jump"] = true
-			bb["can_jump"] = false
+			bb["locked"] = false
 
 	if use_parent_logic:
 		return handle_frame.call(delta)
