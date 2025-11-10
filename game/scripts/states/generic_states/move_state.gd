@@ -17,6 +17,18 @@ extends State
 @export_group("Use Behavior Tree", "export_")
 @export_custom(PROPERTY_HINT_GROUP_ENABLE, "") var export_use_behavior_tree: bool = false
 
+@export_subgroup("Enable Randomize Direction", "export_")
+## Determines if entity can randomly change direction during movement. [br]
+## [b]Note:[/b] Only impacts BehaviorTree driven entities. [br]
+@export_custom(PROPERTY_HINT_GROUP_ENABLE, "") var export_enable_randomize_direction: bool = false
+## Determines how often the state checks whether the entity should randomly change direction. [br]
+## [b]Tip:[/b] Larger values make random direction swaps less frequent. [br]
+## [b]Note:[/b] Setting to [code]0[/code] disables random direction swaps entirely.
+@export_range(0, 5, 0.1, "suffix:s", "or_greater") var export_swap_interval: float = 0
+## Determines the percentage chance (0–100%) that the entity will decide to swap direction each time a random check occurs. [br]
+## [b]Note:[/b] Low values make random direction changing rare and natural; higher values increase frequency. [br]
+@export_range(0, 100, 1, "suffix:%") var export_swap_chance: float = 0
+
 @export_subgroup("Enable Random Idle", "export_")
 ## Determines if entity can randomly idle during movement. [br]
 ## [b]Note:[/b] Only impacts BehaviorTree driven entities. [br]
@@ -52,7 +64,7 @@ extends State
 @onready var randomizer_comp: Node = get_node_or_null(randomizer_component)
 
 # Script Variables
-var direction: int = 0
+var direction: Variant
 
 # Callback Functions
 func _on_enter() -> void: pass
@@ -92,10 +104,19 @@ func process_physics(delta: float) -> State:
 	
 	if export_use_behavior_tree:
 		var bb: Dictionary = actor.get_blackboard()
-		direction = bb["move_direction"]
+		var collided: bool = bb["has_collided"]
+		if export_enable_randomize_direction and not collided:
+			var result : Dictionary = movement_comp. direction_randomizer("jump", export_swap_chance, export_swap_interval, delta)
+			if result.success:
+				direction = result.direction
+				bb["move_direction"] = direction
+			else:
+				direction = bb["move_direction"]
+		else:
+			direction = bb["move_direction"]
 	
-	movement_comp.set_direction(Vector2(direction, 0))
-	movement_comp.apply_physics(delta)
+		movement_comp.set_direction(direction)
+		movement_comp.apply_physics(delta)
 
 	return null
 

@@ -79,7 +79,7 @@ var handle_physics: Callable = _on_physics
 var handle_frame: Callable = _on_frame
 
 # Script Variables
-var direction: int = 0
+var direction: Variant
 var state_direction: Variant
 var jumps_remaining: int = 0
 var jump_timer: float = 0.0

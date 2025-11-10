@@ -17,6 +17,18 @@ extends State
 @export_group("Use Behavior Tree", "export_")
 @export_custom(PROPERTY_HINT_GROUP_ENABLE, "") var export_use_behavior_tree: bool = false
 
+@export_subgroup("Enable Randomize Direction", "export_")
+## Determines if entity can randomly change direction during movement. [br]
+## [b]Note:[/b] Only impacts BehaviorTree driven entities. [br]
+@export_custom(PROPERTY_HINT_GROUP_ENABLE, "") var export_enable_randomize_direction: bool = false
+## Determines how often the state checks whether the entity should randomly change direction. [br]
+## [b]Tip:[/b] Larger values make random direction swaps less frequent. [br]
+## [b]Note:[/b] Setting to [code]0[/code] disables random direction swaps entirely.
+@export_range(0, 5, 0.1, "suffix:s", "or_greater") var export_swap_interval: float = 0
+## Determines the percentage chance (0–100%) that the entity will decide to swap direction each time a random check occurs. [br]
+## [b]Note:[/b] Low values make random direction changing rare and natural; higher values increase frequency. [br]
+@export_range(0, 100, 1, "suffix:%") var export_swap_chance: float = 0
+
 @export_subgroup("Enable Random Patrol", "export_")
 ## Determines if entity can randomly patrols during movement. [br]
 ## [b]Note:[/b] Only impacts BehaviorTree driven entities. [br]
@@ -44,9 +56,11 @@ extends State
 @export_group("Component Paths")
 @export var idle_component: NodePath
 @export var randomizer_component: NodePath
+@export var movement_component: NodePath
 
 @onready var actor: Node = get_node_or_null(actor_path)
 @onready var idle_comp: Node = get_node_or_null(idle_component)
+@onready var movement_comp: Node = get_node_or_null(movement_component)
 @onready var randomizer_comp: Node = get_node_or_null(randomizer_component)
 
 # Callback Functions
@@ -85,6 +99,12 @@ func process_physics(delta: float) -> State:
 	actor.velocity.x = 0
 	
 	if export_use_behavior_tree:
+		if export_enable_randomize_direction:
+			var bb: Dictionary = actor.get_blackboard()
+			var result : Dictionary = movement_comp.direction_randomizer("idle", export_swap_chance, export_swap_interval, delta)
+			if result.success:
+				bb["move_direction"] = result.direction
+
 		if export_enable_random_patrol:
 			var bb: Dictionary = actor.get_blackboard()
 			var can_patrol : bool = randomizer_comp.randomizer("patrol", export_patrol_chance, export_patrol_interval, delta)
