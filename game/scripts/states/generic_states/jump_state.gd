@@ -14,7 +14,18 @@ extends State
 
 @export_group("Use Behavior Tree", "export_")
 @export_custom(PROPERTY_HINT_GROUP_ENABLE, "") var export_use_behavior_tree: bool = false
-@export var export_enable_randomize_direction: bool = false
+
+@export_subgroup("Enable Randomize Direction", "export_")
+## Determines if entity can randomly change direction during movement. [br]
+## [b]Note:[/b] Only impacts BehaviorTree driven entities. [br]
+@export_custom(PROPERTY_HINT_GROUP_ENABLE, "") var export_enable_randomize_direction: bool = false
+## Determines how often the state checks whether the entity should randomly change direction. [br]
+## [b]Tip:[/b] Larger values make random direction swaps less frequent. [br]
+## [b]Note:[/b] Setting to [code]0[/code] disables random direction swaps entirely.
+@export_range(0, 5, 0.1, "suffix:s", "or_greater") var export_swap_interval: float = 0
+## Determines the percentage chance (0–100%) that the entity will decide to swap direction each time a random check occurs. [br]
+## [b]Note:[/b] Low values make random direction changing rare and natural; higher values increase frequency. [br]
+@export_range(0, 100, 1, "suffix:%") var export_swap_chance: float = 0
 
 @export_subgroup("Enable Random Idle", "export_")
 ## Determines if entity can randomly idle during movement. [br]
@@ -122,8 +133,13 @@ func process_physics(delta: float) -> State:
 		
 		if grounded:
 			if not jump_comp.cooldown_active and jumps_remaining > 0:
+				
 				if export_enable_randomize_direction and not collided:
-					state_direction = movement_comp.randomize_direction()
+					var result : Dictionary = movement_comp. direction_randomizer("jump", export_swap_chance, export_swap_interval, delta)
+					if result.success:
+						state_direction = result.direction
+					else:
+						state_direction = bb["move_direction"]
 				else:
 					state_direction = bb["move_direction"]
 				
