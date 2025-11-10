@@ -13,13 +13,13 @@ extends Node
 @export_range(0, 200, 1, "suffix:px/s", "or_greater") var move_speed: float = 0
 
 @export_group("Direction Options")
-
-@export var use_vector_direction: bool = false
+enum EntityType { GROUND, FLYING, BOTH }
+@export var entity_type: EntityType
 
 @onready var actor: CharacterBody2D = get_node_or_null(actor_path)
 
 # Script Variables
-var direction: Vector2 = Vector2.ZERO
+var direction: Variant
 var _timers : Dictionary = {}
 
 func direction_randomizer(id: String, chance: float, interval: float, delta: float) -> Variant:
@@ -37,10 +37,17 @@ func direction_randomizer(id: String, chance: float, interval: float, delta: flo
 		var roll: float = randf() * 100.0
 		var success: bool = roll < chance
 		if success: 
-			if use_vector_direction:
-				direction = Vector2(randf_range(-1.0, 1.0), randf_range(-1.0, 1.0)).normalized()
-			else:
-				direction.x *= -1.0
+			match entity_type:
+				EntityType.GROUND:
+					direction.x *= -1.0
+				EntityType.FLYING:
+					direction = Vector2(randf_range(-1.0, 1.0), randf_range(-1.0, 1.0)).normalized()
+				EntityType.BOTH:
+					if randi() % 2 == 0:
+						direction.x *= -1.0
+					else:
+						direction = Vector2(randf_range(-1.0, 1.0), randf_range(-1.0, 1.0)).normalized()
+				
 			if enable_debug:
 				print(actor.name, " | MovementComponent: DirectionRandomizer: Id:", id, " | Roll Value:", roll, " | Chance: ", chance," | Direction:", direction, " | Success: ", success)	
 				
@@ -48,10 +55,13 @@ func direction_randomizer(id: String, chance: float, interval: float, delta: flo
 	
 	return {"success": false, "direction": direction}
 
-func set_direction(new_direction: Vector2) -> void:
-	direction = new_direction.normalized()
+func set_direction(new_direction: Variant) -> void:
+	if typeof(new_direction) == TYPE_INT or typeof(new_direction) == TYPE_FLOAT:
+		direction = Vector2(new_direction, 0).normalized()
+	elif typeof(new_direction) == TYPE_VECTOR2:
+		direction = new_direction.normalized()
 
-func get_direction() -> Vector2:
+func get_direction() -> Variant:
 	return direction
 
 func apply_physics(_delta: float) -> void:
