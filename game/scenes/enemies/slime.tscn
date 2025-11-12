@@ -468,7 +468,7 @@ jump_height_offset = true
 export_enable_jump_cooldown = true
 export_jump_cooldown = 1.0
 export_enable_multi_jump = true
-export_jump_count = 3
+export_jump_count = 5
 export_recharge_time = 5.0
 ground_check_path = NodePath("../GroundCheckComponent")
 metadata/_custom_type_script = "uid://dr7fn1f0pllf6"
@@ -507,6 +507,7 @@ move_speed = 30.0
 [node name="RandomizerComponent" type="Node" parent="Components"]
 script = ExtResource("16_7ji7s")
 actor_path = NodePath("../..")
+randomizer_cooldown = 1.0
 
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("starting_state")]
 script = ExtResource("9_nx7r3")
@@ -518,8 +519,8 @@ actor_path = NodePath("../..")
 state_animation = "slime_idle"
 export_use_behavior_tree = true
 export_enable_randomize_direction = true
-export_swap_interval = 1.0
-export_swap_chance = 10.0
+export_swap_interval = 0.5
+export_swap_chance = 30.0
 export_enable_random_jump = true
 export_jump_interval = 1.0
 export_jump_chance = 10.0
@@ -532,7 +533,6 @@ script = ExtResource("13_nx7r3")
 actor_path = NodePath("../..")
 state_animation = "slime_patrol"
 export_use_behavior_tree = true
-export_enable_randomize_direction = true
 export_swap_interval = 2.0
 export_swap_chance = 20.0
 export_enable_random_idle = true
@@ -544,6 +544,7 @@ export_jump_chance = 15.0
 edge_detector_component = NodePath("../../Components/EdgeDetectorComponent")
 movement_component = NodePath("../../Components/MovementComponent")
 randomizer_component = NodePath("../../Components/RandomizerComponent")
+ground_check_component = NodePath("../../Components/GroundCheckComponent")
 
 [node name="JumpState" type="Node" parent="StateMachine"]
 script = ExtResource("12_rdhaw")
@@ -564,6 +565,7 @@ ground_check_component = NodePath("../../Components/GroundCheckComponent")
 jump_component = NodePath("../../Components/JumpComponent")
 movement_component = NodePath("../../Components/MovementComponent")
 randomizer_component = NodePath("../../Components/RandomizerComponent")
+edge_detector_component = NodePath("../../Components/EdgeDetectorComponent")
 
 [node name="FallState" type="Node" parent="StateMachine"]
 script = ExtResource("13_m4uwr")
