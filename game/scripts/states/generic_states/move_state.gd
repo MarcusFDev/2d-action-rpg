@@ -57,11 +57,13 @@ extends State
 @export var edge_detector_component: NodePath
 @export var movement_component: NodePath
 @export var randomizer_component: NodePath
+@export var ground_check_component: NodePath
 
 @onready var actor: CharacterBody2D = get_node_or_null(actor_path)
 @onready var edge_detector_comp: Node = get_node_or_null(edge_detector_component)
 @onready var movement_comp: Node = get_node_or_null(movement_component)
 @onready var randomizer_comp: Node = get_node_or_null(randomizer_component)
+@onready var ground_check_comp: Node = get_node_or_null(ground_check_component)
 
 # Script Variables
 var direction: Variant
@@ -122,11 +124,14 @@ func process_physics(delta: float) -> State:
 
 func process_frame(delta: float) -> State:
 	if export_use_behavior_tree:
-		var move_dir : int = edge_detector_comp.update(delta)
 		var bb : Dictionary = actor.get_blackboard()
+		direction = edge_detector_comp.update(delta)
+		
+		if not ground_check_comp.is_grounded:
+			bb["is_grounded"] = false
+			bb["locked"] = false
 
-		if move_dir != 0:
-			direction = move_dir
+		if direction != 0:
 			bb["move_direction"] = direction
 			bb["has_collided"] = true
 			bb["can_jump"] = true
