@@ -58,6 +58,7 @@ extends State
 @export var jump_component: NodePath
 @export var movement_component: NodePath
 @export var randomizer_component: NodePath
+@export var edge_detector_component: NodePath
 
 @onready var actor: CharacterBody2D = get_node_or_null(actor_path)
 @onready var ground_check_comp: Node = get_node_or_null(ground_check_component)
@@ -65,6 +66,7 @@ extends State
 @onready var gravity_comp: Node = get_node_or_null(gravity_component)
 @onready var movement_comp: Node = get_node_or_null(movement_component)
 @onready var randomizer_comp: Node = get_node_or_null(randomizer_component)
+@onready var edge_detector_comp: Node = get_node_or_null(edge_detector_component)
 
 # Callback Functions
 func _on_enter() -> void: pass
@@ -196,6 +198,18 @@ func process_input(event: InputEvent) -> State:
 func process_frame(delta: float) -> State:
 	if use_parent_logic:
 		return handle_frame.call(delta)
+	
+	if export_use_behavior_tree:
+		var bb : Dictionary = actor.get_blackboard()
+		direction = edge_detector_comp.update(delta)
+		if direction != 0:
+			bb["move_direction"] = direction
+			bb["has_collided"] = true
+			bb["can_jump"] = true
+			bb["locked"] = false
+		else:
+			bb["has_collided"] = false
+	
 	return null
 
 func exit() -> void:
