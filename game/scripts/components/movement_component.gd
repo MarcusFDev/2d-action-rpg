@@ -1,5 +1,5 @@
 class_name MovementComponent
-extends Node
+extends Component
 
 ## Assign the parent entity to the component.
 @export var actor_path: NodePath

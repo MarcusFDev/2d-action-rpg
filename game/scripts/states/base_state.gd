@@ -1,3 +1,4 @@
+@icon("uid://bnkau76jjea1e")
 class_name State
 extends Node
 

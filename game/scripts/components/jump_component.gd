@@ -1,5 +1,5 @@
 class_name JumpComponent
-extends Node
+extends Component
 
 ## Assign the parent entity path to the component.
 @export var actor_path: NodePath
