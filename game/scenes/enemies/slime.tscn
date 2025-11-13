@@ -1,4 +1,4 @@
-[gd_scene load_steps=76 format=3 uid="uid://chptbuqgr7qyt"]
+[gd_scene load_steps=78 format=3 uid="uid://chptbuqgr7qyt"]
 
 [ext_resource type="Script" uid="uid://n35k36oc5i6u" path="res://scripts/enemies/slime.gd" id="1_68p8s"]
 [ext_resource type="PackedScene" uid="uid://bg7nrwxlpxf3p" path="res://scenes/core/base_damage_zone.tscn" id="2_68p8s"]
@@ -10,7 +10,9 @@
 [ext_resource type="Texture2D" uid="uid://dkhvgs4m8tdu" path="res://assets/sprites/enemies/slime/slime-take-damage.png" id="7_at850"]
 [ext_resource type="Script" uid="uid://bcoqv8smpfvig" path="res://scripts/states/state_machines/state_machine.gd" id="9_nx7r3"]
 [ext_resource type="Script" uid="uid://dvj15x0yx6poy" path="res://scripts/components/ground_check_component.gd" id="9_rdhaw"]
+[ext_resource type="Script" uid="uid://btyaiu46kb4tm" path="res://scripts/components/component.gd" id="9_wnf82"]
 [ext_resource type="Script" uid="uid://c5ae5naepgxn2" path="res://scripts/components/gravity_component.gd" id="10_m4uwr"]
+[ext_resource type="Script" uid="uid://dnx2iycln56te" path="res://scripts/components/health_component.gd" id="11_noxma"]
 [ext_resource type="Script" uid="uid://d2ncc58simucl" path="res://scripts/components/direction_flip_component.gd" id="11_o5sr2"]
 [ext_resource type="Script" uid="uid://ct14p13yajhmc" path="res://scripts/states/generic_states/idle_state.gd" id="11_tvrjd"]
 [ext_resource type="Script" uid="uid://b320oyar5gjaj" path="res://scripts/components/edge_detector_component.gd" id="12_m4uwr"]
@@ -425,7 +427,7 @@ jump_state_path = NodePath("StateMachine/JumpState")
 fall_state_path = NodePath("StateMachine/FallState")
 attack_state_path = NodePath("StateMachine/AttackState")
 ground_check_component = NodePath("Components/GroundCheckComponent")
-direction_flip_component = NodePath("Components/DirectionFlipComponent")
+animation_component = NodePath("Components/AnimationComponent")
 edge_detector_component = NodePath("Components/EdgeDetectorComponent")
 jump_component = NodePath("Components/JumpComponent")
 
@@ -458,6 +460,7 @@ position = Vector2(0, -1)
 shape = SubResource("RectangleShape2D_6axq5")
 
 [node name="Components" type="Node" parent="."]
+script = ExtResource("9_wnf82")
 
 [node name="JumpComponent" type="Node" parent="Components"]
 script = ExtResource("14_84gbg")
@@ -474,6 +477,7 @@ ground_check_path = NodePath("../GroundCheckComponent")
 metadata/_custom_type_script = "uid://dr7fn1f0pllf6"
 
 [node name="HealthComponent" type="Node" parent="Components"]
+script = ExtResource("11_noxma")
 
 [node name="GroundCheckComponent" type="Node" parent="Components"]
 script = ExtResource("9_rdhaw")
@@ -484,7 +488,7 @@ script = ExtResource("10_m4uwr")
 actor_path = NodePath("../..")
 gravity = 1000.0
 
-[node name="DirectionFlipComponent" type="Node" parent="Components"]
+[node name="AnimationComponent" type="Node" parent="Components"]
 script = ExtResource("11_o5sr2")
 actor_path = NodePath("../..")
 animations_path = NodePath("../../Animations")

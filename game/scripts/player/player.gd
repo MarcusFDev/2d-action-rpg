@@ -29,7 +29,7 @@ extends CharacterBody2D
 
 @export_group("Component Paths")
 @export var ground_check_component: NodePath
-@export var direction_flip_component: NodePath
+@export var animation_component: NodePath
 @export var movement_component: NodePath
 @export var jump_component: NodePath
 @export var gravity_component: NodePath
@@ -51,7 +51,7 @@ extends CharacterBody2D
 @onready var death_state: Node = get_node_or_null(death_state_path)
 	
 @onready var ground_check_comp: Node = get_node_or_null(ground_check_component)
-@onready var direction_flip_comp: Node = get_node_or_null(direction_flip_component)
+@onready var animation_comp: Node = get_node_or_null(animation_component)
 @onready var movement_comp: Node = get_node_or_null(movement_component)
 @onready var jump_comp: Node = get_node_or_null(jump_component)
 @onready var gravity_comp: Node = get_node_or_null(gravity_component)
@@ -172,7 +172,7 @@ func _physics_process(delta: float) -> void:
 	if ground_check_comp.just_landed():
 		jump_comp.reset_jump_counter()
 
-	direction_flip_comp.apply(delta)
+	animation_comp.animation_flip(delta)
 	state_machine.process_physics(delta)
 	jump_comp.update_timer(delta)
 	
@@ -208,11 +208,6 @@ func take_damage(_amount: int, enemy_position: Vector2) -> void:
 		else:
 			print("Player.gd| Error: Could not find Hurt state!")
 
-func trigger_attack() -> void:
-	if InputManagerClass.is_attack_pressed():
-		if attack_state:
-			state_machine.change_state(attack_state)
-
 func add_health(_amount: int) -> void:
 	var old_health: int = current_health
 	current_health = min(current_health + _amount, max_health)
@@ -222,13 +217,16 @@ func add_health(_amount: int) -> void:
 	if hud:
 		hud.update_health(old_health, current_health)
 
+
+
+func trigger_attack() -> void:
+	if InputManagerClass.is_attack_pressed():
+		if attack_state:
+			state_machine.change_state(attack_state)
+
 func apply_knockback(direction: Vector2, force: float) -> void:
 	velocity += direction.normalized() * force
 
-func apply_immunity(_duration: float) -> void:
-	#is_immune = true
-	#$ImmunityTimer.start(duration)
-	pass
 # ==============================
 # ===== GameOver Trigger =====
 # ==============================

@@ -1,4 +1,4 @@
-class_name DirectionFlipComponent
+class_name AnimationComponent
 extends Component
 
 ## Assign the parent entity to the component.
@@ -15,7 +15,7 @@ extends Component
 @onready var actor: Node = get_node_or_null(actor_path)
 @onready var animations: AnimatedSprite2D = get_node_or_null(animations_path)
 
-func apply(_delta: float) -> void:
+func animation_flip(_delta: float) -> void:
 	if actor and animations:
 		if actor.velocity.x != 0:
 			animations.flip_h = actor.velocity.x < 0

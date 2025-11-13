@@ -1,4 +1,4 @@
-[gd_scene load_steps=75 format=3 uid="uid://beftgbphk8tt3"]
+[gd_scene load_steps=77 format=3 uid="uid://beftgbphk8tt3"]
 
 [ext_resource type="Script" uid="uid://dc7is6nsd35mi" path="res://scripts/player/player.gd" id="1_g2els"]
 [ext_resource type="Texture2D" uid="uid://nuicatwvk6p6" path="res://assets/sprites/player/knight-attack1.png" id="2_myrg7"]
@@ -11,6 +11,8 @@
 [ext_resource type="Texture2D" uid="uid://dyco7cgw4mdqp" path="res://assets/sprites/player/knight-jump.png" id="5_gx1jg"]
 [ext_resource type="Texture2D" uid="uid://npo044vxtqee" path="res://assets/sprites/player/knight-take-damage.png" id="7_ugbui"]
 [ext_resource type="Script" uid="uid://dvj15x0yx6poy" path="res://scripts/components/ground_check_component.gd" id="10_3j4b4"]
+[ext_resource type="Script" uid="uid://btyaiu46kb4tm" path="res://scripts/components/component.gd" id="10_007i1"]
+[ext_resource type="Script" uid="uid://dnx2iycln56te" path="res://scripts/components/health_component.gd" id="10_cnsyf"]
 [ext_resource type="Script" uid="uid://ct14p13yajhmc" path="res://scripts/states/generic_states/idle_state.gd" id="11_lgqa7"]
 [ext_resource type="Script" uid="uid://c5ae5naepgxn2" path="res://scripts/components/gravity_component.gd" id="11_yj68g"]
 [ext_resource type="Script" uid="uid://d2ncc58simucl" path="res://scripts/components/direction_flip_component.gd" id="12_ioxgp"]
@@ -430,7 +432,7 @@ hurt_state_path = NodePath("StateMachine/HurtState")
 heal_state_path = NodePath("StateMachine/HealState")
 death_state_path = NodePath("StateMachine/DeathState")
 ground_check_component = NodePath("Components/GroundCheckComponent")
-direction_flip_component = NodePath("Components/DirectionFlipComponent")
+animation_component = NodePath("Components/AnimationComponent")
 movement_component = NodePath("Components/MovementComponent")
 jump_component = NodePath("Components/JumpComponent")
 gravity_component = NodePath("Components/GravityComponent")
@@ -450,8 +452,13 @@ wait_time = 0.5
 one_shot = true
 
 [node name="Components" type="Node" parent="."]
+script = ExtResource("10_007i1")
 
 [node name="HealthComponent" type="Node" parent="Components"]
+script = ExtResource("10_cnsyf")
+actor_path = NodePath("../..")
+max_health = 10.0
+starting_health = 5.0
 
 [node name="GroundCheckComponent" type="Node" parent="Components"]
 script = ExtResource("10_3j4b4")
@@ -462,7 +469,7 @@ script = ExtResource("11_yj68g")
 actor_path = NodePath("../..")
 gravity = 1000.0
 
-[node name="DirectionFlipComponent" type="Node" parent="Components"]
+[node name="AnimationComponent" type="Node" parent="Components"]
 script = ExtResource("12_ioxgp")
 actor_path = NodePath("../..")
 animations_path = NodePath("../../Animations")
@@ -482,7 +489,6 @@ ground_check_path = NodePath("../GroundCheckComponent")
 script = ExtResource("14_ioxgp")
 actor_path = NodePath("../..")
 move_speed = 120.0
-randomized_chance = 30.0
 metadata/_custom_type_script = "uid://biecfhjepus73"
 
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("starting_state")]
@@ -526,10 +532,10 @@ next_state = NodePath("../IdleState")
 enable_knockback = true
 knockback_force = 132.5
 
-[node name="HealState" type="Node" parent="StateMachine" node_paths=PackedStringArray("next_state")]
+[node name="HealState" type="Node" parent="StateMachine"]
 script = ExtResource("15_cnsyf")
-heal_animation = "heal"
-next_state = NodePath("../IdleState")
+actor_path = NodePath("../..")
+state_animation = "heal"
 
 [node name="AttackState" type="Node" parent="StateMachine" node_paths=PackedStringArray("next_state")]
 script = ExtResource("17_6cv16")
@@ -542,6 +548,5 @@ death_animation = "death"
 post_death_method = "trigger_game_over"
 
 [connection signal="animation_finished" from="Animations" to="StateMachine/HurtState" method="animation_finished"]
-[connection signal="animation_finished" from="Animations" to="StateMachine/HealState" method="animation_finished"]
 [connection signal="animation_finished" from="Animations" to="StateMachine/DeathState" method="animation_finished"]
 [connection signal="timeout" from="GameOverDelayTimer" to="." method="_on_game_over_delay_timer_timeout"]

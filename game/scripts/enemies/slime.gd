@@ -21,7 +21,7 @@ extends CharacterBody2D
 
 @export_group("Component Paths")
 @export var ground_check_component: NodePath
-@export var direction_flip_component: NodePath
+@export var animation_component: NodePath
 @export var edge_detector_component: NodePath
 @export var jump_component: NodePath
 
@@ -35,7 +35,7 @@ extends CharacterBody2D
 @onready var attack_state: Node = get_node_or_null(attack_state_path)
 	
 @onready var ground_check_comp: Node = get_node_or_null(ground_check_component)
-@onready var direction_flip_comp: Node = get_node_or_null(direction_flip_component)
+@onready var animation_comp: Node = get_node_or_null(animation_component)
 @onready var edge_detector_comp: Node = get_node_or_null(edge_detector_component)
 @onready var jump_comp: Node = get_node_or_null(jump_component)
 
@@ -173,7 +173,7 @@ func _physics_process(delta: float) -> void:
 	var grounded : bool = ground_check_comp.is_grounded
 	blackboard["is_grounded"] = grounded
 	
-	direction_flip_comp.apply(delta)
+	animation_comp.animation_flip(delta)
 	jump_comp.update_timer(delta)
 	state_machine.process_physics(delta)
 	ground_check_comp.post_update()
