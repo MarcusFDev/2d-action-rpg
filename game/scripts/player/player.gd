@@ -2,17 +2,14 @@ class_name Player
 extends CharacterBody2D
 
 @export var actor_path: NodePath
-@export var animations_path: NodePath
 ## Enables debug messages in the output terminal. [br]
 ## [b]Note:[/b] Useful for development and troubleshooting.
 @export var enable_debug: bool = false
 
 @export_category("Actor Settings")
+@export var animations_path: NodePath
 
 @export_group("Temporary Options")
-@export var max_health : int = 9
-@export var starting_health : int = 5
-@export var hud_path: NodePath
 @export var game_over_menu_path: NodePath
 @export var game_over_timer_path: NodePath
 
@@ -36,7 +33,6 @@ extends CharacterBody2D
 
 @onready var actor: CharacterBody2D = get_node_or_null(actor_path)
 @onready var animations: AnimatedSprite2D = get_node_or_null(animations_path)
-@onready var hud: Node = get_node_or_null(hud_path)
 @onready var game_over_menu: Node = get_node_or_null(game_over_menu_path)
 @onready var game_over_timer: Node = get_node_or_null(game_over_timer_path)
 	
@@ -55,8 +51,6 @@ extends CharacterBody2D
 @onready var movement_comp: Node = get_node_or_null(movement_component)
 @onready var jump_comp: Node = get_node_or_null(jump_component)
 @onready var gravity_comp: Node = get_node_or_null(gravity_component)
-
-var current_health : int = starting_health
 
 # ==============================
 # ===== Intialization =====
@@ -181,51 +175,13 @@ func _physics_process(delta: float) -> void:
 func _process(delta: float) -> void:
 	state_machine.process_frame(delta)
 
-# ==============================
-# ===== Player Health =====
-# ==============================
-func take_damage(_amount: int, enemy_position: Vector2) -> void:
-	if current_health <= 0:
-		return
-	
-	var old_health : int = current_health
-	current_health = max(current_health - _amount, 0)
-	
-	if hud:
-		hud.update_health(old_health, current_health)
-	
-	if current_health <= 0:
-		if death_state:
-			state_machine.change_state(death_state)
-		else:
-			print("Player.gd| Error: Could not find Death State!")
-		
-	else:
-		if hurt_state:
-			var knockback_dir : Vector2 = (global_position - enemy_position).normalized()
-			hurt_state.set_knockback_data(knockback_dir)
-			state_machine.change_state(hurt_state)
-		else:
-			print("Player.gd| Error: Could not find Hurt state!")
-
-func add_health(_amount: int) -> void:
-	var old_health: int = current_health
-	current_health = min(current_health + _amount, max_health)
-
-	if heal_state:
-		state_machine.change_state(heal_state)
-	if hud:
-		hud.update_health(old_health, current_health)
-
-
-
 func trigger_attack() -> void:
 	if InputManagerClass.is_attack_pressed():
 		if attack_state:
 			state_machine.change_state(attack_state)
 
-func apply_knockback(direction: Vector2, force: float) -> void:
-	velocity += direction.normalized() * force
+#func apply_knockback(direction: Vector2, force: float) -> void:
+	#velocity += direction.normalized() * force
 
 # ==============================
 # ===== GameOver Trigger =====
