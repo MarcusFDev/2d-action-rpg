@@ -1,4 +1,4 @@
-[gd_scene load_steps=77 format=3 uid="uid://beftgbphk8tt3"]
+[gd_scene load_steps=78 format=3 uid="uid://beftgbphk8tt3"]
 
 [ext_resource type="Script" uid="uid://dc7is6nsd35mi" path="res://scripts/player/player.gd" id="1_g2els"]
 [ext_resource type="Texture2D" uid="uid://nuicatwvk6p6" path="res://assets/sprites/player/knight-attack1.png" id="2_myrg7"]
@@ -15,7 +15,7 @@
 [ext_resource type="Script" uid="uid://dnx2iycln56te" path="res://scripts/components/health_component.gd" id="10_cnsyf"]
 [ext_resource type="Script" uid="uid://ct14p13yajhmc" path="res://scripts/states/generic_states/idle_state.gd" id="11_lgqa7"]
 [ext_resource type="Script" uid="uid://c5ae5naepgxn2" path="res://scripts/components/gravity_component.gd" id="11_yj68g"]
-[ext_resource type="Script" uid="uid://d2ncc58simucl" path="res://scripts/components/direction_flip_component.gd" id="12_ioxgp"]
+[ext_resource type="Script" uid="uid://d2ncc58simucl" path="res://scripts/components/animation_component.gd" id="12_ioxgp"]
 [ext_resource type="Script" uid="uid://ccjqnofia5vo0" path="res://scripts/states/generic_states/jump_state.gd" id="13_3j4b4"]
 [ext_resource type="Script" uid="uid://dl4e74spycbcb" path="res://scripts/states/generic_states/move_state.gd" id="13_8ydkj"]
 [ext_resource type="Script" uid="uid://dr7fn1f0pllf6" path="res://scripts/components/jump_component.gd" id="13_yj68g"]
@@ -25,6 +25,7 @@
 [ext_resource type="Script" uid="uid://c05o5nbmpwovi" path="res://scripts/states/generic_states/heal_state.gd" id="15_cnsyf"]
 [ext_resource type="Script" uid="uid://b0ewsejienp4o" path="res://scripts/states/generic_states/death_state.gd" id="15_ioxgp"]
 [ext_resource type="Script" uid="uid://dk74e55d6fp38" path="res://scripts/states/generic_states/attack_state.gd" id="17_6cv16"]
+[ext_resource type="Script" uid="uid://bptat52v50ghh" path="res://scripts/components/pickup_receiver_component.gd" id="17_j4nxn"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_upxxc"]
 atlas = ExtResource("2_myrg7")
@@ -457,7 +458,8 @@ script = ExtResource("10_007i1")
 [node name="HealthComponent" type="Node" parent="Components"]
 script = ExtResource("10_cnsyf")
 actor_path = NodePath("../..")
-max_health = 10.0
+enable_debug = true
+max_health = 9.0
 starting_health = 5.0
 
 [node name="GroundCheckComponent" type="Node" parent="Components"]
@@ -490,6 +492,12 @@ script = ExtResource("14_ioxgp")
 actor_path = NodePath("../..")
 move_speed = 120.0
 metadata/_custom_type_script = "uid://biecfhjepus73"
+
+[node name="PickUpReceiverComponent" type="Node" parent="Components"]
+script = ExtResource("17_j4nxn")
+actor_path = NodePath("../..")
+can_receive_healing = true
+health_component = NodePath("../HealthComponent")
 
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("starting_state")]
 script = ExtResource("3_qhqgy")
