@@ -57,6 +57,7 @@ folder_colors={
 [global_group]
 
 player=""
+enemy="Assign to a Enemy Actor."
 
 [input]
 
