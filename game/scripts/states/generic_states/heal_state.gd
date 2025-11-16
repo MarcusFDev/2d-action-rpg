@@ -1,21 +1,23 @@
 class_name HealState
 extends State
 
-## Determines whether this state uses its own internal logic or defers to parent-defined callbacks.[br]
-## [b]Note:[/b] If set to [code]false[/code], all internal logic settings are ignored.
-@export var use_internal_logic: bool = true
-## Determines the animation that plays during the Heal State.[br]
-## [b]Note:[/b] Must match an animation name in  [code]AnimatedSprite2D[/code]  or  [code]AnimationPlayer[/code].
-@export var heal_animation : String
-## Assign State node to transition to when  [code]next_state[/code]  is called. [br]
-## [b]Note:[/b] Heal state will transition automatically to this node.
-@export var next_state: State = null
+## Assign the parent entity to the state.
+@export var actor_path: NodePath
 ## Enables debug messages in the output terminal. [br]
 ## [b]Note:[/b] Useful for development and troubleshooting.
 @export var enable_debug: bool = false
 
+@export_category("State Settings")
+## Determines the animation that plays during the Heal State.[br]
+## [b]Note:[/b] Must match an animation name in  [code]AnimatedSprite2D[/code]  or  [code]AnimationPlayer[/code].
+@export var state_animation : String
+## Determines whether this state uses its own internal logic or defers to parent-defined callbacks.[br]
+## [b]Note:[/b] If set to [code]false[/code], all internal logic settings are ignored.
+@export var use_parent_logic: bool = false
+@export var use_behavior_tree: bool = false
+
 # Script Variables
-var is_finished : bool = false
+@onready var actor: Node = get_node_or_null(actor_path)
 
 # Callback Functions
 func _on_enter() -> void: pass
@@ -34,42 +36,25 @@ func enter() -> void:
 	init_heal()
 
 func init_heal() -> void:
-	parent.animations.play(heal_animation)
-	if use_internal_logic:
-		parent.velocity.x = 0
-		if not animations.animation_finished.is_connected(animation_finished):
-			animations.animation_finished.connect(animation_finished, CONNECT_ONE_SHOT)
+	actor.animations.play(state_animation)
 
 	if enable_debug:
 		print(
-			"\n===== Heal State: ===== \n", parent,
-			"\nAnimation playing: ", heal_animation,
-			"\nVelocity set to: ", parent.velocity)
-	else:
-		enter_callback.call()
+		"===========================\n",
+		"HealState entered by: ", actor.name, "\n",
+		"===========================")
 
 func process_physics(delta: float) -> State:
-	if use_internal_logic:
-		parent.velocity.y += gravity * delta
-		if parent.is_on_floor():
-			parent.velocity.y = 0
-		parent.move_and_slide()
-	else:
+	if use_parent_logic:
 		return handle_physics.call(delta)
 	return null
 
-func process_frame(_delta: float) -> State:
-	if is_finished:
-		return next_state
+func process_frame(delta: float) -> State:
+	if use_parent_logic:
+		return handle_frame.call(delta)
 	return null
 
-func animation_finished() -> void:
-	if animations.animation == heal_animation:
-		if enable_debug:
-			print("Heal Animation finished.")
-		if use_internal_logic:
-			is_finished = true
-
-func exit() -> void:
-	is_finished = false
-	pass
+func process_input(event: InputEvent) -> State:
+	if use_parent_logic:
+		return handle_input.call(event)
+	return null
