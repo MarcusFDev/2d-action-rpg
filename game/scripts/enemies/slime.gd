@@ -1,12 +1,12 @@
 extends CharacterBody2D
 
 @export var actor_path: NodePath
-@export var animations_path: NodePath
 ## Enables debug messages in the output terminal. [br]
 ## [b]Note:[/b] Useful for development and troubleshooting.
 @export var enable_debug: bool = false
 
 @export_category("Actor Settings")
+@export var animations_path: NodePath
 
 @export_group("Temporary Options")
 @export var damage: int = 1

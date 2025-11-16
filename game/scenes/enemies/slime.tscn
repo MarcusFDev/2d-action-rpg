@@ -13,7 +13,7 @@
 [ext_resource type="Script" uid="uid://btyaiu46kb4tm" path="res://scripts/components/component.gd" id="9_wnf82"]
 [ext_resource type="Script" uid="uid://c5ae5naepgxn2" path="res://scripts/components/gravity_component.gd" id="10_m4uwr"]
 [ext_resource type="Script" uid="uid://dnx2iycln56te" path="res://scripts/components/health_component.gd" id="11_noxma"]
-[ext_resource type="Script" uid="uid://d2ncc58simucl" path="res://scripts/components/direction_flip_component.gd" id="11_o5sr2"]
+[ext_resource type="Script" uid="uid://d2ncc58simucl" path="res://scripts/components/animation_component.gd" id="11_o5sr2"]
 [ext_resource type="Script" uid="uid://ct14p13yajhmc" path="res://scripts/states/generic_states/idle_state.gd" id="11_tvrjd"]
 [ext_resource type="Script" uid="uid://b320oyar5gjaj" path="res://scripts/components/edge_detector_component.gd" id="12_m4uwr"]
 [ext_resource type="Script" uid="uid://ccjqnofia5vo0" path="res://scripts/states/generic_states/jump_state.gd" id="12_rdhaw"]
@@ -414,7 +414,7 @@ size = Vector2(22, 16)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6axq5"]
 size = Vector2(20, 14)
 
-[node name="Slime" type="CharacterBody2D"]
+[node name="Slime" type="CharacterBody2D" groups=["enemy"]]
 collision_layer = 2
 collision_mask = 11
 script = ExtResource("1_68p8s")
