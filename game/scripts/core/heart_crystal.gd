@@ -1,10 +1,12 @@
-extends Area2D
+class_name HeartCrystal
+extends PickUpClass
 
-@export var health_amount: int = 1
-var game_manager: Node = GameManager
+## Determines the value of health this heart crystal provides. [br]
+## [b]Note:[/b] Can exceed 10 hearts with manual input.[br]
+@export_range(0, 10, 1, "suffix:Hearts", "or_greater") var heal_amount: float
 
-func _on_body_entered(body: CharacterBody2D) -> void:
-	if body.is_in_group("player"):
-		if body.current_health < body.max_health:
-			body.add_health(health_amount)
-			queue_free()
+func _enter_tree() -> void:
+	pickup_data = {
+		"type": "heal",
+		"amount": heal_amount
+	}
