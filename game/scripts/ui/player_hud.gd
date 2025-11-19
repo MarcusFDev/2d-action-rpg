@@ -19,6 +19,7 @@ extends Control
 	$HealthBar/Heart9
 	]
 
+
 func _ready() -> void:
 	if not actor:
 		push_warning("PlayerHUD: No actor assigned.")

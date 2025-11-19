@@ -7,6 +7,10 @@ extends CharacterBody2D
 
 @export_category("Actor Settings")
 @export var animations_path: NodePath
+enum ActorType {PLAYER, ENEMY, NPC}
+@export var actor_type: ActorType
+enum ControlType {USER_INPUT, AI_LOGIC}
+@export var control_type: ControlType
 
 @export_group("Temporary Options")
 @export var damage: int = 1
@@ -18,6 +22,7 @@ extends CharacterBody2D
 @export var jump_state_path: NodePath
 @export var fall_state_path: NodePath
 @export var attack_state_path: NodePath
+@export var heal_state_path: NodePath
 
 @export_group("Component Paths")
 @export var ground_check_component: NodePath
@@ -33,6 +38,7 @@ extends CharacterBody2D
 @onready var jump_state: Node = get_node_or_null(jump_state_path)
 @onready var fall_state: Node = get_node_or_null(fall_state_path)
 @onready var attack_state: Node = get_node_or_null(attack_state_path)
+@onready var heal_state: Node = get_node_or_null(heal_state_path)
 	
 @onready var ground_check_comp: Node = get_node_or_null(ground_check_component)
 @onready var animation_comp: Node = get_node_or_null(animation_component)
@@ -63,6 +69,7 @@ func _setup_blackboard() -> void:
 	blackboard["force_idle"] = false
 	blackboard["force_jump"] = false
 	blackboard["force_patrol"] = false
+	blackboard["force_heal"] = false
 	
 	blackboard["can_patrol"] = true
 	blackboard["can_idle"] = true
@@ -100,6 +107,11 @@ func _setup_behavior_tree() -> void:
 			BTCondition.new("locked", false),
 			BTAction.new("Patrol")
 		]),
+		BTSequence.new([
+			BTCondition.new("force_heal", true),
+			BTCondition.new("locked", false),
+			BTAction.new("Heal")
+		]),
 		# Priority 4
 		BTSequence.new([
 			BTCondition.new("is_grounded", true),
@@ -135,20 +147,21 @@ func _setup_states() -> void:
 	_patrol_state()
 	_jump_state()
 	_fall_state()
+	_heal_state()
 
 func _idle_state() -> void:
-	idle_state.enter_callback = func() -> void:
-		pass
+	pass
 
 func _patrol_state() -> void:
-	patrol_state.enter_callback = func() -> void:
-		pass
+	pass
 
 func _jump_state() -> void:
-	jump_state.enter_callback = func() -> void:
-		pass
+	pass
 
 func _fall_state() -> void:
+	pass
+
+func _heal_state() -> void:
 	pass
 
 func _process(delta: float) -> void:
@@ -181,3 +194,10 @@ func _physics_process(delta: float) -> void:
 func trigger_attack() -> void:
 	if attack_state:
 		state_machine.change_state(attack_state)
+
+func pickup_received(data: Variant) -> void:
+	if data["type"] == "heal":
+		var bb: Dictionary = actor.get_blackboard()
+		bb["pickup_data"] = data["amount"]
+		bb["force_heal"] = true
+		bb["locked"] = false

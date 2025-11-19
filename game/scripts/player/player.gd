@@ -68,6 +68,7 @@ func _setup_states() -> void:
 	_move_state()
 	_jump_state()
 	_fall_state()
+	_heal_state()
 
 func _idle_state() -> void:
 	idle_state.handle_input = func(_event: InputEvent) -> State:
@@ -157,6 +158,25 @@ func _fall_state() -> void:
 				return idle_state
 		return null
 
+func _heal_state() -> void:
+	heal_state.handle_physics = func(_delta: float) -> State:
+		var input_direction: float = InputManagerClass.get_movement_axis()
+		if input_direction == 0:
+			if heal_state.enable_debug:
+				print("Player Idling detected. switching to: ", idle_state)
+			return idle_state
+		
+		if InputManagerClass.is_jump_pressed() and jump_comp.can_jump():
+			if heal_state.enable_debug:
+				print("Player Jump Key detected. Switching to: ", jump_state)
+			return jump_state
+		if InputManagerClass.get_movement_axis() != 0:
+			if heal_state.enable_debug:
+				print("Player Move Key detected. Switching to: ", move_state)
+			return move_state
+		
+		return null
+
 func _unhandled_input(event: InputEvent) -> void:
 	state_machine.process_input(event)
 	trigger_attack()
@@ -171,6 +191,12 @@ func _physics_process(delta: float) -> void:
 	jump_comp.update_timer(delta)
 	
 	ground_check_comp.post_update()
+
+func pickup_received(data: Variant) -> void:
+	if data["type"] == "heal":
+		print(actor.name, "'s Script: PickUp Recieved")
+		state_machine.change_state(heal_state)
+		state_machine.current_state.set_heal_data(data)
 
 func _process(delta: float) -> void:
 	state_machine.process_frame(delta)
