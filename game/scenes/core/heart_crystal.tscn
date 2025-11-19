@@ -79,8 +79,11 @@ animations = [{
 size = Vector2(23, 22)
 
 [node name="HeartCrystal" type="Area2D"]
+collision_layer = 16
+collision_mask = 3
 script = ExtResource("1_5eakc")
 heal_amount = 1.0
+interact_permission = 2
 
 [node name="Animations" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_dlm1y")

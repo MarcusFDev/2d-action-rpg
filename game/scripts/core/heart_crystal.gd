@@ -8,5 +8,6 @@ extends PickUpClass
 func _enter_tree() -> void:
 	pickup_data = {
 		"type": "heal",
+		"source": "heart_crystal",
 		"amount": heal_amount
 	}
