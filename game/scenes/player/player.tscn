@@ -25,7 +25,7 @@
 [ext_resource type="Script" uid="uid://c05o5nbmpwovi" path="res://scripts/states/generic_states/heal_state.gd" id="15_cnsyf"]
 [ext_resource type="Script" uid="uid://b0ewsejienp4o" path="res://scripts/states/generic_states/death_state.gd" id="15_ioxgp"]
 [ext_resource type="Script" uid="uid://dk74e55d6fp38" path="res://scripts/states/generic_states/attack_state.gd" id="17_6cv16"]
-[ext_resource type="Script" uid="uid://bptat52v50ghh" path="res://scripts/components/pickup_receiver_component.gd" id="17_j4nxn"]
+[ext_resource type="Script" uid="uid://bptat52v50ghh" path="res://scripts/components/pickup_permission_component.gd" id="17_j4nxn"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_upxxc"]
 atlas = ExtResource("2_myrg7")
@@ -418,7 +418,7 @@ radius = 5.09902
 
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 z_index = 5
-collision_mask = 14
+collision_mask = 30
 script = ExtResource("1_g2els")
 actor_path = NodePath(".")
 animations_path = NodePath("Animations")
@@ -441,8 +441,10 @@ gravity_component = NodePath("Components/GravityComponent")
 [node name="Animations" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -12)
 sprite_frames = SubResource("SpriteFrames_2hs0m")
-animation = &"attack_1"
+animation = &"heal"
 autoplay = "idle"
+frame = 5
+frame_progress = 1.0
 
 [node name="PlayerCollision" type="CollisionShape2D" parent="."]
 position = Vector2(0, -5)
@@ -458,7 +460,6 @@ script = ExtResource("10_007i1")
 [node name="HealthComponent" type="Node" parent="Components"]
 script = ExtResource("10_cnsyf")
 actor_path = NodePath("../..")
-enable_debug = true
 max_health = 9.0
 starting_health = 5.0
 
@@ -493,11 +494,11 @@ actor_path = NodePath("../..")
 move_speed = 120.0
 metadata/_custom_type_script = "uid://biecfhjepus73"
 
-[node name="PickUpReceiverComponent" type="Node" parent="Components"]
+[node name="PickUpPermissionComponent" type="Node" parent="Components"]
 script = ExtResource("17_j4nxn")
 actor_path = NodePath("../..")
-can_receive_healing = true
-health_component = NodePath("../HealthComponent")
+export_enable_health_pickup = true
+export_allow_heart_crystals = true
 
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("starting_state")]
 script = ExtResource("3_qhqgy")
@@ -544,6 +545,8 @@ knockback_force = 132.5
 script = ExtResource("15_cnsyf")
 actor_path = NodePath("../..")
 state_animation = "heal"
+use_parent_logic = true
+health_component_path = NodePath("../../Components/HealthComponent")
 
 [node name="AttackState" type="Node" parent="StateMachine" node_paths=PackedStringArray("next_state")]
 script = ExtResource("17_6cv16")
@@ -556,5 +559,7 @@ death_animation = "death"
 post_death_method = "trigger_game_over"
 
 [connection signal="animation_finished" from="Animations" to="StateMachine/HurtState" method="animation_finished"]
+[connection signal="animation_finished" from="Animations" to="StateMachine/HealState" method="on_animation_finished"]
 [connection signal="animation_finished" from="Animations" to="StateMachine/DeathState" method="animation_finished"]
 [connection signal="timeout" from="GameOverDelayTimer" to="." method="_on_game_over_delay_timer_timeout"]
+[connection signal="pickup_received" from="Components/PickUpPermissionComponent" to="." method="pickup_received"]

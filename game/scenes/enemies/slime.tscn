@@ -1,4 +1,4 @@
-[gd_scene load_steps=78 format=3 uid="uid://chptbuqgr7qyt"]
+[gd_scene load_steps=83 format=3 uid="uid://chptbuqgr7qyt"]
 
 [ext_resource type="Script" uid="uid://n35k36oc5i6u" path="res://scripts/enemies/slime.gd" id="1_68p8s"]
 [ext_resource type="PackedScene" uid="uid://bg7nrwxlpxf3p" path="res://scenes/core/base_damage_zone.tscn" id="2_68p8s"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://bqo4nv5fjoevl" path="res://assets/sprites/enemies/slime/slime-death.png" id="3_wfyvu"]
 [ext_resource type="Texture2D" uid="uid://c7uw5sw3daps0" path="res://assets/sprites/enemies/slime/slime-idle.png" id="4_mdcui"]
 [ext_resource type="Texture2D" uid="uid://cmiijc04jyy37" path="res://assets/sprites/enemies/slime/slime-patrol.png" id="5_ikdmk"]
+[ext_resource type="Texture2D" uid="uid://dcrkxexybjpvh" path="res://assets/sprites/enemies/slime/slime-test-heal.png" id="5_noxma"]
 [ext_resource type="Texture2D" uid="uid://dkhvgs4m8tdu" path="res://assets/sprites/enemies/slime/slime-take-damage.png" id="7_at850"]
 [ext_resource type="Script" uid="uid://bcoqv8smpfvig" path="res://scripts/states/state_machines/state_machine.gd" id="9_nx7r3"]
 [ext_resource type="Script" uid="uid://dvj15x0yx6poy" path="res://scripts/components/ground_check_component.gd" id="9_rdhaw"]
@@ -24,6 +25,8 @@
 [ext_resource type="Script" uid="uid://dk74e55d6fp38" path="res://scripts/states/generic_states/attack_state.gd" id="14_o5sr2"]
 [ext_resource type="Script" uid="uid://biecfhjepus73" path="res://scripts/components/movement_component.gd" id="15_84gbg"]
 [ext_resource type="Script" uid="uid://c0by7duiifapt" path="res://scripts/components/randomizer_component.gd" id="16_7ji7s"]
+[ext_resource type="Script" uid="uid://bptat52v50ghh" path="res://scripts/components/pickup_permission_component.gd" id="20_ke2xt"]
+[ext_resource type="Script" uid="uid://c05o5nbmpwovi" path="res://scripts/states/generic_states/heal_state.gd" id="27_4igtm"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_wbf5k"]
 atlas = ExtResource("2_ikdmk")
@@ -124,6 +127,14 @@ region = Rect2(64, 0, 32, 38)
 [sub_resource type="AtlasTexture" id="AtlasTexture_at850"]
 atlas = ExtResource("3_jjup5")
 region = Rect2(96, 0, 32, 38)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l1rd3"]
+atlas = ExtResource("5_noxma")
+region = Rect2(0, 0, 32, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v5un4"]
+atlas = ExtResource("5_noxma")
+region = Rect2(0, 0, 32, 48)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_wnf82"]
 atlas = ExtResource("4_mdcui")
@@ -319,6 +330,29 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_l1rd3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v5un4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v5un4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v5un4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v5un4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v5un4")
+}],
+"loop": false,
+"name": &"slime_heal",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_wnf82")
 }, {
 "duration": 1.0,
@@ -416,16 +450,19 @@ size = Vector2(20, 14)
 
 [node name="Slime" type="CharacterBody2D" groups=["enemy"]]
 collision_layer = 2
-collision_mask = 11
+collision_mask = 27
 script = ExtResource("1_68p8s")
 actor_path = NodePath(".")
 animations_path = NodePath("Animations")
+actor_type = 1
+control_type = 1
 state_machine_path = NodePath("StateMachine")
 idle_state_path = NodePath("StateMachine/IdleState")
 patrol_state_path = NodePath("StateMachine/PatrolState")
 jump_state_path = NodePath("StateMachine/JumpState")
 fall_state_path = NodePath("StateMachine/FallState")
 attack_state_path = NodePath("StateMachine/AttackState")
+heal_state_path = NodePath("StateMachine/HealState")
 ground_check_component = NodePath("Components/GroundCheckComponent")
 animation_component = NodePath("Components/AnimationComponent")
 edge_detector_component = NodePath("Components/EdgeDetectorComponent")
@@ -445,7 +482,7 @@ target_position = Vector2(-13, 0)
 position = Vector2(4.76837e-07, -4)
 scale = Vector2(0.671875, 0.671875)
 sprite_frames = SubResource("SpriteFrames_a1j1j")
-animation = &"slime_take_damage"
+animation = &"slime_heal"
 autoplay = "slime_idle"
 
 [node name="EnemyDamageZone" parent="." instance=ExtResource("2_68p8s")]
@@ -478,6 +515,8 @@ metadata/_custom_type_script = "uid://dr7fn1f0pllf6"
 
 [node name="HealthComponent" type="Node" parent="Components"]
 script = ExtResource("11_noxma")
+actor_path = NodePath("../..")
+max_health = 2.0
 
 [node name="GroundCheckComponent" type="Node" parent="Components"]
 script = ExtResource("9_rdhaw")
@@ -512,6 +551,13 @@ move_speed = 30.0
 script = ExtResource("16_7ji7s")
 actor_path = NodePath("../..")
 randomizer_cooldown = 1.0
+
+[node name="PickUpPermissionComponent" type="Node" parent="Components"]
+script = ExtResource("20_ke2xt")
+actor_path = NodePath("../..")
+export_enable_health_pickup = true
+export_allow_heart_crystals = true
+metadata/_custom_type_script = "uid://bptat52v50ghh"
 
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("starting_state")]
 script = ExtResource("9_nx7r3")
@@ -583,4 +629,14 @@ script = ExtResource("14_o5sr2")
 attack_animation = "slime_attack"
 next_state = NodePath("../IdleState")
 
+[node name="HealState" type="Node" parent="StateMachine"]
+script = ExtResource("27_4igtm")
+actor_path = NodePath("../..")
+state_animation = "slime_heal"
+use_behavior_tree = true
+health_component_path = NodePath("../../Components/HealthComponent")
+metadata/_custom_type_script = "uid://c05o5nbmpwovi"
+
 [connection signal="animation_finished" from="Animations" to="StateMachine/AttackState" method="animation_finished"]
+[connection signal="animation_finished" from="Animations" to="StateMachine/HealState" method="on_animation_finished"]
+[connection signal="pickup_received" from="Components/PickUpPermissionComponent" to="." method="pickup_received"]

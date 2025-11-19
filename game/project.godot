@@ -41,10 +41,6 @@ window/stretch/mode="canvas_items"
 version_control/plugin_name="GitPlugin"
 version_control/autoload_on_startup=true
 
-[editor_plugins]
-
-enabled=PackedStringArray("res://addons/script-ide/plugin.cfg")
-
 [file_customization]
 
 folder_colors={
@@ -97,6 +93,7 @@ attack={
 2d_physics/layer_2="Enemy"
 2d_physics/layer_3="Damage Zone"
 2d_physics/layer_4="Foreground"
+2d_physics/layer_5="Interactables"
 
 [physics]
 
