@@ -125,9 +125,6 @@ func init_jump() -> void:
 # STATE PHYSICS
 # --------------------------------------------------------------------
 func process_physics(delta: float) -> State:
-	actor.move_and_slide()
-	jump_comp.apply_physics(delta)
-
 	if export_use_behavior_tree:
 		var bb: Dictionary = actor.get_blackboard()
 		var grounded: bool = bb["is_grounded"]

@@ -66,7 +66,6 @@ func get_direction() -> Variant:
 
 func apply_physics(_delta: float) -> void:
 	actor.velocity = direction * move_speed
-	actor.move_and_slide()
 	if enable_debug:
 		print(
 			"MovementComponent: ", actor.name,

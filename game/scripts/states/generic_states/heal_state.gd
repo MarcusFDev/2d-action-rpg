@@ -58,7 +58,7 @@ func init_heal() -> void:
 
 func process_physics(delta: float) -> State:
 	actor.velocity.x = 0
-	
+
 	if animation_finished:
 		if health_comp:
 			if enable_debug:

@@ -13,11 +13,7 @@ extends State
 @export var use_behavior_tree: bool = false
 @export var use_parent_logic: bool = false
 
-@export_group("Component Paths")
-@export var gravity_component: NodePath
-
 @onready var actor: CharacterBody2D = get_node_or_null(actor_path)
-@onready var gravity_comp: Node = get_node_or_null(gravity_component)
 
 # Callback Functions
 func _on_enter() -> void: pass
@@ -49,11 +45,11 @@ func init_fall() -> void:
 		var bb: Dictionary = actor.get_blackboard()
 		bb["locked"] = true
 
-func process_physics(_delta: float) -> State:
-	gravity_comp.apply(_delta)
+func process_physics(delta: float) -> State:
 	if use_behavior_tree:
 		var bb: Dictionary = actor.get_blackboard()
-		if actor.is_on_floor():
+		var grounded: bool = bb["is_grounded"]
+		if grounded:
 			bb["can_patrol"] = true
 			bb["is_grounded"] = true
 			bb["locked"] = false
@@ -61,7 +57,7 @@ func process_physics(_delta: float) -> State:
 			bb["is_grounded"] = false
 
 	if use_parent_logic:
-		return handle_physics.call(_delta)
+		return handle_physics.call(delta)
 
 	return null
 
