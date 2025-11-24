@@ -11,16 +11,29 @@ extends Component
 ## Determines the strength of the gravitational pull applied to the entity. [br]
 ## [b]Note:[/b] Higher values increase downward acceleration; lower values create a lighter, floatier feel (e.g. Moon gravity). [br]
 ## [b]Tip:[/b] Can exceed 2000 px/s² with manual input.
-@export_range(0, 2000, 100, "suffix:px²", "or_greater") var gravity: float = 1200.0
+@export_range(0, 2000, 100, "suffix:px²", "or_greater") var gravity: float = 1000.0
+
+@export_group("Component Paths")
+@export var ground_check_component: NodePath
+
+@onready var actor: Node = get_node_or_null(actor_path)
+@onready var ground_check_comp: Node = get_node_or_null(ground_check_component)
 
 # Script Variables
-@onready var actor: Node = get_node_or_null(actor_path)
+var is_grounded: bool
+var export_gravity: float
 
-func apply(delta: float) -> void:
-	var is_grounded : bool = false
+func _ready() -> void:
+	export_gravity = gravity
 
-	if actor.has_method("is_on_floor"):
-		is_grounded = actor.is_on_floor()
+func apply_physics(delta: float) -> void:
+	is_grounded = ground_check_comp.is_grounded
 	
-	if not is_grounded:
+	if is_grounded:
+		gravity = export_gravity
+		if enable_debug:
+			print(actor.name, " | GravityComponent: Ground detected. Gravity not applied.")
+	else:
 		actor.velocity.y += gravity * delta
+		if enable_debug:
+			print(actor.name, " | GravityComponent: Ground not detected. Gravity applied.")
