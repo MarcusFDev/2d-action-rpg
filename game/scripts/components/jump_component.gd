@@ -10,11 +10,10 @@ extends Component
 @export_category("Component Settings")
 ## Determines in seconds it takes to reach the  [code]jump_height[/code]  value.[br]
 ## [b]Note:[/b] Can exceed 3 seconds with manual input.[br]
-## [b]Warning:[/b] If time value exceeds  [code]jump_height[/code]  value unexpected behavior may occur.
+## [b]Note:[/b] Values  [code]0.4[/code]  and lower automatically use Global gravity value.
 @export_range(0.0, 3.0, 0.1, "or_greater", "suffix:s") var jump_time: float = 0
 ## Determines the height the entity attempts to reach. [br]
 ## [b]Note:[/b] Can exceed 100 pixels with manual input.[br]
-## [b]Warning:[/b] If time value falls below  [code]jump_time[/code]  value unexpected behavior may occur.
 @export_range(0.0, 100, 1, "or_greater", "suffix:px") var jump_height: float = 0
 ## Offsets the jump height based on the entity's  [code]jump_height[/code] value. [br]
 @export var jump_height_offset: bool = false
@@ -34,13 +33,18 @@ extends Component
 ## Assign the  [code]GroundCheckComponent[/code]  path to the component.[br]
 ## [b]Note:[/b] This is important as some settings require ground contact information to work correctly.
 @export var ground_check_path: NodePath
+@export var gravity_component_path: NodePath
 
 @onready var actor: CharacterBody2D = get_node_or_null(actor_path)
+@onready var gravity_comp: Node = get_node_or_null(gravity_component_path)
 @onready var ground_check: Node = get_node_or_null(ground_check_path)
 
 # Script Variables
+var jump_gravity: float
 var gravity: float
+
 var initial_velocity: float
+var jump_force: float
 var is_jumping: bool = false
 
 var target_position: Vector2
@@ -59,6 +63,7 @@ var initial_extra_jumps: int:
 var current_extra_jumps: int = 0
 
 func _ready() -> void:
+	gravity = gravity_comp.gravity
 	reset_jump_counter()
 
 # -------------------------
@@ -104,25 +109,36 @@ func start_cooldown() -> void:
 # -------------------------
 #  JUMP PHYSICS
 # -------------------------
+func height_offset() -> float:
+	var height_roll: float = randf()
+	var modified_jump_height: float = jump_height
+
+	if height_roll <= 0.15:
+		modified_jump_height *= 0.5
+
+	elif height_roll >= 0.85:
+		modified_jump_height *= 1.5
+	
+	if enable_debug:
+		print(actor.name, "| Jump Height Offset switched on. Jump Height: ", modified_jump_height)
+	
+	return modified_jump_height
+
 func calculate_gravity() -> void:
 	if jump_height_offset:
-		var height_roll: float = randf()
-		var modified_jump_height: float = jump_height
+		jump_height = height_offset()
 
-		if height_roll <= 0.15:
-			modified_jump_height *= 0.5
-		elif height_roll >= 0.85:
-			modified_jump_height *= 1.5
-
-		gravity = (2.0 * modified_jump_height) / pow(jump_time, 2)
-		initial_velocity = -gravity * jump_time
+	if jump_time <= 0.4:
+		jump_force = -sqrt(2.0 * jump_height * gravity)
 		if enable_debug:
-			print(actor.name, "| Jump Height Offset switched on. Jump Height: ", modified_jump_height, "| Initial velocity: ", initial_velocity)
+			print(actor.name, " | Jump Force: ", jump_force, " | Jump Height: ", jump_height, " | Gravity:", gravity)
 	else:
-		gravity = (2.0 * jump_height) / pow(jump_time, 2)
-		initial_velocity = -gravity * jump_time
+		jump_gravity = (2.0 * jump_height) / pow(jump_time, 2)
+		jump_force = -sqrt(2.0 * jump_height * jump_gravity)
+		actor.gravity_comp.gravity = jump_gravity
+	
 		if enable_debug:
-			print(actor.name, "| Jump Height Offset switched off. Jump Height: ", jump_height)
+			print(actor.name, " | Jump Force: ", jump_force, " | Jump Height: ", jump_height, " | Jump Gravity: ", jump_gravity)
 
 func is_grounded() -> bool:
 	if ground_check:
@@ -137,9 +153,9 @@ func perform_jump() -> void:
 			print(actor.name, " tried to jump but cooldown active or out of jumps.")
 		return
 	is_jumping = true
-
+	
 	calculate_gravity()
-	actor.velocity.y = initial_velocity
+	actor.velocity.y = jump_force
 	
 	consume_jump()
 
@@ -181,11 +197,6 @@ func perform_target_jump(direction: Variant) -> void:
 			" | direction type=", typeof(direction)
 		)
 
-
-func apply_physics(delta: float) -> void:
-	if not is_jumping:
-		return
-	actor.velocity.y += gravity * delta
 
 # -------------------------
 #  MULTI-JUMP SYSTEM
