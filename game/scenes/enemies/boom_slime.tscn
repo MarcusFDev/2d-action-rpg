@@ -12,7 +12,7 @@
 [ext_resource type="Script" uid="uid://clv1jjvxgs12w" path="res://scripts/states/generic_states/fall_state.gd" id="8_eo3gx"]
 [ext_resource type="Script" uid="uid://dvj15x0yx6poy" path="res://scripts/components/ground_check_component.gd" id="17_dj48x"]
 [ext_resource type="Script" uid="uid://c5ae5naepgxn2" path="res://scripts/components/gravity_component.gd" id="18_2cunx"]
-[ext_resource type="Script" uid="uid://d2ncc58simucl" path="res://scripts/components/direction_flip_component.gd" id="19_vqnqe"]
+[ext_resource type="Script" uid="uid://d2ncc58simucl" path="res://scripts/components/animation_component.gd" id="19_vqnqe"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_2cunx"]
 atlas = ExtResource("2_aolva")

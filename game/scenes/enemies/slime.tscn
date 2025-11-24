@@ -467,6 +467,7 @@ ground_check_component = NodePath("Components/GroundCheckComponent")
 animation_component = NodePath("Components/AnimationComponent")
 edge_detector_component = NodePath("Components/EdgeDetectorComponent")
 jump_component = NodePath("Components/JumpComponent")
+gravity_component = NodePath("Components/GravityComponent")
 
 [node name="RayCastRight" type="RayCast2D" parent="."]
 visible = false
@@ -511,6 +512,7 @@ export_enable_multi_jump = true
 export_jump_count = 5
 export_recharge_time = 5.0
 ground_check_path = NodePath("../GroundCheckComponent")
+gravity_component_path = NodePath("../GravityComponent")
 metadata/_custom_type_script = "uid://dr7fn1f0pllf6"
 
 [node name="HealthComponent" type="Node" parent="Components"]
@@ -525,7 +527,7 @@ actor_path = NodePath("../..")
 [node name="GravityComponent" type="Node" parent="Components"]
 script = ExtResource("10_m4uwr")
 actor_path = NodePath("../..")
-gravity = 1000.0
+ground_check_component = NodePath("../GroundCheckComponent")
 
 [node name="AnimationComponent" type="Node" parent="Components"]
 script = ExtResource("11_o5sr2")
@@ -545,7 +547,7 @@ actor_path = NodePath("../..")
 [node name="MovementComponent" type="Node" parent="Components"]
 script = ExtResource("15_84gbg")
 actor_path = NodePath("../..")
-move_speed = 30.0
+move_speed = 60.0
 
 [node name="RandomizerComponent" type="Node" parent="Components"]
 script = ExtResource("16_7ji7s")
