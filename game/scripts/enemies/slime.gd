@@ -29,6 +29,7 @@ enum ControlType {USER_INPUT, AI_LOGIC}
 @export var animation_component: NodePath
 @export var edge_detector_component: NodePath
 @export var jump_component: NodePath
+@export var gravity_component: NodePath
 
 @onready var actor: CharacterBody2D = get_node_or_null(actor_path)
 @onready var animations: AnimatedSprite2D = get_node_or_null(animations_path)
@@ -39,7 +40,8 @@ enum ControlType {USER_INPUT, AI_LOGIC}
 @onready var fall_state: Node = get_node_or_null(fall_state_path)
 @onready var attack_state: Node = get_node_or_null(attack_state_path)
 @onready var heal_state: Node = get_node_or_null(heal_state_path)
-	
+
+@onready var gravity_comp: Node = get_node_or_null(gravity_component)
 @onready var ground_check_comp: Node = get_node_or_null(ground_check_component)
 @onready var animation_comp: Node = get_node_or_null(animation_component)
 @onready var edge_detector_comp: Node = get_node_or_null(edge_detector_component)
@@ -180,7 +182,8 @@ func _process(delta: float) -> void:
 			print("==============================")
 
 func _physics_process(delta: float) -> void:
-	move_and_slide()
+	actor.move_and_slide()
+	gravity_comp.apply_physics(delta)
 	ground_check_comp.apply(delta)
 
 	var grounded : bool = ground_check_comp.is_grounded

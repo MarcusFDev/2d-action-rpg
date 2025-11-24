@@ -71,7 +71,12 @@ func _setup_states() -> void:
 	_heal_state()
 
 func _idle_state() -> void:
-	idle_state.handle_input = func(_event: InputEvent) -> State:
+	idle_state.handle_physics = func(_delta: float) -> State:
+		var is_grounded: bool = ground_check_comp.is_grounded
+		if not is_grounded:
+			if idle_state.enable_debug:
+				print("Player cannot detect floor. Switching to: ", fall_state)
+			return fall_state
 		if InputManagerClass.is_jump_pressed() and jump_comp.can_jump():
 			if idle_state.enable_debug:
 				print("Player Jump Key detected. Switching to: ", jump_state)
@@ -80,15 +85,6 @@ func _idle_state() -> void:
 			if idle_state.enable_debug:
 				print("Player Move Key detected. Switching to: ", move_state)
 			return move_state
-		return null
-	
-	idle_state.handle_physics = func(_delta: float) -> State:
-		var is_grounded: bool = ground_check_comp.is_grounded
-		if not is_grounded:
-			if idle_state.enable_debug:
-				print("Player cannot detect floor. Switching to: ", fall_state)
-			return fall_state
-		move_and_slide()
 		return null
 
 func _move_state() -> void:
@@ -138,8 +134,6 @@ func _fall_state() -> void:
 		var target_speed: float = input_direction * movement_comp.move_speed
 		velocity.x = lerp(velocity.x, target_speed, 0.1)
 		
-		move_and_slide()
-		
 		if InputManagerClass.is_jump_pressed() and jump_comp.can_jump():
 			if move_state.enable_debug:
 				print("Player Jump Key detected. Switching to: ", jump_state)
@@ -183,18 +177,19 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _physics_process(delta: float) -> void:
 	ground_check_comp.apply(delta)
+	gravity_comp.apply_physics(delta)
+
 	if ground_check_comp.just_landed():
 		jump_comp.reset_jump_counter()
 
 	animation_comp.animation_flip(delta)
 	state_machine.process_physics(delta)
 	jump_comp.update_timer(delta)
-	
+	actor.move_and_slide() 
 	ground_check_comp.post_update()
 
 func pickup_received(data: Variant) -> void:
 	if data["type"] == "heal":
-		print(actor.name, "'s Script: PickUp Recieved")
 		state_machine.change_state(heal_state)
 		state_machine.current_state.set_heal_data(data)
 
