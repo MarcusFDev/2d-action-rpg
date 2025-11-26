@@ -1,4 +1,4 @@
-[gd_scene load_steps=83 format=3 uid="uid://chptbuqgr7qyt"]
+[gd_scene load_steps=84 format=3 uid="uid://chptbuqgr7qyt"]
 
 [ext_resource type="Script" uid="uid://n35k36oc5i6u" path="res://scripts/enemies/slime.gd" id="1_68p8s"]
 [ext_resource type="PackedScene" uid="uid://bg7nrwxlpxf3p" path="res://scenes/core/base_damage_zone.tscn" id="2_68p8s"]
@@ -27,6 +27,7 @@
 [ext_resource type="Script" uid="uid://c0by7duiifapt" path="res://scripts/components/randomizer_component.gd" id="16_7ji7s"]
 [ext_resource type="Script" uid="uid://bptat52v50ghh" path="res://scripts/components/pickup_permission_component.gd" id="20_ke2xt"]
 [ext_resource type="Script" uid="uid://c05o5nbmpwovi" path="res://scripts/states/generic_states/heal_state.gd" id="27_4igtm"]
+[ext_resource type="Script" uid="uid://cvmt4g1070nqn" path="res://scripts/states/generic_states/injured_state.gd" id="28_4igtm"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_wbf5k"]
 atlas = ExtResource("2_ikdmk")
@@ -638,6 +639,14 @@ state_animation = "slime_heal"
 use_behavior_tree = true
 health_component_path = NodePath("../../Components/HealthComponent")
 metadata/_custom_type_script = "uid://c05o5nbmpwovi"
+
+[node name="InjuredState" type="Node" parent="StateMachine"]
+script = ExtResource("28_4igtm")
+actor_path = NodePath("../..")
+state_animation = "slime_injure"
+use_behavior_tree = true
+health_component_path = NodePath("../../Components/HealthComponent")
+metadata/_custom_type_script = "uid://cvmt4g1070nqn"
 
 [connection signal="animation_finished" from="Animations" to="StateMachine/AttackState" method="animation_finished"]
 [connection signal="animation_finished" from="Animations" to="StateMachine/HealState" method="on_animation_finished"]

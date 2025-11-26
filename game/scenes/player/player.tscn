@@ -21,7 +21,7 @@
 [ext_resource type="Script" uid="uid://dr7fn1f0pllf6" path="res://scripts/components/jump_component.gd" id="13_yj68g"]
 [ext_resource type="Script" uid="uid://biecfhjepus73" path="res://scripts/components/movement_component.gd" id="14_ioxgp"]
 [ext_resource type="Script" uid="uid://clv1jjvxgs12w" path="res://scripts/states/generic_states/fall_state.gd" id="14_yj68g"]
-[ext_resource type="Script" uid="uid://cvmt4g1070nqn" path="res://scripts/states/generic_states/hurt_state.gd" id="15_007i1"]
+[ext_resource type="Script" uid="uid://cvmt4g1070nqn" path="res://scripts/states/generic_states/injured_state.gd" id="15_007i1"]
 [ext_resource type="Script" uid="uid://c05o5nbmpwovi" path="res://scripts/states/generic_states/heal_state.gd" id="15_cnsyf"]
 [ext_resource type="Script" uid="uid://b0ewsejienp4o" path="res://scripts/states/generic_states/death_state.gd" id="15_ioxgp"]
 [ext_resource type="Script" uid="uid://dk74e55d6fp38" path="res://scripts/states/generic_states/attack_state.gd" id="17_6cv16"]
@@ -139,6 +139,22 @@ region = Rect2(64, 0, 32, 32)
 atlas = ExtResource("3_h17s1")
 region = Rect2(96, 0, 32, 32)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_wva7c"]
+atlas = ExtResource("7_ugbui")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7obkq"]
+atlas = ExtResource("7_ugbui")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_genst"]
+atlas = ExtResource("7_ugbui")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vo27k"]
+atlas = ExtResource("7_ugbui")
+region = Rect2(96, 0, 32, 32)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_lgqa7"]
 atlas = ExtResource("5_gx1jg")
 region = Rect2(0, 0, 32, 32)
@@ -207,22 +223,6 @@ region = Rect2(64, 0, 32, 32)
 atlas = ExtResource("4_je7p5")
 region = Rect2(32, 0, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_wva7c"]
-atlas = ExtResource("7_ugbui")
-region = Rect2(32, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_7obkq"]
-atlas = ExtResource("7_ugbui")
-region = Rect2(64, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_genst"]
-atlas = ExtResource("7_ugbui")
-region = Rect2(64, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_vo27k"]
-atlas = ExtResource("7_ugbui")
-region = Rect2(96, 0, 32, 32)
-
 [sub_resource type="SpriteFrames" id="SpriteFrames_2hs0m"]
 animations = [{
 "frames": [{
@@ -288,7 +288,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_8qxvo")
 }],
 "loop": false,
-"name": &"fall",
+"name": &"player_fall",
 "speed": 10.0
 }, {
 "frames": [{
@@ -311,7 +311,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_0ncpa")
 }],
 "loop": false,
-"name": &"heal",
+"name": &"player_heal",
 "speed": 10.0
 }, {
 "frames": [{
@@ -331,7 +331,24 @@ animations = [{
 "texture": SubResource("AtlasTexture_kvlxm")
 }],
 "loop": true,
-"name": &"idle",
+"name": &"player_idle",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wva7c")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7obkq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_genst")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vo27k")
+}],
+"loop": false,
+"name": &"player_injure",
 "speed": 8.0
 }, {
 "frames": [{
@@ -348,7 +365,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_5q8fn")
 }],
 "loop": false,
-"name": &"jump",
+"name": &"player_jump",
 "speed": 15.0
 }, {
 "frames": [{
@@ -392,25 +409,8 @@ animations = [{
 "texture": SubResource("AtlasTexture_pk8ii")
 }],
 "loop": true,
-"name": &"move",
+"name": &"player_move",
 "speed": 10.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_wva7c")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_7obkq")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_genst")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_vo27k")
-}],
-"loop": false,
-"name": &"take_damage",
-"speed": 8.0
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_1jxqw"]
@@ -429,7 +429,6 @@ move_state_path = NodePath("StateMachine/MoveState")
 jump_state_path = NodePath("StateMachine/JumpState")
 fall_state_path = NodePath("StateMachine/FallState")
 attack_state_path = NodePath("StateMachine/AttackState")
-hurt_state_path = NodePath("StateMachine/HurtState")
 heal_state_path = NodePath("StateMachine/HealState")
 death_state_path = NodePath("StateMachine/DeathState")
 ground_check_component = NodePath("Components/GroundCheckComponent")
@@ -441,10 +440,8 @@ gravity_component = NodePath("Components/GravityComponent")
 [node name="Animations" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -12)
 sprite_frames = SubResource("SpriteFrames_2hs0m")
-animation = &"heal"
-autoplay = "idle"
-frame = 5
-frame_progress = 1.0
+animation = &"player_injure"
+autoplay = "player_idle"
 
 [node name="PlayerCollision" type="CollisionShape2D" parent="."]
 position = Vector2(0, -5)
@@ -507,20 +504,20 @@ starting_state = NodePath("IdleState")
 [node name="IdleState" type="Node" parent="StateMachine"]
 script = ExtResource("11_lgqa7")
 actor_path = NodePath("../..")
-state_animation = "idle"
+state_animation = "player_idle"
 use_parent_logic = true
 
 [node name="MoveState" type="Node" parent="StateMachine"]
 script = ExtResource("13_8ydkj")
 actor_path = NodePath("../..")
-state_animation = "move"
+state_animation = "player_move"
 use_parent_logic = true
 movement_component = NodePath("../../Components/MovementComponent")
 
 [node name="JumpState" type="Node" parent="StateMachine"]
 script = ExtResource("13_3j4b4")
 actor_path = NodePath("../..")
-state_animation = "jump"
+state_animation = "player_jump"
 use_parent_logic = true
 gravity_component = NodePath("../../Components/GravityComponent")
 ground_check_component = NodePath("../../Components/GroundCheckComponent")
@@ -530,20 +527,20 @@ movement_component = NodePath("../../Components/MovementComponent")
 [node name="FallState" type="Node" parent="StateMachine"]
 script = ExtResource("14_yj68g")
 actor_path = NodePath("../..")
-state_animation = "fall"
+state_animation = "player_fall"
 use_parent_logic = true
 
-[node name="HurtState" type="Node" parent="StateMachine" node_paths=PackedStringArray("next_state")]
+[node name="InjuredState" type="Node" parent="StateMachine"]
 script = ExtResource("15_007i1")
-hurt_animation = "take_damage"
-next_state = NodePath("../IdleState")
-enable_knockback = true
-knockback_force = 132.5
+actor_path = NodePath("../..")
+state_animation = "player_injure"
+use_parent_logic = true
+health_component_path = NodePath("../../Components/HealthComponent")
 
 [node name="HealState" type="Node" parent="StateMachine"]
 script = ExtResource("15_cnsyf")
 actor_path = NodePath("../..")
-state_animation = "heal"
+state_animation = "player_heal"
 use_parent_logic = true
 health_component_path = NodePath("../../Components/HealthComponent")
 
@@ -557,7 +554,7 @@ script = ExtResource("15_ioxgp")
 death_animation = "death"
 post_death_method = "trigger_game_over"
 
-[connection signal="animation_finished" from="Animations" to="StateMachine/HurtState" method="animation_finished"]
+[connection signal="animation_finished" from="Animations" to="StateMachine/InjuredState" method="on_animation_finished"]
 [connection signal="animation_finished" from="Animations" to="StateMachine/HealState" method="on_animation_finished"]
 [connection signal="animation_finished" from="Animations" to="StateMachine/DeathState" method="animation_finished"]
 [connection signal="timeout" from="GameOverDelayTimer" to="." method="_on_game_over_delay_timer_timeout"]
