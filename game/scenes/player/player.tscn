@@ -457,25 +457,31 @@ one_shot = true
 [node name="Components" type="Node" parent="."]
 script = ExtResource("10_007i1")
 
-[node name="HealthComponent" type="Node" parent="Components"]
-script = ExtResource("10_cnsyf")
-actor_path = NodePath("../..")
-max_health = 9.0
-starting_health = 5.0
-
-[node name="GroundCheckComponent" type="Node" parent="Components"]
-script = ExtResource("10_3j4b4")
-actor_path = NodePath("../..")
-
 [node name="GravityComponent" type="Node" parent="Components"]
 script = ExtResource("11_yj68g")
 actor_path = NodePath("../..")
 ground_check_component = NodePath("../GroundCheckComponent")
 
+[node name="GroundCheckComponent" type="Node" parent="Components"]
+script = ExtResource("10_3j4b4")
+actor_path = NodePath("../..")
+
 [node name="AnimationComponent" type="Node" parent="Components"]
 script = ExtResource("12_ioxgp")
 actor_path = NodePath("../..")
 animations_path = NodePath("../../Animations")
+
+[node name="HealthComponent" type="Node" parent="Components"]
+script = ExtResource("10_cnsyf")
+actor_path = NodePath("../..")
+max_health = 9.0
+base_health = 5.0
+
+[node name="MovementComponent" type="Node" parent="Components"]
+script = ExtResource("14_ioxgp")
+actor_path = NodePath("../..")
+move_speed = 125.0
+metadata/_custom_type_script = "uid://biecfhjepus73"
 
 [node name="JumpComponent" type="Node" parent="Components"]
 script = ExtResource("13_yj68g")
@@ -487,12 +493,6 @@ export_jump_count = 1
 export_recharge_time = 4.0
 ground_check_path = NodePath("../GroundCheckComponent")
 gravity_component_path = NodePath("../GravityComponent")
-
-[node name="MovementComponent" type="Node" parent="Components"]
-script = ExtResource("14_ioxgp")
-actor_path = NodePath("../..")
-move_speed = 125.0
-metadata/_custom_type_script = "uid://biecfhjepus73"
 
 [node name="PickUpPermissionComponent" type="Node" parent="Components"]
 script = ExtResource("17_j4nxn")

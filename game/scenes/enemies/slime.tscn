@@ -500,6 +500,31 @@ shape = SubResource("RectangleShape2D_6axq5")
 [node name="Components" type="Node" parent="."]
 script = ExtResource("9_wnf82")
 
+[node name="GravityComponent" type="Node" parent="Components"]
+script = ExtResource("10_m4uwr")
+actor_path = NodePath("../..")
+gravity = 800.0
+ground_check_component = NodePath("../GroundCheckComponent")
+
+[node name="GroundCheckComponent" type="Node" parent="Components"]
+script = ExtResource("9_rdhaw")
+actor_path = NodePath("../..")
+
+[node name="AnimationComponent" type="Node" parent="Components"]
+script = ExtResource("11_o5sr2")
+actor_path = NodePath("../..")
+animations_path = NodePath("../../Animations")
+
+[node name="HealthComponent" type="Node" parent="Components"]
+script = ExtResource("11_noxma")
+actor_path = NodePath("../..")
+max_health = 2.0
+
+[node name="MovementComponent" type="Node" parent="Components"]
+script = ExtResource("15_84gbg")
+actor_path = NodePath("../..")
+move_speed = 60.0
+
 [node name="JumpComponent" type="Node" parent="Components"]
 script = ExtResource("14_84gbg")
 actor_path = NodePath("../..")
@@ -515,40 +540,15 @@ ground_check_path = NodePath("../GroundCheckComponent")
 gravity_component_path = NodePath("../GravityComponent")
 metadata/_custom_type_script = "uid://dr7fn1f0pllf6"
 
-[node name="HealthComponent" type="Node" parent="Components"]
-script = ExtResource("11_noxma")
+[node name="IdleComponent" type="Node" parent="Components"]
+script = ExtResource("13_o5sr2")
 actor_path = NodePath("../..")
-max_health = 2.0
-
-[node name="GroundCheckComponent" type="Node" parent="Components"]
-script = ExtResource("9_rdhaw")
-actor_path = NodePath("../..")
-
-[node name="GravityComponent" type="Node" parent="Components"]
-script = ExtResource("10_m4uwr")
-actor_path = NodePath("../..")
-gravity = 800.0
-ground_check_component = NodePath("../GroundCheckComponent")
-
-[node name="AnimationComponent" type="Node" parent="Components"]
-script = ExtResource("11_o5sr2")
-actor_path = NodePath("../..")
-animations_path = NodePath("../../Animations")
 
 [node name="EdgeDetectorComponent" type="Node" parent="Components"]
 script = ExtResource("12_m4uwr")
 actor_path = NodePath("../..")
 raycast_right_path = NodePath("../../RayCastRight")
 raycast_left_path = NodePath("../../RayCastLeft")
-
-[node name="IdleComponent" type="Node" parent="Components"]
-script = ExtResource("13_o5sr2")
-actor_path = NodePath("../..")
-
-[node name="MovementComponent" type="Node" parent="Components"]
-script = ExtResource("15_84gbg")
-actor_path = NodePath("../..")
-move_speed = 60.0
 
 [node name="RandomizerComponent" type="Node" parent="Components"]
 script = ExtResource("16_7ji7s")
