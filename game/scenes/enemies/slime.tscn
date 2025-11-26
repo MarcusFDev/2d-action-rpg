@@ -503,13 +503,13 @@ script = ExtResource("9_wnf82")
 [node name="JumpComponent" type="Node" parent="Components"]
 script = ExtResource("14_84gbg")
 actor_path = NodePath("../..")
-jump_time = 0.3
-jump_height = 20.0
+jump_height = 40.0
+jump_distance = 35.0
 jump_height_offset = true
 export_enable_jump_cooldown = true
 export_jump_cooldown = 1.0
 export_enable_multi_jump = true
-export_jump_count = 5
+export_jump_count = 2
 export_recharge_time = 5.0
 ground_check_path = NodePath("../GroundCheckComponent")
 gravity_component_path = NodePath("../GravityComponent")
@@ -527,6 +527,7 @@ actor_path = NodePath("../..")
 [node name="GravityComponent" type="Node" parent="Components"]
 script = ExtResource("10_m4uwr")
 actor_path = NodePath("../..")
+gravity = 800.0
 ground_check_component = NodePath("../GroundCheckComponent")
 
 [node name="AnimationComponent" type="Node" parent="Components"]
@@ -624,7 +625,6 @@ script = ExtResource("13_m4uwr")
 actor_path = NodePath("../..")
 state_animation = "slime_fall"
 use_behavior_tree = true
-gravity_component = NodePath("../../Components/GravityComponent")
 
 [node name="AttackState" type="Node" parent="StateMachine" node_paths=PackedStringArray("next_state")]
 script = ExtResource("14_o5sr2")
