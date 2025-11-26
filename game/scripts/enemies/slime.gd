@@ -182,7 +182,6 @@ func _process(delta: float) -> void:
 			print("==============================")
 
 func _physics_process(delta: float) -> void:
-	actor.move_and_slide()
 	gravity_comp.apply_physics(delta)
 	ground_check_comp.apply(delta)
 
@@ -192,6 +191,8 @@ func _physics_process(delta: float) -> void:
 	animation_comp.animation_flip(delta)
 	jump_comp.update_timer(delta)
 	state_machine.process_physics(delta)
+	
+	actor.move_and_slide()
 	ground_check_comp.post_update()
 
 func trigger_attack() -> void:
