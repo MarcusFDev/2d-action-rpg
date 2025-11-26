@@ -15,7 +15,7 @@ signal update_health(old_health: float, new_health: float)
 @export_range(1, 15, 1, "or_greater", "suffix:Hearts") var max_health: float
 ## Determines the starting health value assigned when the entity spawns or resets. [br]
 ## [b]Note:[/b] Cannot exceed the maximum health and can be set above 15 with manual input.
-@export_range(1, 15, 1, "or_greater", "suffix:Hearts") var starting_health: float
+@export_range(1, 15, 1, "or_greater", "suffix:Hearts") var base_health: float
 
 @onready var actor: Node = get_node_or_null(actor_path)
 
@@ -24,7 +24,7 @@ var current_health: float
 var is_dead: bool = false
 
 func _ready() -> void:
-	current_health = clamp(starting_health, 0.0, max_health)
+	current_health = clamp(base_health, 0.0, max_health)
 	if enable_debug:
 		print(actor.name, " | HealthComponent | Initialized Health: ", current_health, "/", max_health)
 
@@ -62,7 +62,7 @@ func lose_health(amount: float) -> void:
 		emit_signal("update_health", old_health, current_health)
 
 func reset_health() -> void:
-	current_health = clamp(starting_health, 0.0, max_health)
+	current_health = clamp(base_health, 0.0, max_health)
 	is_dead = false
 	if enable_debug:
 		print(actor.name, " | HealthComponent | Health reset.")
