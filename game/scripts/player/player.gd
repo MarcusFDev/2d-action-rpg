@@ -20,7 +20,7 @@ extends CharacterBody2D
 @export var jump_state_path: NodePath
 @export var fall_state_path: NodePath
 @export var attack_state_path: NodePath
-@export var hurt_state_path: NodePath
+@export var injured_state_path: NodePath
 @export var heal_state_path: NodePath
 @export var death_state_path: NodePath
 
@@ -42,7 +42,7 @@ extends CharacterBody2D
 @onready var jump_state: Node = get_node_or_null(jump_state_path)
 @onready var fall_state: Node = get_node_or_null(fall_state_path)
 @onready var attack_state: Node = get_node_or_null(attack_state_path)
-@onready var hurt_state: Node = get_node_or_null(hurt_state_path)
+@onready var injured_state: Node = get_node_or_null(injured_state_path)
 @onready var heal_state: Node = get_node_or_null(heal_state_path)
 @onready var death_state: Node = get_node_or_null(death_state_path)
 	
@@ -69,6 +69,7 @@ func _setup_states() -> void:
 	_jump_state()
 	_fall_state()
 	_heal_state()
+	_injured_state()
 
 func _idle_state() -> void:
 	idle_state.handle_physics = func(_delta: float) -> State:
@@ -171,6 +172,25 @@ func _heal_state() -> void:
 		
 		return null
 
+func _injured_state() -> void:
+	injured_state.handle_physics = func(_delta: float) -> State:
+		var input_direction: float = InputManagerClass.get_movement_axis()
+		if input_direction == 0:
+			if injured_state.enable_debug:
+				print("Player Idling detected. switching to: ", idle_state)
+			return idle_state
+		
+		if InputManagerClass.is_jump_pressed() and jump_comp.can_jump():
+			if injured_state.enable_debug:
+				print("Player Jump Key detected. Switching to: ", jump_state)
+			return jump_state
+		if InputManagerClass.get_movement_axis() != 0:
+			if injured_state.enable_debug:
+				print("Player Move Key detected. Switching to: ", move_state)
+			return move_state
+		
+		return null
+
 func _unhandled_input(event: InputEvent) -> void:
 	state_machine.process_input(event)
 	trigger_attack()
@@ -200,9 +220,6 @@ func trigger_attack() -> void:
 	if InputManagerClass.is_attack_pressed():
 		if attack_state:
 			state_machine.change_state(attack_state)
-
-#func apply_knockback(direction: Vector2, force: float) -> void:
-	#velocity += direction.normalized() * force
 
 # ==============================
 # ===== GameOver Trigger =====

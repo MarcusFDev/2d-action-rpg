@@ -23,6 +23,7 @@ enum ControlType {USER_INPUT, AI_LOGIC}
 @export var fall_state_path: NodePath
 @export var attack_state_path: NodePath
 @export var heal_state_path: NodePath
+@export var injured_state_path: NodePath
 
 @export_group("Component Paths")
 @export var ground_check_component: NodePath
@@ -40,6 +41,7 @@ enum ControlType {USER_INPUT, AI_LOGIC}
 @onready var fall_state: Node = get_node_or_null(fall_state_path)
 @onready var attack_state: Node = get_node_or_null(attack_state_path)
 @onready var heal_state: Node = get_node_or_null(heal_state_path)
+@onready var injured_state: Node = get_node_or_null(injured_state_path)
 
 @onready var gravity_comp: Node = get_node_or_null(gravity_component)
 @onready var ground_check_comp: Node = get_node_or_null(ground_check_component)
@@ -150,6 +152,7 @@ func _setup_states() -> void:
 	_jump_state()
 	_fall_state()
 	_heal_state()
+	_injured_state()
 
 func _idle_state() -> void:
 	pass
@@ -164,6 +167,9 @@ func _fall_state() -> void:
 	pass
 
 func _heal_state() -> void:
+	pass
+
+func _injured_state() -> void:
 	pass
 
 func _process(delta: float) -> void:
