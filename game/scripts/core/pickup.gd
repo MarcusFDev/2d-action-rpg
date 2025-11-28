@@ -35,8 +35,6 @@ func actor_entered(actor: Node) -> void:
 			pass
 	
 	var pickup_permission_comp: Node = actor.get_node_or_null("Components/PickUpPermissionComponent")
-	if enable_debug:
-		print(actor.name, " has got ", pickup_permission_comp)
-	if pickup_permission_comp and pickup_permission_comp.has_method("apply_pickup"):
+	if pickup_permission_comp:
 		pickup_permission_comp.apply_pickup(pickup_data)
 		queue_free()
