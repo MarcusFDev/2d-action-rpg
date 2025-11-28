@@ -1,4 +1,4 @@
-[gd_scene load_steps=78 format=3 uid="uid://beftgbphk8tt3"]
+[gd_scene load_steps=81 format=3 uid="uid://beftgbphk8tt3"]
 
 [ext_resource type="Script" uid="uid://dc7is6nsd35mi" path="res://scripts/player/player.gd" id="1_g2els"]
 [ext_resource type="Texture2D" uid="uid://nuicatwvk6p6" path="res://assets/sprites/player/knight-attack1.png" id="2_myrg7"]
@@ -12,8 +12,10 @@
 [ext_resource type="Texture2D" uid="uid://npo044vxtqee" path="res://assets/sprites/player/knight-take-damage.png" id="7_ugbui"]
 [ext_resource type="Script" uid="uid://dvj15x0yx6poy" path="res://scripts/components/ground_check_component.gd" id="10_3j4b4"]
 [ext_resource type="Script" uid="uid://btyaiu46kb4tm" path="res://scripts/components/component.gd" id="10_007i1"]
+[ext_resource type="Script" uid="uid://dxcaucci80nek" path="res://scripts/components/hurtbox_component.gd" id="10_28m0y"]
 [ext_resource type="Script" uid="uid://dnx2iycln56te" path="res://scripts/components/health_component.gd" id="10_cnsyf"]
 [ext_resource type="Script" uid="uid://ct14p13yajhmc" path="res://scripts/states/generic_states/idle_state.gd" id="11_lgqa7"]
+[ext_resource type="Script" uid="uid://kybu86uisr3x" path="res://scripts/components/hitbox_component.gd" id="11_uniwh"]
 [ext_resource type="Script" uid="uid://c5ae5naepgxn2" path="res://scripts/components/gravity_component.gd" id="11_yj68g"]
 [ext_resource type="Script" uid="uid://d2ncc58simucl" path="res://scripts/components/animation_component.gd" id="12_ioxgp"]
 [ext_resource type="Script" uid="uid://ccjqnofia5vo0" path="res://scripts/states/generic_states/jump_state.gd" id="13_3j4b4"]
@@ -416,6 +418,10 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_1jxqw"]
 radius = 5.09902
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_6cv16"]
+radius = 7.0
+height = 28.0
+
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 z_index = 5
 collision_mask = 30
@@ -429,6 +435,7 @@ move_state_path = NodePath("StateMachine/MoveState")
 jump_state_path = NodePath("StateMachine/JumpState")
 fall_state_path = NodePath("StateMachine/FallState")
 attack_state_path = NodePath("StateMachine/AttackState")
+injured_state_path = NodePath("StateMachine/InjuredState")
 heal_state_path = NodePath("StateMachine/HealState")
 death_state_path = NodePath("StateMachine/DeathState")
 ground_check_component = NodePath("Components/GroundCheckComponent")
@@ -444,8 +451,34 @@ animation = &"player_injure"
 autoplay = "player_idle"
 
 [node name="PlayerCollision" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2(0, -5)
 shape = SubResource("CircleShape2D_1jxqw")
+
+[node name="HurtBox" type="Area2D" parent="."]
+collision_layer = 128
+collision_mask = 0
+script = ExtResource("10_28m0y")
+owner_path = NodePath("..")
+
+[node name="HurtBoxCollision" type="CollisionShape2D" parent="HurtBox"]
+visible = false
+position = Vector2(0, -10)
+shape = SubResource("CapsuleShape2D_6cv16")
+debug_color = Color(0.86851335, 0.31255168, 0.4341947, 0.41960785)
+
+[node name="HitBox" type="Area2D" parent="."]
+collision_layer = 64
+collision_mask = 128
+script = ExtResource("11_uniwh")
+owner_path = NodePath("..")
+enable_debug = true
+
+[node name="HitBoxCollision" type="CollisionShape2D" parent="HitBox"]
+visible = false
+position = Vector2(0, -10)
+shape = SubResource("CapsuleShape2D_6cv16")
+debug_color = Color(0.86851335, 0.31255168, 0.4341947, 0.41960785)
 
 [node name="GameOverDelayTimer" type="Timer" parent="."]
 wait_time = 0.5

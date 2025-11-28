@@ -1,7 +1,6 @@
-[gd_scene load_steps=84 format=3 uid="uid://chptbuqgr7qyt"]
+[gd_scene load_steps=86 format=3 uid="uid://chptbuqgr7qyt"]
 
 [ext_resource type="Script" uid="uid://n35k36oc5i6u" path="res://scripts/enemies/slime.gd" id="1_68p8s"]
-[ext_resource type="PackedScene" uid="uid://bg7nrwxlpxf3p" path="res://scenes/core/base_damage_zone.tscn" id="2_68p8s"]
 [ext_resource type="Texture2D" uid="uid://mqmm0ytehpti" path="res://assets/sprites/enemies/slime/slime-attack.png" id="2_ikdmk"]
 [ext_resource type="Texture2D" uid="uid://b0c4p7qgu22yt" path="res://assets/sprites/enemies/slime/slime-fall.png" id="3_jjup5"]
 [ext_resource type="Texture2D" uid="uid://bqo4nv5fjoevl" path="res://assets/sprites/enemies/slime/slime-death.png" id="3_wfyvu"]
@@ -9,9 +8,11 @@
 [ext_resource type="Texture2D" uid="uid://cmiijc04jyy37" path="res://assets/sprites/enemies/slime/slime-patrol.png" id="5_ikdmk"]
 [ext_resource type="Texture2D" uid="uid://dcrkxexybjpvh" path="res://assets/sprites/enemies/slime/slime-test-heal.png" id="5_noxma"]
 [ext_resource type="Texture2D" uid="uid://dkhvgs4m8tdu" path="res://assets/sprites/enemies/slime/slime-take-damage.png" id="7_at850"]
+[ext_resource type="Script" uid="uid://dxcaucci80nek" path="res://scripts/components/hurtbox_component.gd" id="9_hhkhi"]
 [ext_resource type="Script" uid="uid://bcoqv8smpfvig" path="res://scripts/states/state_machines/state_machine.gd" id="9_nx7r3"]
 [ext_resource type="Script" uid="uid://dvj15x0yx6poy" path="res://scripts/components/ground_check_component.gd" id="9_rdhaw"]
 [ext_resource type="Script" uid="uid://btyaiu46kb4tm" path="res://scripts/components/component.gd" id="9_wnf82"]
+[ext_resource type="Script" uid="uid://kybu86uisr3x" path="res://scripts/components/hitbox_component.gd" id="10_fqq7q"]
 [ext_resource type="Script" uid="uid://c5ae5naepgxn2" path="res://scripts/components/gravity_component.gd" id="10_m4uwr"]
 [ext_resource type="Script" uid="uid://dnx2iycln56te" path="res://scripts/components/health_component.gd" id="11_noxma"]
 [ext_resource type="Script" uid="uid://d2ncc58simucl" path="res://scripts/components/animation_component.gd" id="11_o5sr2"]
@@ -443,11 +444,14 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_gstla"]
-size = Vector2(22, 16)
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6axq5"]
 size = Vector2(20, 14)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_fqq7q"]
+height = 20.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gstla"]
+size = Vector2(22, 16)
 
 [node name="Slime" type="CharacterBody2D" groups=["enemy"]]
 collision_layer = 2
@@ -464,11 +468,24 @@ jump_state_path = NodePath("StateMachine/JumpState")
 fall_state_path = NodePath("StateMachine/FallState")
 attack_state_path = NodePath("StateMachine/AttackState")
 heal_state_path = NodePath("StateMachine/HealState")
+injured_state_path = NodePath("StateMachine/InjuredState")
 ground_check_component = NodePath("Components/GroundCheckComponent")
 animation_component = NodePath("Components/AnimationComponent")
 edge_detector_component = NodePath("Components/EdgeDetectorComponent")
 jump_component = NodePath("Components/JumpComponent")
 gravity_component = NodePath("Components/GravityComponent")
+
+[node name="Animations" type="AnimatedSprite2D" parent="."]
+position = Vector2(4.76837e-07, -4)
+scale = Vector2(0.671875, 0.671875)
+sprite_frames = SubResource("SpriteFrames_a1j1j")
+animation = &"slime_idle"
+autoplay = "slime_idle"
+
+[node name="SlimeCollision" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2(0, -1)
+shape = SubResource("RectangleShape2D_6axq5")
 
 [node name="RayCastRight" type="RayCast2D" parent="."]
 visible = false
@@ -480,23 +497,32 @@ visible = false
 position = Vector2(0, 6)
 target_position = Vector2(-13, 0)
 
-[node name="Animations" type="AnimatedSprite2D" parent="."]
-position = Vector2(4.76837e-07, -4)
-scale = Vector2(0.671875, 0.671875)
-sprite_frames = SubResource("SpriteFrames_a1j1j")
-animation = &"slime_heal"
-autoplay = "slime_idle"
-
-[node name="EnemyDamageZone" parent="." instance=ExtResource("2_68p8s")]
+[node name="HurtBox" type="Area2D" parent="."]
 position = Vector2(0, -0.5)
+collision_layer = 128
+collision_mask = 0
+script = ExtResource("9_hhkhi")
+owner_path = NodePath("..")
+metadata/_custom_type_script = "uid://dxcaucci80nek"
 
-[node name="AttackCollision" type="CollisionShape2D" parent="EnemyDamageZone"]
+[node name="HurtBoxCollision" type="CollisionShape2D" parent="HurtBox"]
+visible = false
+position = Vector2(0, -0.5)
+shape = SubResource("CapsuleShape2D_fqq7q")
+debug_color = Color(0.9133591, 0.24193373, 0.42832702, 0.41960785)
+
+[node name="HitBox" type="Area2D" parent="."]
+position = Vector2(0, -0.5)
+collision_layer = 64
+collision_mask = 128
+script = ExtResource("10_fqq7q")
+owner_path = NodePath("..")
+enable_debug = true
+
+[node name="HitBoxCollision" type="CollisionShape2D" parent="HitBox"]
+visible = false
 position = Vector2(0, -1.5)
 shape = SubResource("RectangleShape2D_gstla")
-
-[node name="SlimeCollision" type="CollisionShape2D" parent="."]
-position = Vector2(0, -1)
-shape = SubResource("RectangleShape2D_6axq5")
 
 [node name="Components" type="Node" parent="."]
 script = ExtResource("9_wnf82")
