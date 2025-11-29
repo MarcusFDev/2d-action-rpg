@@ -1,8 +1,13 @@
-extends Area2D
+class_name CoinPickUp
+extends ItemPickUp
 
-@onready var animation_player: AnimationPlayer = $AnimationPlayer
-var game_manager: Node = GameManager
+## Determines the value that this coin provides. [br]
+## [b]Note:[/b] Can exceed a value of 10 with manual input.[br]
+@export_range(0, 10, 1, "suffix:Coins", "or_greater") var coin_amount: float
 
-func _on_body_entered(_body: CharacterBody2D) -> void:
-	game_manager.add_point()
-	animation_player.play("pickup") # Function that removes coin upon player collision.
+func _enter_tree() -> void:
+	item_data = {
+		"type": "currency",
+		"source": "coin",
+		"amount": coin_amount
+	}
