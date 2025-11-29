@@ -91,12 +91,12 @@ animation = &"crystal_idle"
 autoplay = "crystal_idle"
 frame_progress = 0.0879466
 
-[node name="PickupSound" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("2_adck5")
-bus = &"SFX"
-
 [node name="HeartCrystalCollision" type="CollisionShape2D" parent="."]
 position = Vector2(-0.5, 0)
 shape = SubResource("RectangleShape2D_3ghpg")
+
+[node name="PickupSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("2_adck5")
+bus = &"SFX"
 
 [connection signal="body_entered" from="." to="." method="actor_entered"]

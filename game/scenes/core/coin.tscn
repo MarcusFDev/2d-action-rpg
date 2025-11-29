@@ -1,7 +1,7 @@
 [gd_scene load_steps=21 format=3 uid="uid://bf8leam20pyk"]
 
 [ext_resource type="Texture2D" uid="uid://cqm0r02sn7u1j" path="res://assets/sprites/world/coin.png" id="1_d5gmh"]
-[ext_resource type="Script" uid="uid://duxsginlj04j2" path="res://scripts/core/coin.gd" id="1_i64fm"]
+[ext_resource type="Script" uid="uid://duxsginlj04j2" path="res://scripts/core/interactables/item_pickups/coin_pickup.gd" id="1_i64fm"]
 [ext_resource type="AudioStream" uid="uid://c818fq7vn7chg" path="res://assets/sounds/coin.wav" id="3_11l1o"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_0t63x"]
@@ -198,7 +198,11 @@ _data = {
 }
 
 [node name="Coin" type="Area2D"]
+collision_layer = 16
+collision_mask = 3
 script = ExtResource("1_i64fm")
+coin_amount = 1.0
+enable_debug = true
 
 [node name="Animations" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_s5w7y")
@@ -218,4 +222,4 @@ libraries = {
 &"": SubResource("AnimationLibrary_1ikuy")
 }
 
-[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_entered" from="." to="." method="actor_entered"]

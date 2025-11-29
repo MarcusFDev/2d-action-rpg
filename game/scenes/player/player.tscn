@@ -464,7 +464,19 @@ visible = false
 position = Vector2(0, -5)
 shape = SubResource("CircleShape2D_1jxqw")
 
+[node name="PlayerCamera" type="Camera2D" parent="."]
+visible = false
+scale = Vector2(8.6, 29)
+offset = Vector2(0, -35)
+zoom = Vector2(5, 5)
+process_callback = 0
+limit_bottom = 150
+limit_smoothed = true
+position_smoothing_enabled = true
+metadata/_edit_lock_ = true
+
 [node name="HurtBox" type="Area2D" parent="."]
+visible = false
 collision_layer = 128
 collision_mask = 0
 script = ExtResource("10_28m0y")
@@ -477,6 +489,7 @@ shape = SubResource("CapsuleShape2D_6cv16")
 debug_color = Color(0.86851335, 0.31255168, 0.4341947, 0.41960785)
 
 [node name="HitBox" type="Area2D" parent="."]
+visible = false
 collision_layer = 64
 collision_mask = 128
 monitoring = false
@@ -540,8 +553,10 @@ gravity_component_path = NodePath("../GravityComponent")
 [node name="PickUpPermissionComponent" type="Node" parent="Components"]
 script = ExtResource("17_j4nxn")
 actor_path = NodePath("../..")
-export_enable_health_pickup = true
-export_allow_heart_crystals = true
+export_hp_enable_health_pickup = true
+export_hp_allow_heart_crystals = true
+export_cur_enable_currency_pickup = true
+export_cur_allow_coins = true
 
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("starting_state")]
 script = ExtResource("3_qhqgy")
@@ -606,4 +621,3 @@ post_death_method = "trigger_game_over"
 [connection signal="animation_finished" from="Animations" to="StateMachine/HealState" method="on_animation_finished"]
 [connection signal="animation_finished" from="Animations" to="StateMachine/DeathState" method="animation_finished"]
 [connection signal="timeout" from="GameOverDelayTimer" to="." method="_on_game_over_delay_timer_timeout"]
-[connection signal="pickup_received" from="Components/PickUpPermissionComponent" to="." method="pickup_received"]
