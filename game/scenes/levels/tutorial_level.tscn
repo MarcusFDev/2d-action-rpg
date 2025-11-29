@@ -1,16 +1,14 @@
-[gd_scene load_steps=17 format=4 uid="uid://c17coch358rjq"]
+[gd_scene load_steps=14 format=4 uid="uid://c17coch358rjq"]
 
-[ext_resource type="Script" uid="uid://cxn04bicrxv54" path="res://scripts/core/game_manager.gd" id="1_8r123"]
+[ext_resource type="Script" uid="uid://cxn04bicrxv54" path="res://scripts/core/system_managers/game_manager.gd" id="1_8r123"]
 [ext_resource type="Texture2D" uid="uid://c7g7cuah1l2u0" path="res://assets/sprites/world/tilemap.png" id="1_i4g7q"]
 [ext_resource type="PackedScene" uid="uid://beftgbphk8tt3" path="res://scenes/player/player.tscn" id="2_6jffa"]
 [ext_resource type="PackedScene" uid="uid://bf8leam20pyk" path="res://scenes/core/coin.tscn" id="3_jcy27"]
-[ext_resource type="PackedScene" uid="uid://djt4jaxstqp53" path="res://scenes/ui/hud.tscn" id="3_xl0d0"]
+[ext_resource type="PackedScene" uid="uid://djt4jaxstqp53" path="res://scenes/ui/player_hud.tscn" id="3_xl0d0"]
 [ext_resource type="PackedScene" uid="uid://3qwe5nmnoejx" path="res://scenes/ui/pause_menu.tscn" id="4_8r123"]
 [ext_resource type="PackedScene" uid="uid://chptbuqgr7qyt" path="res://scenes/enemies/slime.tscn" id="4_xl0d0"]
 [ext_resource type="PackedScene" uid="uid://dcvg187d11cce" path="res://scenes/core/platform.tscn" id="5_8r123"]
 [ext_resource type="PackedScene" uid="uid://ddx81y73wlc8s" path="res://scenes/ui/game_over_menu.tscn" id="6_d0g56"]
-[ext_resource type="PackedScene" uid="uid://bg7nrwxlpxf3p" path="res://scenes/core/base_damage_zone.tscn" id="9_77k6j"]
-[ext_resource type="Script" uid="uid://dxvil1un2kg0e" path="res://scripts/core/world_damage_zone.gd" id="10_d0g56"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_bmrm0"]
 texture = ExtResource("1_i4g7q")
@@ -268,9 +266,6 @@ physics_layer_0/collision_layer = 8
 physics_layer_0/collision_mask = 0
 sources/0 = SubResource("TileSetAtlasSource_43dxg")
 
-[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_gs1om"]
-distance = -520.0
-
 [node name="TutorialLevel" type="Node2D"]
 
 [node name="Core" type="Node" parent="."]
@@ -293,16 +288,6 @@ tile_set = SubResource("TileSet_4xxee")
 
 [node name="Player" parent="Core/Player" instance=ExtResource("2_6jffa")]
 position = Vector2(0, -856)
-
-[node name="PlayerCamera" type="Camera2D" parent="Core/Player/Player"]
-scale = Vector2(8.6, 29)
-offset = Vector2(0, -35)
-zoom = Vector2(5, 5)
-process_callback = 0
-limit_bottom = 150
-limit_smoothed = true
-position_smoothing_enabled = true
-metadata/_edit_lock_ = true
 
 [node name="Interfaces" type="Node" parent="Core"]
 
@@ -367,29 +352,3 @@ position = Vector2(248, -40)
 position = Vector2(-240, -32)
 
 [node name="WorldBorder" type="Node" parent="."]
-
-[node name="DamageZone" parent="WorldBorder" instance=ExtResource("9_77k6j")]
-script = ExtResource("10_d0g56")
-
-[node name="BottomCollision" type="CollisionShape2D" parent="WorldBorder/DamageZone"]
-position = Vector2(0, 208)
-shape = SubResource("WorldBoundaryShape2D_gs1om")
-debug_color = Color(0.971997, 0, 0.444106, 0.42)
-
-[node name="TopCollision" type="CollisionShape2D" parent="WorldBorder/DamageZone"]
-position = Vector2(0, -432)
-rotation = -3.13845
-shape = SubResource("WorldBoundaryShape2D_gs1om")
-debug_color = Color(0.971997, 0, 0.444106, 0.42)
-
-[node name="LeftCollision" type="CollisionShape2D" parent="WorldBorder/DamageZone"]
-position = Vector2(-624, 312)
-rotation = 1.57141
-shape = SubResource("WorldBoundaryShape2D_gs1om")
-debug_color = Color(0.971997, 0, 0.444106, 0.42)
-
-[node name="RightCollision" type="CollisionShape2D" parent="WorldBorder/DamageZone"]
-position = Vector2(600, 320)
-rotation = 4.7219
-shape = SubResource("WorldBoundaryShape2D_gs1om")
-debug_color = Color(0.971997, 0, 0.444106, 0.42)
