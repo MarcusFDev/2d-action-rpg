@@ -18,9 +18,11 @@ extends State
 @export var next_state: State = null
 
 @export_group("Components Logic")
+@export var hitbox_component: NodePath
 
 @export_range(0, 100, 1, "or_greater", "suffix:hearts") var entity_damage: float = 1
 
+@onready var hitbox_comp: Node = get_node_or_null(hitbox_component)
 # Script Variables
 var is_finished : bool = false
 
@@ -42,6 +44,8 @@ func enter() -> void:
 
 func init_attack() -> void:
 	parent.animations.play(attack_animation)
+	if hitbox_comp:
+		hitbox_comp.set_deferred("monitoring", true)
 	if use_internal_logic:
 		parent.velocity.x = 0
 		if not animations.animation_finished.is_connected(animation_finished):
@@ -79,6 +83,8 @@ func animation_finished() -> void:
 
 func exit() -> void:
 	is_finished = false
+	if hitbox_comp:
+		hitbox_comp.set_deferred("monitoring", false)
 	if enable_debug:
 		print("Exiting AttackState.")
 	pass
