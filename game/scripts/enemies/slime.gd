@@ -30,6 +30,7 @@ enum ControlType {USER_INPUT, AI_LOGIC}
 @export var animation_component: NodePath
 @export var edge_detector_component: NodePath
 @export var jump_component: NodePath
+@export var pickup_permission_component: NodePath
 @export var gravity_component: NodePath
 @export var hurtbox_component: NodePath
 
@@ -49,9 +50,10 @@ enum ControlType {USER_INPUT, AI_LOGIC}
 @onready var animation_comp: Node = get_node_or_null(animation_component)
 @onready var edge_detector_comp: Node = get_node_or_null(edge_detector_component)
 @onready var jump_comp: Node = get_node_or_null(jump_component)
+@onready var pickup_permission_comp: Node = get_node_or_null(pickup_permission_component)
 @onready var hurtbox_comp: Area2D = get_node_or_null(hurtbox_component)
 
-# Internal BehaviorTree Variables
+# Script Variables
 var _prev_state_name: String = ""
 var bt_root: BTNode
 var bt: BehaviorTree
@@ -61,7 +63,7 @@ func _ready() -> void:
 	_setup_states()
 	_setup_blackboard()
 	_setup_behavior_tree()
-	hurtbox_comp.hit_received.connect(hit_received)
+	_setup_signals()
 	state_machine.init(self, animations, blackboard)
 
 func get_blackboard() -> Dictionary:
@@ -154,6 +156,10 @@ func _setup_behavior_tree() -> void:
 		]),
 	])
 	bt = BehaviorTree.new(bt_root, blackboard, self)
+
+func _setup_signals() -> void:
+	pickup_permission_comp.pickup_received.connect(pickup_received)
+	hurtbox_comp.hit_received.connect(hit_received)
 
 func _setup_states() -> void:
 	_idle_state()

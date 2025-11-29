@@ -64,8 +64,12 @@ extends CharacterBody2D
 # ==============================
 func _ready() -> void:
 	_setup_states()
-	hurtbox_comp.hit_received.connect(hit_received)
+	_setup_signals()
 	state_machine.init(self, animations)
+
+func _setup_signals() -> void:
+	pickup_permission_comp.pickup_received.connect(pickup_received)
+	hurtbox_comp.hit_received.connect(hit_received)
 
 # ==============================
 # ===== Player State Setup =====
@@ -220,6 +224,8 @@ func pickup_received(data: Variant) -> void:
 	if data["type"] == "heal":
 		heal_state.set_heal_data(data)
 		state_machine.change_state(heal_state)
+	if data["type"] == "currency":
+		print(actor.name, " | Congratulations you collected a coin!")
 
 func hit_received(hurtbox_owner: Node, hitbox_data: Variant) -> void:
 	if hurtbox_owner == actor:
