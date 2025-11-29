@@ -447,6 +447,7 @@ animation_component = NodePath("Components/AnimationComponent")
 movement_component = NodePath("Components/MovementComponent")
 jump_component = NodePath("Components/JumpComponent")
 gravity_component = NodePath("Components/GravityComponent")
+pickup_permission_component = NodePath("Components/PickUpPermissionComponent")
 hurtbox_component = NodePath("HurtBox")
 hitbox_component = NodePath("HitBox")
 

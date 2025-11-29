@@ -22,8 +22,8 @@ buses/default_bus_layout="res://scenes/music/music_controls.tres"
 [autoload]
 
 Music="*res://scenes/music/music.tscn"
-GameManager="*res://scripts/core/game_manager.gd"
-InputManager="*res://scripts/core/input_manager.gd"
+GameManager="*res://scripts/core/system_managers/game_manager.gd"
+InputManager="*res://scripts/core/system_managers/input_manager.gd"
 
 [debug]
 

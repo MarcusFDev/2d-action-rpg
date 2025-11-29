@@ -1,6 +1,6 @@
 [gd_scene load_steps=15 format=3 uid="uid://dpg6pyjck4uj5"]
 
-[ext_resource type="Script" uid="uid://brje2iuhmwpn7" path="res://scripts/core/heart_crystal.gd" id="1_5eakc"]
+[ext_resource type="Script" uid="uid://brje2iuhmwpn7" path="res://scripts/core/interactables/item_pickups/heart_crystal_pickup.gd" id="1_5eakc"]
 [ext_resource type="AudioStream" uid="uid://bbm14ntpa0q46" path="res://assets/sounds/power_up.wav" id="2_adck5"]
 [ext_resource type="Texture2D" uid="uid://ch8tr0wrc7sfs" path="res://assets/sprites/world/heart-crystal.png" id="2_fxog8"]
 
