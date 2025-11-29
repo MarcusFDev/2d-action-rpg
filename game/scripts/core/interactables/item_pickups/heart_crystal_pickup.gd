@@ -1,5 +1,5 @@
-class_name HeartCrystal
-extends PickUpClass
+class_name HeartCrystalPickUp
+extends ItemPickUp
 
 ## Determines the value of health this heart crystal provides. [br]
 ## [b]Note:[/b] Can exceed 10 hearts with manual input.[br]
