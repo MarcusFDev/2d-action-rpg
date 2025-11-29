@@ -31,6 +31,7 @@ extends CharacterBody2D
 @export var movement_component: NodePath
 @export var jump_component: NodePath
 @export var gravity_component: NodePath
+@export var pickup_permission_component: NodePath
 @export var hurtbox_component: NodePath
 @export var hitbox_component: NodePath
 
@@ -54,6 +55,7 @@ extends CharacterBody2D
 @onready var movement_comp: Node = get_node_or_null(movement_component)
 @onready var jump_comp: Node = get_node_or_null(jump_component)
 @onready var gravity_comp: Node = get_node_or_null(gravity_component)
+@onready var pickup_permission_comp: Node = get_node_or_null(pickup_permission_component)
 @onready var hurtbox_comp: Area2D = get_node_or_null(hurtbox_component)
 @onready var hitbox_comp: Area2D = get_node_or_null(hitbox_component)
 
@@ -216,8 +218,8 @@ func _physics_process(delta: float) -> void:
 
 func pickup_received(data: Variant) -> void:
 	if data["type"] == "heal":
+		heal_state.set_heal_data(data)
 		state_machine.change_state(heal_state)
-		state_machine.current_state.set_heal_data(data)
 
 func hit_received(hurtbox_owner: Node, hitbox_data: Variant) -> void:
 	if hurtbox_owner == actor:
