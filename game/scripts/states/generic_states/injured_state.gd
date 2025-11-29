@@ -18,10 +18,12 @@ extends State
 
 @export_group("Component Paths")
 @export var health_component_path: NodePath
+@export var hurtbox_component_path: NodePath
 
 # Script Variables
 @onready var actor: Node = get_node_or_null(actor_path)
 @onready var health_comp: Node = get_node_or_null(health_component_path)
+@onready var hurtbox_comp: Area2D = get_node_or_null(hurtbox_component_path)
 
 # Callback Functions
 func _on_enter() -> void: pass
@@ -36,7 +38,7 @@ var handle_physics: Callable = _on_physics
 var handle_frame: Callable = _on_frame
 
 var animation_finished: bool
-var amount: float = 0.0
+var amount: float
 
 func enter() -> void:
 	super.enter()
@@ -54,19 +56,25 @@ func init_injured() -> void:
 	
 	if use_behavior_tree:
 		var bb: Dictionary = actor.get_blackboard()
+		amount = bb["hitbox_data"]
 		bb["locked"] = true
-
-func process_physics(delta: float) -> State:
+	
 	if health_comp:
 		health_comp.lose_health(amount)
+		if enable_debug:
+			print(actor.name, " | InjuredState: Calling HealthComponent with health loss amount: ", amount)
 
-	if use_behavior_tree:
-		var bb: Dictionary = actor.get_blackboard()
-		bb["force_injured"] = false
-		bb["locked"] = false
+func process_physics(delta: float) -> State:
+	actor.velocity.x = 0
 
-	if use_parent_logic:
-		return handle_physics.call(delta)
+	if animation_finished:
+		if use_behavior_tree:
+			var bb: Dictionary = actor.get_blackboard()
+			bb["force_injure"] = false
+			bb["locked"] = false
+
+		if use_parent_logic:
+			return handle_physics.call(delta)
 
 	return null
 	
@@ -80,6 +88,11 @@ func process_input(event: InputEvent) -> State:
 		if animation_finished:
 			return handle_input.call(event)
 	return null
+
+func set_injured_data(hitbox_data: Variant) -> void:
+	amount = hitbox_data
+	if enable_debug:
+		print(actor.name, " | InjuredState: Set Injured Data: ", hitbox_data)
 
 func on_animation_finished() -> void:
 	if actor.animations.animation == state_animation:
