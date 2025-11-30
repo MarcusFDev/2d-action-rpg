@@ -1,4 +1,4 @@
-[gd_scene load_steps=86 format=3 uid="uid://chptbuqgr7qyt"]
+[gd_scene load_steps=87 format=3 uid="uid://chptbuqgr7qyt"]
 
 [ext_resource type="Script" uid="uid://n35k36oc5i6u" path="res://scripts/enemies/slime.gd" id="1_68p8s"]
 [ext_resource type="Texture2D" uid="uid://mqmm0ytehpti" path="res://assets/sprites/enemies/slime/slime-attack.png" id="2_ikdmk"]
@@ -27,6 +27,7 @@
 [ext_resource type="Script" uid="uid://biecfhjepus73" path="res://scripts/components/movement_component.gd" id="15_84gbg"]
 [ext_resource type="Script" uid="uid://c0by7duiifapt" path="res://scripts/components/randomizer_component.gd" id="16_7ji7s"]
 [ext_resource type="Script" uid="uid://bptat52v50ghh" path="res://scripts/components/pickup_permission_component.gd" id="20_ke2xt"]
+[ext_resource type="Resource" uid="uid://fqi7cnc7uw6t" path="res://resources/slime_pickup_permissions.tres" id="22_hhkhi"]
 [ext_resource type="Script" uid="uid://c05o5nbmpwovi" path="res://scripts/states/generic_states/heal_state.gd" id="27_4igtm"]
 [ext_resource type="Script" uid="uid://cvmt4g1070nqn" path="res://scripts/states/generic_states/injured_state.gd" id="28_4igtm"]
 
@@ -588,8 +589,7 @@ randomizer_cooldown = 1.0
 [node name="PickUpPermissionComponent" type="Node" parent="Components"]
 script = ExtResource("20_ke2xt")
 actor_path = NodePath("../..")
-export_enable_health_pickup = true
-export_allow_heart_crystals = true
+permissions = ExtResource("22_hhkhi")
 metadata/_custom_type_script = "uid://bptat52v50ghh"
 
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("starting_state")]

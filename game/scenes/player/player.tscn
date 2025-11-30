@@ -1,4 +1,4 @@
-[gd_scene load_steps=82 format=3 uid="uid://beftgbphk8tt3"]
+[gd_scene load_steps=83 format=3 uid="uid://beftgbphk8tt3"]
 
 [ext_resource type="Script" uid="uid://dc7is6nsd35mi" path="res://scripts/player/player.gd" id="1_g2els"]
 [ext_resource type="Texture2D" uid="uid://nuicatwvk6p6" path="res://assets/sprites/player/knight-attack1.png" id="2_myrg7"]
@@ -28,6 +28,7 @@
 [ext_resource type="Script" uid="uid://b0ewsejienp4o" path="res://scripts/states/generic_states/death_state.gd" id="15_ioxgp"]
 [ext_resource type="Script" uid="uid://dk74e55d6fp38" path="res://scripts/states/generic_states/attack_state.gd" id="17_6cv16"]
 [ext_resource type="Script" uid="uid://bptat52v50ghh" path="res://scripts/components/pickup_permission_component.gd" id="17_j4nxn"]
+[ext_resource type="Resource" uid="uid://d27yoff6pu43p" path="res://resources/player_pickup_permissions.tres" id="20_uniwh"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_upxxc"]
 atlas = ExtResource("2_myrg7")
@@ -553,10 +554,7 @@ gravity_component_path = NodePath("../GravityComponent")
 [node name="PickUpPermissionComponent" type="Node" parent="Components"]
 script = ExtResource("17_j4nxn")
 actor_path = NodePath("../..")
-export_hp_enable_health_pickup = true
-export_hp_allow_heart_crystals = true
-export_cur_enable_currency_pickup = true
-export_cur_allow_coins = true
+permissions = ExtResource("20_uniwh")
 
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("starting_state")]
 script = ExtResource("3_qhqgy")
