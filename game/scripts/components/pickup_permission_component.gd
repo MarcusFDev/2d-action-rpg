@@ -10,44 +10,24 @@ signal pickup_received(data: Dictionary)
 @export var enable_debug: bool = false
 
 @export_category("Component Settings")
-## Determines whether this entity is allowed to receive healing pickups. [br]
-## [b]Tip:[/b] Disable this for actors that should ignore health-restoring items.
-@export_group("Enable Health Pickup", "export_hp_")
-@export_custom(PROPERTY_HINT_GROUP_ENABLE, "") var export_hp_enable_health_pickup: bool = false
-@export var export_hp_allow_heart_crystals: bool = false
-
-## Determines whether this entity is allowed to receive healing pickups. [br]
-## [b]Tip:[/b] Disable this for actors that should ignore health-restoring items.
-@export_group("Enable Currency Pickup", "export_cur_")
-@export_custom(PROPERTY_HINT_GROUP_ENABLE, "") var export_cur_enable_currency_pickup: bool = false
-@export var export_cur_allow_coins: bool = false
+## Attach the actor specific pickup_permission Resource.
+@export var permissions: PickUpPermissionResource
 
 @onready var actor: Node = get_node_or_null(actor_path)
 
+func _ready() -> void:
+	if permissions:
+		permissions.rebuild_allowed()
+
 func apply_pickup(data: Dictionary) -> void:
-	if not data.has("type"):
+	if permissions == null:
 		if enable_debug:
-			print(actor.name, " PickUpPermissionsComponent: Data does not contain 'type'.")
+			print(actor.name, " | PickUpPermissionComponent: No Permissions found.")
 		return
-	if not data.has("source"):
-		if enable_debug:
-			print(actor.name, " PickUpPermissionsComponent: Data does not contain 'source'.")
-		return
+
+	var item_id: String = data.get("item_id")
 	
-	match data["type"]:
-		"heal":
-			if export_hp_enable_health_pickup:
-				match data["source"]:
-					"heart_crystal":
-						if export_hp_allow_heart_crystals:
-							if enable_debug:
-								print(actor.name, " PickUpPermissionsComponent: HeartCrystal Picked Up.")
-							emit_signal("pickup_received", data)
-		"currency":
-			if export_cur_enable_currency_pickup:
-				match data["source"]:
-					"coin":
-						if export_cur_allow_coins:
-							if enable_debug:
-								print(actor.name, " PickUpPermissionsComponent: Coin Picked Up.")
-							emit_signal("pickup_received", data)
+	if item_id in permissions.allowed:
+		if enable_debug:
+			print(actor.name, " | PickUpPermissionComponent: Permissions found & granted.")
+		pickup_received.emit(data)
