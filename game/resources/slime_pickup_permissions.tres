@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="PickUpPermissionResource" load_steps=2 format=3 uid="uid://fqi7cnc7uw6t"]
+
+[ext_resource type="Script" uid="uid://bt6vr1phrgsc5" path="res://scripts/resources/pickup_permission.gd" id="1_tw1x7"]
+
+[resource]
+script = ExtResource("1_tw1x7")
+toggle_advanced_controls = true
+toggle_allow_heart_crystals = true
+metadata/_custom_type_script = "uid://bt6vr1phrgsc5"
