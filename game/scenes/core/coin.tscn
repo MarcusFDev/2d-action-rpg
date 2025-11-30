@@ -201,8 +201,7 @@ _data = {
 collision_layer = 16
 collision_mask = 3
 script = ExtResource("1_i64fm")
-coin_amount = 1.0
-enable_debug = true
+coin_amount = 1
 
 [node name="Animations" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_s5w7y")

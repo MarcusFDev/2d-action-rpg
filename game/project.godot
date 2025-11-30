@@ -46,6 +46,7 @@ version_control/autoload_on_startup=true
 folder_colors={
 "res://addons/": "orange",
 "res://assets/": "teal",
+"res://resources/": "purple",
 "res://scenes/": "pink",
 "res://scripts/": "yellow"
 }
