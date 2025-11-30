@@ -87,7 +87,7 @@ func process_input(event: InputEvent) -> State:
 	return null
 
 func set_heal_data(data: Dictionary) -> void:
-	heal_amount = data["amount"]
+	heal_amount = data["item_value"]
 
 func on_animation_finished() -> void:
 	if actor.animations.animation == state_animation:

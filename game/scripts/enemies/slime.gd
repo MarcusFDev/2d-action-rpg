@@ -221,9 +221,9 @@ func trigger_attack() -> void:
 		state_machine.change_state(attack_state)
 
 func pickup_received(data: Variant) -> void:
-	if data["type"] == "heal":
+	if data["item_type"] == "health":
 		var bb: Dictionary = actor.get_blackboard()
-		bb["pickup_data"] = data["amount"]
+		bb["pickup_data"] = data["item_value"]
 		bb["force_heal"] = true
 		bb["locked"] = false
 

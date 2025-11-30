@@ -221,11 +221,12 @@ func _physics_process(delta: float) -> void:
 	ground_check_comp.post_update()
 
 func pickup_received(data: Variant) -> void:
-	if data["type"] == "heal":
+	if data["item_type"] == "health":
 		heal_state.set_heal_data(data)
 		state_machine.change_state(heal_state)
-	if data["type"] == "currency":
-		print(actor.name, " | Congratulations you collected a coin!")
+	if data["item_type"] == "currency":
+		if enable_debug:
+			print(actor.name, " | Congratulations you collected ",data["item_value"]," coin!")
 
 func hit_received(hurtbox_owner: Node, hitbox_data: Variant) -> void:
 	if hurtbox_owner == actor:
