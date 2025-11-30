@@ -7,7 +7,7 @@ extends ItemPickUp
 
 func _enter_tree() -> void:
 	item_data = {
-		"type": "heal",
-		"source": "heart_crystal",
-		"amount": heal_amount
+		"item_id": "heart_crystal",
+		"item_type": "health",
+		"item_value": heal_amount
 	}
