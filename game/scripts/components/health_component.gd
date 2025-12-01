@@ -2,6 +2,7 @@ class_name HealthComponent
 extends Component
 
 signal update_health(old_health: float, new_health: float)
+signal actor_died
 
 ## Assign the parent entity to the component.
 @export var actor_path: NodePath
@@ -21,7 +22,6 @@ signal update_health(old_health: float, new_health: float)
 
 # Script Variables
 var current_health: float
-var is_dead: bool = false
 
 func _ready() -> void:
 	current_health = clamp(base_health, 0.0, max_health)
@@ -29,40 +29,38 @@ func _ready() -> void:
 		print(actor.name, " | HealthComponent | Initialized Health: ", current_health, "/", max_health)
 
 func gain_health(amount: float) -> void:
-	if is_dead:
-		if enable_debug:
-			print(actor.name, " | HealthComponent | Cannot Gain Health. ", actor.name ," is dead.")
-		return
 	var old_health: float = current_health
 	current_health = clamp(current_health + amount, 0.0, max_health)
+	
+	health_update(old_health, current_health)
+	
 	if enable_debug:
-		print(actor.name, " | HealthComponent | Current Health: ", current_health)
-	if old_health != current_health:
-		if enable_debug:
-			print(actor.name, " | HealthComponent | Detected Health Update. Emitting signal.")
-		emit_signal("update_health", old_health, current_health)
+		print(actor.name, " | HealthComponent | Health Gained: ", amount)
 
 func lose_health(amount: float) -> void:
-	if is_dead:
-		if enable_debug:
-			print(actor.name, " | HealthComponent | Cannot Lose Health. ", actor.name, " is dead.")
 	var old_health: float = current_health
-	current_health -= amount
+	current_health = clamp(current_health - amount, 0.0, max_health)
+	
+	health_update(old_health, current_health)
+	
+	if enable_debug:
+		print(actor.name, " | HealthComponent | Health Lost: ", amount)
+	
 	if current_health <= 0.0:
-		current_health = 0.0
-		is_dead = true
+		actor_died.emit()
 		if enable_debug:
-			print(actor.name, " | HealthComponent | ", actor.name, " has died.")
+			print(actor.name, " | HealthComponent | ", actor.name, " has no health remaining.")
 	else:
 		if enable_debug:
 			print(actor.name, " | HealthComponent | ", actor.name, " has taken ", amount, " damage.(", current_health, "/", max_health, ")")
-	if old_health != current_health:
+
+func health_update(old_hp: float, new_hp: float) -> void:
+	if old_hp != new_hp:
+		update_health.emit(old_hp, new_hp)
 		if enable_debug:
 			print(actor.name, " | HealthComponent | Detected Health Update. Emitting signal.")
-		emit_signal("update_health", old_health, current_health)
 
 func reset_health() -> void:
 	current_health = clamp(base_health, 0.0, max_health)
-	is_dead = false
 	if enable_debug:
 		print(actor.name, " | HealthComponent | Health reset.")
