@@ -1,6 +1,7 @@
 class_name Player
 extends CharacterBody2D
 
+## Assign the parent entity to the script.
 @export var actor_path: NodePath
 ## Enables debug messages in the output terminal. [br]
 ## [b]Note:[/b] Useful for development and troubleshooting.
@@ -11,8 +12,6 @@ extends CharacterBody2D
 
 @export_group("Temporary Options")
 @export var damage: int = 1
-@export var game_over_menu_path: NodePath
-@export var game_over_timer_path: NodePath
 
 @export_group("State Paths")
 @export var state_machine_path: NodePath
@@ -32,13 +31,12 @@ extends CharacterBody2D
 @export var jump_component: NodePath
 @export var gravity_component: NodePath
 @export var pickup_permission_component: NodePath
+@export var health_component: NodePath
 @export var hurtbox_component: NodePath
 @export var hitbox_component: NodePath
 
 @onready var actor: CharacterBody2D = get_node_or_null(actor_path)
 @onready var animations: AnimatedSprite2D = get_node_or_null(animations_path)
-@onready var game_over_menu: Node = get_node_or_null(game_over_menu_path)
-@onready var game_over_timer: Node = get_node_or_null(game_over_timer_path)
 	
 @onready var state_machine: Node = get_node_or_null(state_machine_path)
 @onready var idle_state: Node = get_node_or_null(idle_state_path)
@@ -58,6 +56,7 @@ extends CharacterBody2D
 @onready var pickup_permission_comp: Node = get_node_or_null(pickup_permission_component)
 @onready var hurtbox_comp: Area2D = get_node_or_null(hurtbox_component)
 @onready var hitbox_comp: Area2D = get_node_or_null(hitbox_component)
+@onready var health_comp: Node = get_node_or_null(health_component)
 
 # ==============================
 # ===== Intialization =====
@@ -70,6 +69,7 @@ func _ready() -> void:
 func _setup_signals() -> void:
 	pickup_permission_comp.pickup_received.connect(pickup_received)
 	hurtbox_comp.hit_received.connect(hit_received)
+	health_comp.health_empty.connect(death_received)
 
 # ==============================
 # ===== Player State Setup =====
@@ -233,6 +233,9 @@ func hit_received(hurtbox_owner: Node, hitbox_data: Variant) -> void:
 		injured_state.set_injured_data(hitbox_data)
 		state_machine.change_state(injured_state)
 
+func death_received() -> void:
+	state_machine.change_state(death_state)
+
 func _process(delta: float) -> void:
 	state_machine.process_frame(delta)
 
@@ -240,13 +243,3 @@ func trigger_attack() -> void:
 	if InputManagerClass.is_attack_pressed():
 		if attack_state:
 			state_machine.change_state(attack_state)
-
-# ==============================
-# ===== GameOver Trigger =====
-# ==============================
-func trigger_game_over() -> void:
-	game_over_timer.start()
-
-func _on_game_over_delay_timer_timeout() -> void:
-	game_over_menu.visible = true
-	game_over_menu.on_enter()

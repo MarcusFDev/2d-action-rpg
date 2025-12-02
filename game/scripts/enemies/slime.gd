@@ -24,6 +24,7 @@ enum ControlType {USER_INPUT, AI_LOGIC}
 @export var attack_state_path: NodePath
 @export var heal_state_path: NodePath
 @export var injured_state_path: NodePath
+@export var death_state_path: NodePath
 
 @export_group("Component Paths")
 @export var ground_check_component: NodePath
@@ -33,6 +34,7 @@ enum ControlType {USER_INPUT, AI_LOGIC}
 @export var pickup_permission_component: NodePath
 @export var gravity_component: NodePath
 @export var hurtbox_component: NodePath
+@export var health_component: NodePath
 
 @onready var actor: CharacterBody2D = get_node_or_null(actor_path)
 @onready var animations: AnimatedSprite2D = get_node_or_null(animations_path)
@@ -44,6 +46,7 @@ enum ControlType {USER_INPUT, AI_LOGIC}
 @onready var attack_state: Node = get_node_or_null(attack_state_path)
 @onready var heal_state: Node = get_node_or_null(heal_state_path)
 @onready var injured_state: Node = get_node_or_null(injured_state_path)
+@onready var death_state: Node = get_node_or_null(death_state_path)
 
 @onready var gravity_comp: Node = get_node_or_null(gravity_component)
 @onready var ground_check_comp: Node = get_node_or_null(ground_check_component)
@@ -52,6 +55,7 @@ enum ControlType {USER_INPUT, AI_LOGIC}
 @onready var jump_comp: Node = get_node_or_null(jump_component)
 @onready var pickup_permission_comp: Node = get_node_or_null(pickup_permission_component)
 @onready var hurtbox_comp: Area2D = get_node_or_null(hurtbox_component)
+@onready var health_comp: Node = get_node_or_null(health_component)
 
 # Script Variables
 var _prev_state_name: String = ""
@@ -84,6 +88,7 @@ func _setup_blackboard() -> void:
 	blackboard["can_patrol"] = true
 	blackboard["can_idle"] = true
 	blackboard["can_jump"] = true
+	blackboard["can_die"] = false
 	
 	blackboard["locked"] = false
 	blackboard["move_direction"] = 1
@@ -91,20 +96,17 @@ func _setup_blackboard() -> void:
 
 func _setup_behavior_tree() -> void:
 	bt_root = BTSelector.new([
-		# Priority 1
 		BTSequence.new([
 			BTCondition.new("is_grounded", false),
 			BTCondition.new("locked", false),
 			BTAction.new("Fall")
 		]),
-		# Priority 2
 		BTSequence.new([
 			BTCondition.new("is_grounded", true),
 			BTCondition.new("force_idle", true),
 			BTCondition.new("locked", false),
 			BTAction.new("Idle")
 		]),
-		# Priority 3
 		BTSequence.new([
 			BTCondition.new("is_grounded", true),
 			BTCondition.new("force_jump", true),
@@ -127,7 +129,10 @@ func _setup_behavior_tree() -> void:
 			BTCondition.new("locked", false),
 			BTAction.new("Injured")
 		]),
-		# Priority 4
+		BTSequence.new([
+			BTCondition.new("can_die", true),
+			BTAction.new("Death")
+		]),
 		BTSequence.new([
 			BTCondition.new("is_grounded", true),
 			BTCondition.new("has_collided", false),
@@ -135,7 +140,6 @@ func _setup_behavior_tree() -> void:
 			BTCondition.new("locked", false),
 			BTAction.new("Patrol")
 		]),
-		# Priority 5
 		BTSequence.new([
 			BTCondition.new("is_grounded", true),
 			BTCondition.new("has_collided", true),
@@ -160,6 +164,9 @@ func _setup_behavior_tree() -> void:
 func _setup_signals() -> void:
 	pickup_permission_comp.pickup_received.connect(pickup_received)
 	hurtbox_comp.hit_received.connect(hit_received)
+	
+	health_comp.health_empty.connect(death_received)
+	SignalBus.actor_died.connect(on_death)
 
 func _setup_states() -> void:
 	_idle_state()
@@ -168,6 +175,7 @@ func _setup_states() -> void:
 	_fall_state()
 	_heal_state()
 	_injured_state()
+	_death_state()
 
 func _idle_state() -> void:
 	pass
@@ -185,6 +193,9 @@ func _heal_state() -> void:
 	pass
 
 func _injured_state() -> void:
+	pass
+
+func _death_state() -> void:
 	pass
 
 func _process(delta: float) -> void:
@@ -219,6 +230,14 @@ func _physics_process(delta: float) -> void:
 func trigger_attack() -> void:
 	if attack_state:
 		state_machine.change_state(attack_state)
+
+func death_received() -> void:
+	var bb: Dictionary = actor.get_blackboard()
+	bb["can_die"] = true
+
+func on_death(signal_actor: Node) -> void:
+	if signal_actor == actor:
+		queue_free()
 
 func pickup_received(data: Variant) -> void:
 	if data["item_type"] == "health":

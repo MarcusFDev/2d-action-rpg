@@ -2,7 +2,7 @@ class_name HealthComponent
 extends Component
 
 signal update_health(old_health: float, new_health: float)
-signal actor_died
+signal health_empty
 
 ## Assign the parent entity to the component.
 @export var actor_path: NodePath
@@ -47,7 +47,7 @@ func lose_health(amount: float) -> void:
 		print(actor.name, " | HealthComponent | Health Lost: ", amount)
 	
 	if current_health <= 0.0:
-		actor_died.emit()
+		health_empty.emit()
 		if enable_debug:
 			print(actor.name, " | HealthComponent | ", actor.name, " has no health remaining.")
 	else:
