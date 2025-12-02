@@ -277,7 +277,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_ds1xl")
 }],
 "loop": false,
-"name": &"death",
+"name": &"player_death",
 "speed": 10.0
 }, {
 "frames": [{
@@ -432,8 +432,6 @@ collision_mask = 30
 script = ExtResource("1_g2els")
 actor_path = NodePath(".")
 animations_path = NodePath("Animations")
-damage = 2
-game_over_timer_path = NodePath("GameOverDelayTimer")
 state_machine_path = NodePath("StateMachine")
 idle_state_path = NodePath("StateMachine/IdleState")
 move_state_path = NodePath("StateMachine/MoveState")
@@ -449,16 +447,15 @@ movement_component = NodePath("Components/MovementComponent")
 jump_component = NodePath("Components/JumpComponent")
 gravity_component = NodePath("Components/GravityComponent")
 pickup_permission_component = NodePath("Components/PickUpPermissionComponent")
+health_component = NodePath("Components/HealthComponent")
 hurtbox_component = NodePath("HurtBox")
 hitbox_component = NodePath("HitBox")
 
 [node name="Animations" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -12)
 sprite_frames = SubResource("SpriteFrames_2hs0m")
-animation = &"attack_1"
+animation = &"player_death"
 autoplay = "player_idle"
-frame = 7
-frame_progress = 1.0
 
 [node name="PlayerCollision" type="CollisionShape2D" parent="."]
 visible = false
@@ -506,10 +503,6 @@ debug_color = Color(0.044215664, 0.6449701, 0.24307114, 0.41960785)
 position = Vector2(-10, -7.25)
 shape = SubResource("RectangleShape2D_28m0y")
 debug_color = Color(0.044215664, 0.6449701, 0.24307114, 0.41960785)
-
-[node name="GameOverDelayTimer" type="Timer" parent="."]
-wait_time = 0.5
-one_shot = true
 
 [node name="Components" type="Node" parent="."]
 script = ExtResource("10_007i1")
@@ -612,10 +605,9 @@ hitbox_component = NodePath("../../HitBox")
 
 [node name="DeathState" type="Node" parent="StateMachine"]
 script = ExtResource("15_ioxgp")
-death_animation = "death"
-post_death_method = "trigger_game_over"
+actor_path = NodePath("../..")
+state_animation = "player_death"
 
 [connection signal="animation_finished" from="Animations" to="StateMachine/InjuredState" method="on_animation_finished"]
 [connection signal="animation_finished" from="Animations" to="StateMachine/HealState" method="on_animation_finished"]
-[connection signal="animation_finished" from="Animations" to="StateMachine/DeathState" method="animation_finished"]
-[connection signal="timeout" from="GameOverDelayTimer" to="." method="_on_game_over_delay_timer_timeout"]
+[connection signal="animation_finished" from="Animations" to="StateMachine/DeathState" method="on_animation_finished"]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=87 format=3 uid="uid://chptbuqgr7qyt"]
+[gd_scene load_steps=88 format=3 uid="uid://chptbuqgr7qyt"]
 
 [ext_resource type="Script" uid="uid://n35k36oc5i6u" path="res://scripts/enemies/slime.gd" id="1_68p8s"]
 [ext_resource type="Texture2D" uid="uid://mqmm0ytehpti" path="res://assets/sprites/enemies/slime/slime-attack.png" id="2_ikdmk"]
@@ -30,6 +30,7 @@
 [ext_resource type="Resource" uid="uid://fqi7cnc7uw6t" path="res://resources/slime_pickup_permissions.tres" id="22_hhkhi"]
 [ext_resource type="Script" uid="uid://c05o5nbmpwovi" path="res://scripts/states/generic_states/heal_state.gd" id="27_4igtm"]
 [ext_resource type="Script" uid="uid://cvmt4g1070nqn" path="res://scripts/states/generic_states/injured_state.gd" id="28_4igtm"]
+[ext_resource type="Script" uid="uid://b0ewsejienp4o" path="res://scripts/states/generic_states/death_state.gd" id="31_84xnm"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_wbf5k"]
 atlas = ExtResource("2_ikdmk")
@@ -310,7 +311,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_ayoef")
 }],
-"loop": true,
+"loop": false,
 "name": &"slime_death",
 "speed": 8.0
 }, {
@@ -470,6 +471,7 @@ fall_state_path = NodePath("StateMachine/FallState")
 attack_state_path = NodePath("StateMachine/AttackState")
 heal_state_path = NodePath("StateMachine/HealState")
 injured_state_path = NodePath("StateMachine/InjuredState")
+death_state_path = NodePath("StateMachine/DeathState")
 ground_check_component = NodePath("Components/GroundCheckComponent")
 animation_component = NodePath("Components/AnimationComponent")
 edge_detector_component = NodePath("Components/EdgeDetectorComponent")
@@ -477,12 +479,13 @@ jump_component = NodePath("Components/JumpComponent")
 pickup_permission_component = NodePath("Components/PickUpPermissionComponent")
 gravity_component = NodePath("Components/GravityComponent")
 hurtbox_component = NodePath("HurtBox")
+health_component = NodePath("Components/HealthComponent")
 
 [node name="Animations" type="AnimatedSprite2D" parent="."]
 position = Vector2(4.76837e-07, -4)
 scale = Vector2(0.671875, 0.671875)
 sprite_frames = SubResource("SpriteFrames_a1j1j")
-animation = &"slime_injure"
+animation = &"slime_death"
 autoplay = "slime_idle"
 
 [node name="SlimeCollision" type="CollisionShape2D" parent="."]
@@ -549,7 +552,8 @@ animations_path = NodePath("../../Animations")
 [node name="HealthComponent" type="Node" parent="Components"]
 script = ExtResource("11_noxma")
 actor_path = NodePath("../..")
-max_health = 2.0
+max_health = 3.0
+base_health = 3.0
 
 [node name="MovementComponent" type="Node" parent="Components"]
 script = ExtResource("15_84gbg")
@@ -679,6 +683,14 @@ health_component_path = NodePath("../../Components/HealthComponent")
 hurtbox_component_path = NodePath("../../HurtBox")
 metadata/_custom_type_script = "uid://cvmt4g1070nqn"
 
+[node name="DeathState" type="Node" parent="StateMachine"]
+script = ExtResource("31_84xnm")
+actor_path = NodePath("../..")
+state_animation = "slime_death"
+use_behavior_tree = true
+metadata/_custom_type_script = "uid://b0ewsejienp4o"
+
 [connection signal="animation_finished" from="Animations" to="StateMachine/AttackState" method="animation_finished"]
 [connection signal="animation_finished" from="Animations" to="StateMachine/HealState" method="on_animation_finished"]
 [connection signal="animation_finished" from="Animations" to="StateMachine/InjuredState" method="on_animation_finished"]
+[connection signal="animation_finished" from="Animations" to="StateMachine/DeathState" method="on_animation_finished"]
