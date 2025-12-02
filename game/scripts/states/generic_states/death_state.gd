@@ -53,6 +53,12 @@ func init_death() -> void:
 
 func process_physics(_delta: float) -> State:
 	actor.velocity.x = 0
+	if animation_finished:
+		if use_behavior_tree:
+			var bb: Dictionary = actor.get_blackboard()
+			bb["can_die"] = false
+			bb["locked"] = false
+	
 	return null
 
 func on_animation_finished() -> void:
@@ -60,6 +66,7 @@ func on_animation_finished() -> void:
 		if enable_debug:
 			print(actor.name, " | DeathState: Animation finished.")
 		animation_finished = true
+		SignalBus.actor_died.emit(actor)
 
 func exit() -> void:
 	if enable_debug:
