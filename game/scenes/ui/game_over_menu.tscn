@@ -101,5 +101,5 @@ layout_mode = 2
 text = "Main Menu"
 flat = true
 
-[connection signal="pressed" from="MarginContainer/VBoxContainer/RestartButton" to="." method="_on_restart_button_pressed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/MainMenuButton" to="." method="_on_main_menu_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/RestartButton" to="." method="on_restart_btn"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/MainMenuButton" to="." method="on_main_menu_btn"]
