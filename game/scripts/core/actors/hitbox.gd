@@ -1,4 +1,4 @@
-class_name HitBoxComponent
+class_name HitBox
 extends Area2D
 
 ## Assign the parent entity to the script.
@@ -13,8 +13,8 @@ func _ready() -> void:
 	area_entered.connect(on_area_entered)
 
 func on_area_entered(area: Area2D) -> void:
-	if area is HurtBoxComponent:
-		var hurtbox: Variant = area as HurtBoxComponent
+	if area is HurtBox:
+		var hurtbox: Variant = area as HurtBox
 		
 		if hurtbox.hurtbox_owner == hitbox_owner:
 			return
@@ -24,5 +24,5 @@ func on_area_entered(area: Area2D) -> void:
 			hurtbox.received_hit(hitbox_owner, hitbox_data)
 
 			if enable_debug:
-				print(hitbox_owner.name, " | HitBoxComponent: ", hurtbox.hurtbox_owner.name, "'s HurtBox has been detected.")
-				print(hitbox_owner.name, " | HitBoxComponent: ", hitbox_owner.name, "'s HitBoxData: ", hitbox_data)
+				print(hitbox_owner.name, " | HitBox: ", hurtbox.hurtbox_owner.name, "'s HurtBox has been detected.")
+				print(hitbox_owner.name, " | HitBox: ", hitbox_owner.name, "'s HitBoxData: ", hitbox_data)

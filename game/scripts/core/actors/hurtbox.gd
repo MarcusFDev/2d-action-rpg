@@ -1,4 +1,4 @@
-class_name HurtBoxComponent
+class_name HurtBox
 extends Area2D
 
 signal hit_received(hurtbox_owner: Node, hitbox_data: Variant)
@@ -13,6 +13,6 @@ signal hit_received(hurtbox_owner: Node, hitbox_data: Variant)
 @onready var hurtbox_owner: Node = get_node(owner_path)
 
 func received_hit(hitbox_owner: Node, hitbox_data: Variant) -> void:
-	emit_signal("hit_received", hurtbox_owner, hitbox_data)
+	hit_received.emit(hurtbox_owner, hitbox_data)
 	if enable_debug:
-		print(hurtbox_owner.name, " | HurtBoxComponent: ", hitbox_owner.name, "'s HitBoxData: ", hitbox_data)
+		print(hurtbox_owner.name, " | HurtBox: ", hitbox_owner.name, "'s HitBoxData: ", hitbox_data)
