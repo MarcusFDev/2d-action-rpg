@@ -1,26 +1,38 @@
 class_name Slime
 extends BaseActor
 
-# Script Variables
-var _prev_state_name: String = ""
-var bt_root: BTNode
-var bt: BehaviorTree
-var blackboard: Dictionary = {}
-
-func get_blackboard() -> Dictionary:
-	return blackboard
-
 # ===============================
 # ===== Actor Intialization =====
 # ===============================
 
 func _ready() -> void:
 	setup_states()
-	setup_blackboard()
-	setup_behavior_tree()
 	setup_signals()
+	actor_blackboard()
+	actor_behavior_tree()
 
-func setup_blackboard() -> void:
+func setup_signals() -> void:
+	pickup_permission_comp.pickup_received.connect(pickup_signal_receiver)
+	hurtbox.hit_received.connect(hit_signal_receiver)
+	health_comp.health_empty.connect(death_signal_receiver)
+	ground_check_comp.actor_grounded.connect(grounded_signal_receiver)
+	SignalBus.actor_died.connect(destroy_actor)
+
+func setup_states() -> void:
+	state_machine.init(self, animations, blackboard)
+	_idle_state()
+	_patrol_state()
+	_jump_state()
+	_fall_state()
+	_heal_state()
+	_injured_state()
+	_death_state()
+
+# ===============================
+# ==== Actor Behavior Tree ======
+# ===============================
+
+func actor_blackboard() -> void:
 	blackboard["fsm"] = state_machine
 	
 	blackboard["is_grounded"] = true
@@ -41,7 +53,7 @@ func setup_blackboard() -> void:
 	blackboard["move_direction"] = 1
 	blackboard["intent"] = "Fall" # Note: Must Match StateMachine Starting State
 
-func setup_behavior_tree() -> void:
+func actor_behavior_tree() -> void:
 	bt_root = BTSelector.new([
 		BTSequence.new([
 			BTCondition.new("is_grounded", false),
@@ -106,23 +118,7 @@ func setup_behavior_tree() -> void:
 			])
 		]),
 	])
-	bt = BehaviorTree.new(bt_root, blackboard, self)
-
-func setup_signals() -> void:
-	pickup_permission_comp.pickup_received.connect(pickup_signal_receiver)
-	hurtbox.hit_received.connect(hit_signal_receiver)
-	health_comp.health_empty.connect(death_signal_receiver)
-	SignalBus.actor_died.connect(destroy_actor)
-
-func setup_states() -> void:
-	state_machine.init(self, animations, blackboard)
-	_idle_state()
-	_patrol_state()
-	_jump_state()
-	_fall_state()
-	_heal_state()
-	_injured_state()
-	_death_state()
+	behavior_tree = BehaviorTree.new(bt_root, blackboard, self)
 
 # ==============================
 # ===== Actor State Setup ======
@@ -154,36 +150,25 @@ func _death_state() -> void:
 # ==============================
 
 func _physics_process(delta: float) -> void:
-	gravity_comp.apply_physics(delta)
-	ground_check_comp.apply(delta)
-
-	var grounded : bool = ground_check_comp.is_grounded
-	blackboard["is_grounded"] = grounded
-	
-	animation_comp.animation_flip(delta)
-	jump_comp.update_timer(delta)
+	gravity_comp.process_physics(delta)
+	ground_check_comp.process_physics(delta)
+	jump_comp.process_physics(delta)
 	state_machine.process_physics(delta)
-	
+
 	actor.move_and_slide()
-	ground_check_comp.post_update()
 
 func _process(delta: float) -> void:
-	bt.tick()
+	behavior_tree.process_frame()
+	animation_comp.process_frame()
 	state_machine.process_frame(delta)
-	
-	if enable_debug:
-		var current_state_name : Variant = state_machine.current_state.name
-		if current_state_name != _prev_state_name:
-			_prev_state_name = current_state_name
-			print("==============================")
-			print("[STATE CHANGE] →", current_state_name)
-			for key: Variant in blackboard.keys():
-				print(" ", key, ":", blackboard[key])
-			print("==============================")
 
 # ===============================
 # === Actor Signal Receivers ====
 # ===============================
+
+func grounded_signal_receiver(signal_actor: Node) -> void:
+	if signal_actor == actor:
+		blackboard["is_grounded"] = true
 
 func death_signal_receiver() -> void:
 	blackboard["can_die"] = true

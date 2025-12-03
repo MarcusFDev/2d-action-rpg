@@ -539,7 +539,6 @@ script = ExtResource("9_wnf82")
 script = ExtResource("10_m4uwr")
 actor_path = NodePath("../..")
 gravity = 800.0
-ground_check_component = NodePath("../GroundCheckComponent")
 
 [node name="GroundCheckComponent" type="Node" parent="Components"]
 script = ExtResource("9_rdhaw")
@@ -612,9 +611,6 @@ export_swap_chance = 30.0
 export_enable_random_jump = true
 export_jump_interval = 1.0
 export_jump_chance = 10.0
-idle_component = NodePath("../../Components/IdleComponent")
-randomizer_component = NodePath("../../Components/RandomizerComponent")
-movement_component = NodePath("../../Components/MovementComponent")
 
 [node name="MoveState" type="Node" parent="StateMachine"]
 script = ExtResource("13_nx7r3")
@@ -629,10 +625,6 @@ export_idle_chance = 15.0
 export_enable_random_jump = true
 export_jump_interval = 2.0
 export_jump_chance = 15.0
-edge_detector_component = NodePath("../../Components/EdgeDetectorComponent")
-movement_component = NodePath("../../Components/MovementComponent")
-randomizer_component = NodePath("../../Components/RandomizerComponent")
-ground_check_component = NodePath("../../Components/GroundCheckComponent")
 
 [node name="JumpState" type="Node" parent="StateMachine"]
 script = ExtResource("12_rdhaw")
@@ -648,12 +640,6 @@ export_idle_chance = 10.0
 export_enable_random_patrol = true
 export_patrol_interval = 2.0
 export_patrol_chance = 10.0
-gravity_component = NodePath("../../Components/GravityComponent")
-ground_check_component = NodePath("../../Components/GroundCheckComponent")
-jump_component = NodePath("../../Components/JumpComponent")
-movement_component = NodePath("../../Components/MovementComponent")
-randomizer_component = NodePath("../../Components/RandomizerComponent")
-edge_detector_component = NodePath("../../Components/EdgeDetectorComponent")
 
 [node name="FallState" type="Node" parent="StateMachine"]
 script = ExtResource("13_m4uwr")
@@ -672,7 +658,6 @@ script = ExtResource("27_4igtm")
 actor_path = NodePath("../..")
 state_animation = "slime_heal"
 use_behavior_tree = true
-health_component_path = NodePath("../../Components/HealthComponent")
 metadata/_custom_type_script = "uid://c05o5nbmpwovi"
 
 [node name="InjuredState" type="Node" parent="StateMachine"]
@@ -680,8 +665,6 @@ script = ExtResource("28_4igtm")
 actor_path = NodePath("../..")
 state_animation = "slime_injure"
 use_behavior_tree = true
-health_component_path = NodePath("../../Components/HealthComponent")
-hurtbox_component_path = NodePath("../../HurtBox")
 metadata/_custom_type_script = "uid://cvmt4g1070nqn"
 
 [node name="DeathState" type="Node" parent="StateMachine"]

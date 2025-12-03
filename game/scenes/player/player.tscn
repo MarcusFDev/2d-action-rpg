@@ -511,7 +511,6 @@ script = ExtResource("10_007i1")
 [node name="GravityComponent" type="Node" parent="Components"]
 script = ExtResource("11_yj68g")
 actor_path = NodePath("../..")
-ground_check_component = NodePath("../GroundCheckComponent")
 
 [node name="GroundCheckComponent" type="Node" parent="Components"]
 script = ExtResource("10_3j4b4")
@@ -565,17 +564,12 @@ script = ExtResource("13_8ydkj")
 actor_path = NodePath("../..")
 state_animation = "player_move"
 use_parent_logic = true
-movement_component = NodePath("../../Components/MovementComponent")
 
 [node name="JumpState" type="Node" parent="StateMachine"]
 script = ExtResource("13_3j4b4")
 actor_path = NodePath("../..")
 state_animation = "player_jump"
 use_parent_logic = true
-gravity_component = NodePath("../../Components/GravityComponent")
-ground_check_component = NodePath("../../Components/GroundCheckComponent")
-jump_component = NodePath("../../Components/JumpComponent")
-movement_component = NodePath("../../Components/MovementComponent")
 
 [node name="FallState" type="Node" parent="StateMachine"]
 script = ExtResource("14_yj68g")
@@ -588,15 +582,12 @@ script = ExtResource("15_007i1")
 actor_path = NodePath("../..")
 state_animation = "player_injure"
 use_parent_logic = true
-health_component_path = NodePath("../../Components/HealthComponent")
-hurtbox_component_path = NodePath("../../HurtBox")
 
 [node name="HealState" type="Node" parent="StateMachine"]
 script = ExtResource("15_cnsyf")
 actor_path = NodePath("../..")
 state_animation = "player_heal"
 use_parent_logic = true
-health_component_path = NodePath("../../Components/HealthComponent")
 
 [node name="AttackState" type="Node" parent="StateMachine" node_paths=PackedStringArray("next_state")]
 script = ExtResource("17_6cv16")

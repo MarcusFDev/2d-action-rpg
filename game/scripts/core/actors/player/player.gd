@@ -13,6 +13,7 @@ func setup_signals() -> void:
 	pickup_permission_comp.pickup_received.connect(pickup_signal_receiver)
 	hurtbox.hit_received.connect(hit_signal_receiver)
 	health_comp.health_empty.connect(death_signal_receiver)
+	ground_check_comp.actor_grounded.connect(grounded_signal_receiver)
 
 func setup_states() -> void:
 	state_machine.init(self, animations)
@@ -42,6 +43,8 @@ func _idle_state() -> void:
 			if idle_state.enable_debug:
 				print("Player Move Key detected. Switching to: ", move_state)
 			return move_state
+		if InputManagerClass.is_attack_pressed():
+			return attack_state
 		return null
 
 func _move_state() -> void:
@@ -58,7 +61,7 @@ func _move_state() -> void:
 		else:
 			movement_comp.set_direction(Vector2.ZERO)
 		
-		movement_comp.apply_physics(_delta)
+		movement_comp.process_physics()
 		
 		if input_direction == 0:
 			if move_state.enable_debug:
@@ -69,6 +72,9 @@ func _move_state() -> void:
 			if move_state.enable_debug:
 				print("Player Jump Key detected. Switching to: ", jump_state)
 			return jump_state
+		
+		if InputManagerClass.is_attack_pressed():
+			return attack_state
 
 		return null
 
@@ -83,6 +89,7 @@ func _jump_state() -> void:
 			if jump_state.enable_debug:
 				print("Player is falling. Switching to: ", fall_state)
 			return fall_state
+		
 		return null
 
 func _fall_state() -> void:
@@ -125,6 +132,8 @@ func _heal_state() -> void:
 			if heal_state.enable_debug:
 				print("Player Move Key detected. Switching to: ", move_state)
 			return move_state
+		if InputManagerClass.is_attack_pressed():
+			return attack_state
 		
 		return null
 
@@ -149,33 +158,31 @@ func _injured_state() -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	state_machine.process_input(event)
-	
-	if InputManagerClass.is_attack_pressed():
-		state_machine.change_state(attack_state)
 
 # ==============================
 # ====== Actor Physics =======
 # ==============================
 
 func _physics_process(delta: float) -> void:
-	ground_check_comp.apply(delta)
-	gravity_comp.apply_physics(delta)
-
-	if ground_check_comp.just_landed():
-		jump_comp.reset_jump_counter()
-
-	animation_comp.animation_flip(delta)
+	gravity_comp.process_physics(delta)
+	ground_check_comp.process_physics(delta)
+	jump_comp.process_physics(delta)
 	state_machine.process_physics(delta)
-	jump_comp.update_timer(delta)
+	
 	actor.move_and_slide() 
-	ground_check_comp.post_update()
 
 func _process(delta: float) -> void:
+	animation_comp.process_frame()
 	state_machine.process_frame(delta)
 
 # ===============================
 # === Actor Signal Receivers ====
 # ===============================
+
+func grounded_signal_receiver(signal_actor: Node) -> void:
+	if signal_actor == actor:
+		if actor.jump_comp:
+			jump_comp.reset_jump_counter()
 
 func pickup_signal_receiver(data: Variant) -> void:
 	if data["item_type"] == "health":
