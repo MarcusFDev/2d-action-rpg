@@ -64,6 +64,9 @@ extends CharacterBody2D
 @onready var randomizer_comp: Node = get_node_or_null(randomizer_component)
 
 # Script Variables
+var bt_root: BTNode
+var behavior_tree: BehaviorTree
+var blackboard: Dictionary = {}
 var animations: AnimatedSprite2D:
 	get:
 		return animation_comp.animations
@@ -75,3 +78,6 @@ var animations: AnimatedSprite2D:
 func destroy_actor(signal_actor: Node) -> void:
 	if signal_actor == actor:
 		queue_free()
+
+func get_blackboard() -> Dictionary:
+	return blackboard
