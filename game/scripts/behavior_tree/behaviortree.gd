@@ -9,6 +9,6 @@ func _init(_root: BTNode, _blackboard: Dictionary, _actor: Node) -> void:
 	blackboard = _blackboard
 	actor = _actor
 
-func tick() -> void:
+func process_frame() -> void:
 	if root and blackboard and actor:
 		root.tick(actor, blackboard)
