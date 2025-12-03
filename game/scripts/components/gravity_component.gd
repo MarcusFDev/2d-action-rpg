@@ -13,27 +13,16 @@ extends Component
 ## [b]Tip:[/b] Can exceed 2000 px/s² with manual input.
 @export_range(0, 2000, 100, "suffix:px²", "or_greater") var gravity: float = 1000.0
 
-@export_group("Component Paths")
-@export var ground_check_component: NodePath
-
 @onready var actor: Node = get_node_or_null(actor_path)
-@onready var ground_check_comp: Node = get_node_or_null(ground_check_component)
 
 # Script Variables
-var is_grounded: bool
 var export_gravity: float
 
 func _ready() -> void:
 	export_gravity = gravity
 
-func apply_physics(delta: float) -> void:
-	is_grounded = ground_check_comp.is_grounded
-	
-	if is_grounded:
-		gravity = export_gravity
-		if enable_debug:
-			print(actor.name, " | GravityComponent: Ground detected. Gravity not applied.")
-	else:
-		actor.velocity.y += gravity * delta
-		if enable_debug:
-			print(actor.name, " | GravityComponent: Ground not detected. Gravity applied.")
+func process_physics(delta: float) -> void:
+	gravity = export_gravity
+	actor.velocity.y += gravity * delta
+	if enable_debug:
+		print(actor.name, " | GravityComponent: Gravity applied.")
