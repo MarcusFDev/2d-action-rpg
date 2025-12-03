@@ -15,9 +15,12 @@ extends Component
 @onready var actor: Node = get_node_or_null(actor_path)
 @onready var animations: AnimatedSprite2D = get_node_or_null(animations_path)
 
-func animation_flip(_delta: float) -> void:
+func animation_flip() -> void:
 	if actor and animations:
 		if actor.velocity.x != 0:
 			animations.flip_h = actor.velocity.x < 0
 			if enable_debug:
 				print(actor.name, " animation flipped.")
+
+func process_frame() -> void:
+	animation_flip()

@@ -22,6 +22,15 @@ enum EntityType { GROUND, FLYING, BOTH }
 var direction: Variant
 var _timers : Dictionary = {}
 
+func process_physics() -> void:
+	actor.velocity = direction * move_speed
+	if enable_debug:
+		print(
+			"MovementComponent: ", actor.name,
+			" | Direction: ", direction,
+			" | Speed: ", move_speed,
+			" | Velocity X before move: ", actor.velocity.x)
+
 func direction_randomizer(id: String, chance: float, interval: float, delta: float) -> Variant:
 	if interval <= 0:
 		if enable_debug:
@@ -64,11 +73,11 @@ func set_direction(new_direction: Variant) -> void:
 func get_direction() -> Variant:
 	return direction
 
-func apply_physics(_delta: float) -> void:
-	actor.velocity = direction * move_speed
-	if enable_debug:
-		print(
-			"MovementComponent: ", actor.name,
-			" | Direction: ", direction,
-			" | Speed: ", move_speed,
-			" | Velocity X before move: ", actor.velocity.x)
+#func apply_physics(_delta: float) -> void:
+	#actor.velocity = direction * move_speed
+	#if enable_debug:
+		#print(
+			#"MovementComponent: ", actor.name,
+			#" | Direction: ", direction,
+			#" | Speed: ", move_speed,
+			#" | Velocity X before move: ", actor.velocity.x)

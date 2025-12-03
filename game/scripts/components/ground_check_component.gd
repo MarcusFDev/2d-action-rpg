@@ -1,6 +1,8 @@
 class_name GroundCheckComponent
 extends Component
 
+signal actor_grounded(actor: Node)
+
 ## Assign the parent entity to the component.
 @export var actor_path: NodePath
 ## Enables debug messages in the output terminal. [br]
@@ -19,9 +21,8 @@ extends Component
 var grounded_timer: float = 0.0
 var grounded_duration: float = 0.0
 var is_grounded: bool = false
-var was_grounded: bool = false
 
-func apply(delta: float) -> void:
+func process_physics(delta: float) -> void:
 	var on_floor : bool = actor.is_on_floor()
 
 	if on_floor:
@@ -29,18 +30,13 @@ func apply(delta: float) -> void:
 		grounded_duration += delta
 		if grounded_timer >= grounded_buffer and not is_grounded:
 			is_grounded = true
-			grounded_timer = grounded_buffer 
+			grounded_timer = grounded_buffer
+			actor_grounded.emit(actor)
 			if enable_debug:
-				print(actor.name, " confirmed grounded.")
+				print(actor.name, " | GroundCheckComponent: Actor confirmed grounded.")
 	else:
 		is_grounded = false
 		grounded_timer = 0.0
 		grounded_duration = 0.0
 		if enable_debug:
-			print(actor.name, " lost ground contact.")
-
-func just_landed() -> bool:
-	return is_grounded and not was_grounded
-
-func post_update() -> void:
-	was_grounded = is_grounded
+			print(actor.name, " | GroundCheckComponent: Actor lost ground contact.")

@@ -69,6 +69,9 @@ func _ready() -> void:
 	gravity = gravity_comp.gravity
 	reset_jump_counter()
 
+func process_physics(delta: float) -> void:
+	update_timer(delta)
+
 # -------------------------
 #  TIMER + COOLDOWN
 # -------------------------
