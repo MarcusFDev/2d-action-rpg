@@ -1,6 +1,6 @@
 [gd_scene load_steps=83 format=3 uid="uid://beftgbphk8tt3"]
 
-[ext_resource type="Script" uid="uid://dc7is6nsd35mi" path="res://scripts/player/player.gd" id="1_g2els"]
+[ext_resource type="Script" uid="uid://dc7is6nsd35mi" path="res://scripts/core/actors/player/player.gd" id="1_g2els"]
 [ext_resource type="Texture2D" uid="uid://nuicatwvk6p6" path="res://assets/sprites/player/knight-attack1.png" id="2_myrg7"]
 [ext_resource type="Texture2D" uid="uid://q6qxk2euivaw" path="res://assets/sprites/player/knight-death.png" id="2_ugbui"]
 [ext_resource type="Texture2D" uid="uid://c5nm6jegwh4n5" path="res://assets/sprites/player/knight-fall.png" id="3_fm80t"]
@@ -431,25 +431,24 @@ z_index = 5
 collision_mask = 30
 script = ExtResource("1_g2els")
 actor_path = NodePath(".")
-animations_path = NodePath("Animations")
+actor_hurtbox = NodePath("HurtBox")
+actor_hitbox = NodePath("HitBox")
 state_machine_path = NodePath("StateMachine")
 idle_state_path = NodePath("StateMachine/IdleState")
 move_state_path = NodePath("StateMachine/MoveState")
 jump_state_path = NodePath("StateMachine/JumpState")
 fall_state_path = NodePath("StateMachine/FallState")
 attack_state_path = NodePath("StateMachine/AttackState")
-injured_state_path = NodePath("StateMachine/InjuredState")
 heal_state_path = NodePath("StateMachine/HealState")
+injured_state_path = NodePath("StateMachine/InjuredState")
 death_state_path = NodePath("StateMachine/DeathState")
+gravity_component = NodePath("Components/GravityComponent")
 ground_check_component = NodePath("Components/GroundCheckComponent")
 animation_component = NodePath("Components/AnimationComponent")
-movement_component = NodePath("Components/MovementComponent")
 jump_component = NodePath("Components/JumpComponent")
-gravity_component = NodePath("Components/GravityComponent")
 pickup_permission_component = NodePath("Components/PickUpPermissionComponent")
+movement_component = NodePath("Components/MovementComponent")
 health_component = NodePath("Components/HealthComponent")
-hurtbox_component = NodePath("HurtBox")
-hitbox_component = NodePath("HitBox")
 
 [node name="Animations" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -12)
@@ -495,11 +494,13 @@ script = ExtResource("11_uniwh")
 owner_path = NodePath("..")
 
 [node name="HitBoxCollisionRight" type="CollisionShape2D" parent="HitBox"]
+visible = false
 position = Vector2(10.5, -7.5)
 shape = SubResource("RectangleShape2D_28m0y")
 debug_color = Color(0.044215664, 0.6449701, 0.24307114, 0.41960785)
 
 [node name="HitBoxCollisionLeft" type="CollisionShape2D" parent="HitBox"]
+visible = false
 position = Vector2(-10, -7.25)
 shape = SubResource("RectangleShape2D_28m0y")
 debug_color = Color(0.044215664, 0.6449701, 0.24307114, 0.41960785)

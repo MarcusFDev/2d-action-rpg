@@ -1,9 +1,9 @@
 [gd_scene load_steps=34 format=3 uid="uid://c7gvf6d2ofd3d"]
 
-[ext_resource type="Script" uid="uid://djxs0565osbkq" path="res://scripts/enemies/boom_slime.gd" id="1_eo3gx"]
+[ext_resource type="Script" uid="uid://djxs0565osbkq" path="res://scripts/core/actors/enemies/boom_slime.gd" id="1_eo3gx"]
 [ext_resource type="Texture2D" uid="uid://6fe2cx8btcng" path="res://assets/sprites/enemies/boom_slime/boom-slime-idle.png" id="1_oggdf"]
 [ext_resource type="Texture2D" uid="uid://b0c4p7qgu22yt" path="res://assets/sprites/enemies/slime/slime-fall.png" id="2_aolva"]
-[ext_resource type="PackedScene" uid="uid://bg7nrwxlpxf3p" path="res://scenes/core/base_hitbox.tscn" id="2_b7oqg"]
+[ext_resource type="PackedScene" path="res://scenes/core/base_hitbox.tscn" id="2_b7oqg"]
 [ext_resource type="Script" uid="uid://bcoqv8smpfvig" path="res://scripts/states/state_machines/state_machine.gd" id="3_c5vq7"]
 [ext_resource type="Texture2D" uid="uid://cmiijc04jyy37" path="res://assets/sprites/enemies/slime/slime-patrol.png" id="4_dj48x"]
 [ext_resource type="Script" uid="uid://ct14p13yajhmc" path="res://scripts/states/generic_states/idle_state.gd" id="4_eo3gx"]
