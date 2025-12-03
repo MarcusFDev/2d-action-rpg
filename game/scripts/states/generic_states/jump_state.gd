@@ -51,22 +51,7 @@ extends State
 ## [b]Note:[/b] Low values make random patrolling rare and natural; higher values increase frequency. [br]
 @export_range(0, 100, 1, "suffix:%") var export_patrol_chance: float = 0
 
-@export_group("Component Paths")
-
-@export var gravity_component: NodePath
-@export var ground_check_component: NodePath
-@export var jump_component: NodePath
-@export var movement_component: NodePath
-@export var randomizer_component: NodePath
-@export var edge_detector_component: NodePath
-
 @onready var actor: CharacterBody2D = get_node_or_null(actor_path)
-@onready var ground_check_comp: Node = get_node_or_null(ground_check_component)
-@onready var jump_comp: Node = get_node_or_null(jump_component)
-@onready var gravity_comp: Node = get_node_or_null(gravity_component)
-@onready var movement_comp: Node = get_node_or_null(movement_component)
-@onready var randomizer_comp: Node = get_node_or_null(randomizer_component)
-@onready var edge_detector_comp: Node = get_node_or_null(edge_detector_component)
 
 # Callback Functions
 func _on_enter() -> void: pass
@@ -103,7 +88,7 @@ func init_jump() -> void:
 	actor.animations.play(state_animation)
 	
 	if use_parent_logic:
-		jump_comp.perform_jump()
+		actor.jump_comp.perform_jump()
 	
 	if export_use_behavior_tree:
 		var bb: Dictionary = actor.get_blackboard()
@@ -112,13 +97,13 @@ func init_jump() -> void:
 		bb["can_jump"] = false
 		direction = bb["move_direction"]
 		
-		jumps_remaining = jump_comp.base_jumps + jump_comp.initial_extra_jumps
+		jumps_remaining = actor.jump_comp.base_jumps + actor.jump_comp.initial_extra_jumps
 
 		if enable_debug:
 			print(
 				actor.name,
-				" | JumpState: Combining Base Jumps: ", jump_comp.base_jumps,
-				" & Extra Jumps: ", jump_comp.initial_extra_jumps,
+				" | JumpState: Combining Base Jumps: ", actor.jump_comp.base_jumps,
+				" & Extra Jumps: ", actor.jump_comp.initial_extra_jumps,
 				" to: ", jumps_remaining, " jumps.")
 
 # --------------------------------------------------------------------
@@ -131,10 +116,10 @@ func process_physics(delta: float) -> State:
 		var collided: bool = bb["has_collided"]
 		
 		if grounded:
-			if not jump_comp.cooldown_active and jumps_remaining > 0:
+			if not actor.jump_comp.cooldown_active and jumps_remaining > 0:
 				
 				if export_enable_randomize_direction and not collided:
-					var result : Dictionary = movement_comp. direction_randomizer("jump", export_swap_chance, export_swap_interval, delta)
+					var result : Dictionary = actor.movement_comp. direction_randomizer("jump", export_swap_chance, export_swap_interval, delta)
 					if result.success:
 						state_direction = result.direction
 					else:
@@ -142,17 +127,17 @@ func process_physics(delta: float) -> State:
 				else:
 					state_direction = bb["move_direction"]
 				
-				jump_comp.perform_target_jump(state_direction)
-				jump_comp.start_cooldown()
+				actor.jump_comp.perform_target_jump(state_direction)
+				actor.jump_comp.start_cooldown()
 				
 				jumps_remaining -= 1
 				
-			elif jump_comp.cooldown_active:
+			elif actor.jump_comp.cooldown_active:
 				actor.velocity.x = 0
 				pass
 			
 			else:
-				jump_comp.reset_jump_counter()
+				actor.jump_comp.reset_jump_counter()
 				bb["can_jump"] = true
 				bb["locked"] = false
 				bb["can_patrol"] = true
@@ -162,7 +147,7 @@ func process_physics(delta: float) -> State:
 					print(actor.name, " | JumpState finished all jumps.")
 		
 		if export_enable_random_idle and grounded:
-			var can_idle : bool = randomizer_comp.randomizer("idle", export_idle_chance, export_idle_interval, delta)
+			var can_idle : bool = actor.randomizer_comp.randomizer("idle", export_idle_chance, export_idle_interval, delta)
 			if can_idle:
 				if enable_debug:
 					print(actor.name, "JumpState: Random Idle enabled & can idle.")
@@ -172,7 +157,7 @@ func process_physics(delta: float) -> State:
 				bb["locked"] = false
 	
 		if export_enable_random_patrol and grounded:
-			var can_patrol : bool = randomizer_comp.randomizer("patrol", export_patrol_chance, export_patrol_interval, delta)
+			var can_patrol : bool = actor.randomizer_comp.randomizer("patrol", export_patrol_chance, export_patrol_interval, delta)
 			if can_patrol:
 				if enable_debug:
 					print(actor.name, "JumpState: Random Patrol enabled & can patrol.")
@@ -198,7 +183,7 @@ func process_frame(delta: float) -> State:
 	
 	if export_use_behavior_tree:
 		var bb : Dictionary = actor.get_blackboard()
-		direction = edge_detector_comp.update(delta)
+		direction = actor.edge_detector_comp.update(delta)
 		if direction != 0:
 			bb["move_direction"] = direction
 			bb["has_collided"] = true

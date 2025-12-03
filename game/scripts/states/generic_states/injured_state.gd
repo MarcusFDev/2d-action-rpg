@@ -16,14 +16,8 @@ extends State
 @export var use_parent_logic: bool = false
 @export var use_behavior_tree: bool = false
 
-@export_group("Component Paths")
-@export var health_component_path: NodePath
-@export var hurtbox_component_path: NodePath
-
 # Script Variables
 @onready var actor: Node = get_node_or_null(actor_path)
-@onready var health_comp: Node = get_node_or_null(health_component_path)
-@onready var hurtbox_comp: Area2D = get_node_or_null(hurtbox_component_path)
 
 # Callback Functions
 func _on_enter() -> void: pass
@@ -59,8 +53,8 @@ func init_injured() -> void:
 		amount = bb["hitbox_data"]
 		bb["locked"] = true
 	
-	if health_comp:
-		health_comp.lose_health(amount)
+	if actor.health_comp:
+		actor.health_comp.lose_health(amount)
 		if enable_debug:
 			print(actor.name, " | InjuredState: Calling HealthComponent with health loss amount: ", amount)
 

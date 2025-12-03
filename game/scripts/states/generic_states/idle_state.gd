@@ -53,15 +53,7 @@ extends State
 ## [b]Note:[/b] Low values make random jumping rare and natural; higher values increase frequency. [br]
 @export_range(0, 100, 1, "suffix:%") var export_jump_chance: float = 0
 
-@export_group("Component Paths")
-@export var idle_component: NodePath
-@export var randomizer_component: NodePath
-@export var movement_component: NodePath
-
 @onready var actor: Node = get_node_or_null(actor_path)
-@onready var idle_comp: Node = get_node_or_null(idle_component)
-@onready var movement_comp: Node = get_node_or_null(movement_component)
-@onready var randomizer_comp: Node = get_node_or_null(randomizer_component)
 
 # Callback Functions
 func _on_enter() -> void: pass
@@ -91,7 +83,7 @@ func init_idle() -> void:
 	
 	if export_use_behavior_tree:
 		var bb: Dictionary = actor.get_blackboard()
-		idle_comp.start()
+		actor.idle_comp.start()
 		bb["force_idle"] = false
 		bb["locked"] = true
 
@@ -101,13 +93,13 @@ func process_physics(delta: float) -> State:
 	if export_use_behavior_tree:
 		if export_enable_randomize_direction:
 			var bb: Dictionary = actor.get_blackboard()
-			var result : Dictionary = movement_comp.direction_randomizer("idle", export_swap_chance, export_swap_interval, delta)
+			var result : Dictionary = actor.movement_comp.direction_randomizer("idle", export_swap_chance, export_swap_interval, delta)
 			if result.success:
 				bb["move_direction"] = result.direction
 
 		if export_enable_random_patrol:
 			var bb: Dictionary = actor.get_blackboard()
-			var can_patrol : bool = randomizer_comp.randomizer("patrol", export_patrol_chance, export_patrol_interval, delta)
+			var can_patrol : bool = actor.randomizer_comp.randomizer("patrol", export_patrol_chance, export_patrol_interval, delta)
 			if can_patrol:
 				if enable_debug:
 					print(actor.name, "IdleState: Random Patrol enabled & can patrol.")
@@ -116,7 +108,7 @@ func process_physics(delta: float) -> State:
 	
 		if export_enable_random_jump:
 			var bb: Dictionary = actor.get_blackboard()
-			var can_jump : bool = randomizer_comp.randomizer("jump", export_jump_chance, export_jump_interval, delta)
+			var can_jump : bool = actor.randomizer_comp.randomizer("jump", export_jump_chance, export_jump_interval, delta)
 			if can_jump:
 				if enable_debug:
 					print(actor.name, "IdleState: Random Jump enabled & can jump.")
@@ -131,9 +123,9 @@ func process_physics(delta: float) -> State:
 func process_frame(delta: float) -> State:
 	if export_use_behavior_tree:
 		var bb: Dictionary = actor.get_blackboard()
-		idle_comp.update(delta)
+		actor.idle_comp.update(delta)
 		
-		if not idle_comp.is_active:
+		if not actor.idle_comp.is_active:
 			bb["has_collided"] = false
 			bb["can_idle"] = true
 			bb["can_jump"] = true

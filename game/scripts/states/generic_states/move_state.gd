@@ -53,17 +53,7 @@ extends State
 ## [b]Note:[/b] Low values make random jumping rare and natural; higher values increase frequency. [br]
 @export_range(0, 100, 1, "suffix:%") var export_jump_chance: float = 0
 
-@export_group("Component Paths")
-@export var edge_detector_component: NodePath
-@export var movement_component: NodePath
-@export var randomizer_component: NodePath
-@export var ground_check_component: NodePath
-
 @onready var actor: CharacterBody2D = get_node_or_null(actor_path)
-@onready var edge_detector_comp: Node = get_node_or_null(edge_detector_component)
-@onready var movement_comp: Node = get_node_or_null(movement_component)
-@onready var randomizer_comp: Node = get_node_or_null(randomizer_component)
-@onready var ground_check_comp: Node = get_node_or_null(ground_check_component)
 
 # Script Variables
 var direction: Variant
@@ -108,7 +98,7 @@ func process_physics(delta: float) -> State:
 		var bb: Dictionary = actor.get_blackboard()
 		var collided: bool = bb["has_collided"]
 		if export_enable_randomize_direction and not collided:
-			var result : Dictionary = movement_comp. direction_randomizer("jump", export_swap_chance, export_swap_interval, delta)
+			var result : Dictionary = actor.movement_comp. direction_randomizer("jump", export_swap_chance, export_swap_interval, delta)
 			if result.success:
 				direction = result.direction
 				bb["move_direction"] = direction
@@ -117,17 +107,17 @@ func process_physics(delta: float) -> State:
 		else:
 			direction = bb["move_direction"]
 	
-		movement_comp.set_direction(direction)
-		movement_comp.apply_physics(delta)
+		actor.movement_comp.set_direction(direction)
+		actor.movement_comp.process_physics()
 
 	return null
 
 func process_frame(delta: float) -> State:
 	if export_use_behavior_tree:
 		var bb : Dictionary = actor.get_blackboard()
-		direction = edge_detector_comp.update(delta)
+		direction = actor.edge_detector_comp.update(delta)
 		
-		if not ground_check_comp.is_grounded:
+		if not actor.ground_check_comp.is_grounded:
 			bb["is_grounded"] = false
 			bb["locked"] = false
 
@@ -141,7 +131,7 @@ func process_frame(delta: float) -> State:
 	
 	if export_enable_random_idle:
 		var bb: Dictionary = actor.get_blackboard()
-		var can_idle : bool = randomizer_comp.randomizer("idle", export_idle_chance, export_idle_interval, delta)
+		var can_idle : bool = actor.randomizer_comp.randomizer("idle", export_idle_chance, export_idle_interval, delta)
 		if can_idle:
 			if enable_debug:
 				print(actor.name, "MoveState: Random Idle enabled & can idle.")
@@ -150,7 +140,7 @@ func process_frame(delta: float) -> State:
 	
 	if export_enable_random_jump:
 		var bb: Dictionary = actor.get_blackboard()
-		var can_jump : bool = randomizer_comp.randomizer("jump", export_jump_chance, export_jump_interval, delta)
+		var can_jump : bool = actor.randomizer_comp.randomizer("jump", export_jump_chance, export_jump_interval, delta)
 		if can_jump:
 			if enable_debug:
 				print(actor.name, "MoveState: Random Jump enabled & can jump.")

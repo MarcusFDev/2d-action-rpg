@@ -16,12 +16,8 @@ extends State
 @export var use_parent_logic: bool = false
 @export var use_behavior_tree: bool = false
 
-@export_group("Component Paths")
-@export var health_component_path: NodePath
-
 # Script Variables
 @onready var actor: Node = get_node_or_null(actor_path)
-@onready var health_comp: Node = get_node_or_null(health_component_path)
 
 # Callback Functions
 func _on_enter() -> void: pass
@@ -60,10 +56,10 @@ func process_physics(delta: float) -> State:
 	actor.velocity.x = 0
 
 	if animation_finished:
-		if health_comp:
+		if actor.health_comp:
 			if enable_debug:
 				print(actor.name, " | HealState: Calling HealthComponent with heal_value: ", heal_amount)
-			health_comp.gain_health(heal_amount)
+			actor.health_comp.gain_health(heal_amount)
 		
 		if use_behavior_tree:
 			var bb: Dictionary = actor.get_blackboard()
