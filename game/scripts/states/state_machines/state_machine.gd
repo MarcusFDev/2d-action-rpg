@@ -10,6 +10,7 @@ extends Node
 var current_state: State
 var blackboard: Dictionary
 var state_map : Dictionary = {}
+var previous_state_name: String
 
 # Intialize the state machine by giving each child state a refernce to the
 # parent object it belongs to and enter the default starting_state.
@@ -55,7 +56,17 @@ func process_frame(delta: float) -> void:
 					if enable_debug:
 						print("State Machine | State Change due to intent: ", intent)
 					change_state(desired_state)
-
+	
+	if enable_debug:
+		var current_state_name : Variant = current_state.name
+		if current_state_name != previous_state_name:
+			previous_state_name = current_state_name
+			print("==============================")
+			print("[STATE CHANGE] →", current_state_name)
+			for key: Variant in blackboard.keys():
+				print(" ", key, ":", blackboard[key])
+			print("==============================")
+	
 	if current_state:
 		var new_state: State = current_state.process_frame(delta)
 		if new_state:
