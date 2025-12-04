@@ -46,7 +46,6 @@ extends Component
 var jump_gravity: float
 var gravity: float
 
-var initial_velocity: float
 var jump_force: float
 var is_jumping: bool = false
 
@@ -82,7 +81,7 @@ func update_timer(delta: float) -> void:
 			cooldown_active = false
 			cooldown_timer = 0.0
 			if enable_debug:
-				print(actor.name, " | Jump cooldown complete.")
+				print(actor.name, " | JumpComponent: Jump cooldown complete.")
 	
 	if is_recharging:
 		recharge_timer -= delta
@@ -92,10 +91,10 @@ func update_timer(delta: float) -> void:
 			if is_grounded():
 				reset_jump_counter()
 				if enable_debug:
-					print(actor.name, " | Multi-jump recharged and available again.")
+					print(actor.name, " | JumpComponent: Multi-jump recharged and available again.")
 			else:
 				if enable_debug:
-					print(actor.name, " | Multi-jump recharge finished but still mid-air. Will reset on landing.")
+					print(actor.name, " | JumpComponent: Multi-jump recharge finished but still mid-air. Will reset on landing.")
 
 func start_recharge() -> void:
 	if export_recharge_time > 0.0:
@@ -103,14 +102,14 @@ func start_recharge() -> void:
 		recharge_timer = export_recharge_time
 		export_enable_multi_jump = false
 		if enable_debug:
-				print(actor.name, " | Started multi-jump recharge (", export_recharge_time, "s)")
+				print(actor.name, " | JumpComponent: Started multi-jump recharge (", export_recharge_time, "s)")
 
 func start_cooldown() -> void:
 	if export_jump_cooldown > 0.0:
 		cooldown_active = true
 		cooldown_timer = export_jump_cooldown
 		if enable_debug:
-			print(actor.name, " | Jump cooldown started (", export_jump_cooldown, "s)")
+			print(actor.name, " | JumpComponent: Jump cooldown started (", export_jump_cooldown, "s)")
 
 # -------------------------
 #  JUMP PHYSICS
@@ -126,7 +125,7 @@ func height_offset() -> float:
 		modified_jump_height *= 1.5
 	
 	if enable_debug:
-		print(actor.name, " | Jump Height Offset switched on. Jump Height: ", modified_jump_height)
+		print(actor.name, " | JumpComponent: Jump Height Offset switched on. Jump Height: ", modified_jump_height)
 	
 	return modified_jump_height
 
@@ -137,14 +136,14 @@ func calculate_gravity() -> void:
 	if jump_time <= 0.0:
 		jump_force = -sqrt(2.0 * jump_height * gravity)
 		if enable_debug:
-			print(actor.name, " | Jump Force: ", jump_force, " | Jump Height: ", jump_height, " | Gravity:", gravity)
+			print(actor.name, " | JumpComponent: Jump Force: ", jump_force, " | Jump Height: ", jump_height, " | Gravity:", gravity)
 	else:
 		jump_gravity = (2.0 * jump_height) / pow(jump_time, 2)
 		jump_force = -sqrt(2.0 * jump_height * jump_gravity)
 		actor.gravity_comp.gravity = jump_gravity
 	
 		if enable_debug:
-			print(actor.name, " | Jump Force: ", jump_force, " | Jump Height: ", jump_height, " | Jump Gravity: ", jump_gravity)
+			print(actor.name, " | JumpComponent: Jump Force: ", jump_force, " | Jump Height: ", jump_height, " | Jump Gravity: ", jump_gravity)
 
 func is_grounded() -> bool:
 	if ground_check:
@@ -156,7 +155,7 @@ func is_grounded() -> bool:
 func perform_jump() -> void:
 	if not can_jump():
 		if enable_debug:
-			print(actor.name, " tried to jump but cooldown active or out of jumps.")
+			print(actor.name, " JumpComponent: Tried to jump but cooldown active or out of jumps.")
 		return
 	is_jumping = true
 	
@@ -169,12 +168,12 @@ func perform_jump() -> void:
 		start_cooldown()
 
 	if enable_debug:
-		print(actor.name, " started jump. Base Jumps remaining: ", base_jumps, " Extra Jumps remaining: ", current_extra_jumps)
+		print(actor.name, " JumpComponent: Started jump. Base Jumps remaining: ", base_jumps, " Extra Jumps remaining: ", current_extra_jumps)
 
 func perform_target_jump(direction: Variant) -> void:
 	if not can_jump():
 		if enable_debug:
-			print(actor.name, " | Failed Jump. Cooldown active or actor out of jumps.")
+			print(actor.name, " | JumpComponent: Failed Jump. Cooldown active or actor out of jumps.")
 		return
 	
 	is_jumping = true
@@ -186,8 +185,8 @@ func perform_target_jump(direction: Variant) -> void:
 		jump_offset = Vector2(jump_distance * float(direction), 0.0)
 
 	if enable_debug:
-		print(actor.name, " | Before Jump: Global Position: ", actor.global_position)
-		print(actor.name, " | Jump Offset value: ", jump_offset)
+		print(actor.name, " | JumpComponent: Before Jump: Global Position: ", actor.global_position)
+		print(actor.name, " | JumpComponent: Jump Offset value: ", jump_offset)
 	
 	target_position = actor.global_position + jump_offset + Vector2(0.0, -32.0)
 	var displacement: Vector2 = target_position - actor.global_position
@@ -203,8 +202,9 @@ func perform_target_jump(direction: Variant) -> void:
 	actor.velocity = Vector2(horizontal_velocity, jump_force)
 
 	if enable_debug:
-		print(actor.name, " | Target Position: ", target_position, " | Horizontal Velocity: ", horizontal_velocity)
-		print(actor.name, " | After Jump: Global Position: ", actor.global_position)
+		print(actor.name, " | JumpComponent: Direction: ", direction)
+		print(actor.name, " | JumpComponent: Target Position: ", target_position, " | Horizontal Velocity: ", horizontal_velocity)
+		print(actor.name, " | JumpComponent: After Jump: Global Position: ", actor.global_position)
 
 # -------------------------
 #  MULTI-JUMP SYSTEM
@@ -238,4 +238,4 @@ func reset_jump_counter() -> void:
 	else:
 		current_extra_jumps = 0
 	if enable_debug:
-		print(actor.name, " | Jump counter reset. Base Jumps: ", base_jumps, " Extra Jumps: ", current_extra_jumps)
+		print(actor.name, " | JumpComponent: Jump counter reset. Base Jumps: ", base_jumps, " Extra Jumps: ", current_extra_jumps)

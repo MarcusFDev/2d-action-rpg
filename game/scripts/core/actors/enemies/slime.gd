@@ -35,7 +35,7 @@ func setup_states() -> void:
 func actor_blackboard() -> void:
 	blackboard["fsm"] = state_machine
 	
-	blackboard["is_grounded"] = true
+	blackboard["is_grounded"] = false
 	blackboard["has_collided"] = false
 	
 	blackboard["force_idle"] = false
@@ -150,13 +150,13 @@ func _death_state() -> void:
 # ==============================
 
 func _physics_process(delta: float) -> void:
-	gravity_comp.process_physics(delta)
 	ground_check_comp.process_physics(delta)
-	jump_comp.process_physics(delta)
 	state_machine.process_physics(delta)
-
+	gravity_comp.process_physics(delta)
+	jump_comp.process_physics(delta)
+	
 	actor.move_and_slide()
-
+	
 func _process(delta: float) -> void:
 	behavior_tree.process_frame()
 	animation_comp.process_frame()
@@ -166,9 +166,12 @@ func _process(delta: float) -> void:
 # === Actor Signal Receivers ====
 # ===============================
 
-func grounded_signal_receiver(signal_actor: Node) -> void:
+func grounded_signal_receiver(signal_actor: Node, grounded: bool) -> void:
 	if signal_actor == actor:
-		blackboard["is_grounded"] = true
+		if grounded:
+			blackboard["is_grounded"] = true
+		else:
+			blackboard["is_grounded"] = false
 
 func death_signal_receiver() -> void:
 	blackboard["can_die"] = true

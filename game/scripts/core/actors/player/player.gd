@@ -179,10 +179,11 @@ func _process(delta: float) -> void:
 # === Actor Signal Receivers ====
 # ===============================
 
-func grounded_signal_receiver(signal_actor: Node) -> void:
+func grounded_signal_receiver(signal_actor: Node, grounded: bool) -> void:
 	if signal_actor == actor:
-		if actor.jump_comp:
-			jump_comp.reset_jump_counter()
+		if grounded:
+			if actor.jump_comp:
+				jump_comp.reset_jump_counter()
 
 func pickup_signal_receiver(data: Variant) -> void:
 	if data["item_type"] == "health":

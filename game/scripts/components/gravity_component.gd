@@ -25,4 +25,4 @@ func process_physics(delta: float) -> void:
 	gravity = export_gravity
 	actor.velocity.y += gravity * delta
 	if enable_debug:
-		print(actor.name, " | GravityComponent: Gravity applied.")
+		print(actor.name, " | GravityComponent: ", gravity ," Gravity applied.")

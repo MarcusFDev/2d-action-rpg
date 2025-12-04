@@ -1,7 +1,7 @@
 class_name GroundCheckComponent
 extends Component
 
-signal actor_grounded(actor: Node)
+signal actor_grounded(actor: Node, value: bool)
 
 ## Assign the parent entity to the component.
 @export var actor_path: NodePath
@@ -31,12 +31,13 @@ func process_physics(delta: float) -> void:
 		if grounded_timer >= grounded_buffer and not is_grounded:
 			is_grounded = true
 			grounded_timer = grounded_buffer
-			actor_grounded.emit(actor)
+			actor_grounded.emit(actor, is_grounded)
 			if enable_debug:
 				print(actor.name, " | GroundCheckComponent: Actor confirmed grounded.")
 	else:
 		is_grounded = false
 		grounded_timer = 0.0
 		grounded_duration = 0.0
+		actor_grounded.emit(actor, is_grounded)
 		if enable_debug:
 			print(actor.name, " | GroundCheckComponent: Actor lost ground contact.")
