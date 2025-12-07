@@ -1,5 +1,9 @@
+class_name CreditsMenu
 extends Control
 
+## Enables debug messages in the output terminal. [br]
+## [b]Note:[/b] Useful for development and troubleshooting.
+@export var enable_debug: bool = false
 
-func _on_back_button_pressed() -> void:
-	get_tree().change_scene_to_file("res://scenes/ui/main_menu.tscn")
+func on_back_btn() -> void:
+	GameManager.on_back_btn()

@@ -1,16 +1,26 @@
+class_name MainMenu
 extends Control
-	
 
-func _on_play_button_pressed() -> void:
-	get_tree().change_scene_to_file("res://scenes/ui/level_picker.tscn")
+## Enables debug messages in the output terminal. [br]
+## [b]Note:[/b] Useful for development and troubleshooting.
+@export var enable_debug: bool = false
 
-func _on_settings_button_pressed() -> void:
-	get_tree().change_scene_to_file("res://scenes/ui/settings_menu.tscn")
+func on_play_btn() -> void:
+	GameManager.on_level_pick_menu()
+	if enable_debug:
+		print("MainMenu | Play button press detected.")
 
+func on_settings_btn() -> void:
+	GameManager.on_settings_menu()
+	if enable_debug:
+		print("MainMenu | Settings button press detected.")
 
-func _on_credits_button_pressed() -> void:
-	get_tree().change_scene_to_file("res://scenes/ui/credits_menu.tscn")
+func on_credits_btn() -> void:
+	GameManager.on_credits_menu()
+	if enable_debug:
+		print("MainMenu | Credits button press detected.")
 
-
-func _on_quit_btn_pressed() -> void:
-	get_tree().quit()
+func on_quit_btn() -> void:
+	GameManager.on_game_exit()
+	if enable_debug:
+		print("MainMenu | Game Exit button press detected.")

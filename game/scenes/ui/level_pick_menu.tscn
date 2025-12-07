@@ -1,24 +1,24 @@
-[gd_scene load_steps=11 format=3 uid="uid://c0kyicitd13x6"]
+[gd_scene load_steps=10 format=3 uid="uid://c0kyicitd13x6"]
 
-[ext_resource type="Script" uid="uid://dx5fmt671armw" path="res://scripts/ui/level_picker.gd" id="1_fp2ef"]
-[ext_resource type="Texture2D" uid="uid://b02slykbjhaut" path="res://assets/images/placeholder-image.png" id="2_8r1pm"]
-[ext_resource type="Theme" uid="uid://cdvnx1x2un6o8" path="res://assets/themes/btn_theme.tres" id="3_lpyf1"]
-[ext_resource type="StyleBox" uid="uid://bsq0gu7c1pqjm" path="res://assets/themes/level_panels_border.tres" id="3_mhmff"]
-[ext_resource type="Theme" uid="uid://kmndp1tcmq6f" path="res://assets/themes/title_theme.tres" id="3_mill3"]
-[ext_resource type="Theme" uid="uid://dct1adrtx53me" path="res://assets/themes/scrollbar_theme.tres" id="4_1rkqb"]
-[ext_resource type="StyleBox" uid="uid://beqo8irsniav2" path="res://assets/themes/level_panels_black.tres" id="4_mill3"]
-[ext_resource type="Script" uid="uid://bibfmbooi65dl" path="res://scripts/ui/level_scroller.gd" id="4_sc7fl"]
-[ext_resource type="Texture2D" uid="uid://bcy0nvc4ekpxx" path="res://assets/images/icon.svg" id="5_sc7fl"]
-[ext_resource type="Texture2D" uid="uid://ituxbiimdjgy" path="res://assets/images/lock.png" id="8_mill3"]
+[ext_resource type="Script" uid="uid://dx5fmt671armw" path="res://scripts/ui/level_pick_menu.gd" id="1_3ys60"]
+[ext_resource type="Texture2D" uid="uid://b02slykbjhaut" path="res://assets/images/placeholder-image.png" id="2_4f4ud"]
+[ext_resource type="Theme" uid="uid://kmndp1tcmq6f" path="res://assets/themes/title_theme.tres" id="3_eh0vo"]
+[ext_resource type="Theme" uid="uid://dct1adrtx53me" path="res://assets/themes/scrollbar_theme.tres" id="4_31h3w"]
+[ext_resource type="StyleBox" uid="uid://beqo8irsniav2" path="res://assets/themes/level_panels_black.tres" id="6_q7ccy"]
+[ext_resource type="StyleBox" uid="uid://bsq0gu7c1pqjm" path="res://assets/themes/level_panels_border.tres" id="7_coy0a"]
+[ext_resource type="Texture2D" uid="uid://bcy0nvc4ekpxx" path="res://assets/images/icon.svg" id="8_hxra3"]
+[ext_resource type="Theme" uid="uid://cdvnx1x2un6o8" path="res://assets/themes/btn_theme.tres" id="9_plf4j"]
+[ext_resource type="Texture2D" uid="uid://ituxbiimdjgy" path="res://assets/images/lock.png" id="10_l1a6e"]
 
-[node name="LevelPicker" type="Control"]
+[node name="LevelPickMenu" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_fp2ef")
+script = ExtResource("1_3ys60")
+level_button_container = NodePath("LevelPanels/VBoxContainer/ScrollContainer/LevelButtonContainer")
 
 [node name="PageStyle" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -30,7 +30,7 @@ grow_vertical = 2
 
 [node name="BackgroundImage" type="TextureRect" parent="PageStyle"]
 layout_mode = 2
-texture = ExtResource("2_8r1pm")
+texture = ExtResource("2_4f4ud")
 expand_mode = 2
 stretch_mode = 6
 
@@ -64,7 +64,7 @@ layout_mode = 2
 
 [node name="PageTitle" type="Label" parent="LevelPanels/VBoxContainer"]
 layout_mode = 2
-theme = ExtResource("3_mill3")
+theme = ExtResource("3_eh0vo")
 theme_override_font_sizes/font_size = 65
 text = "Pick a Level:"
 horizontal_alignment = 1
@@ -77,76 +77,75 @@ layout_mode = 2
 [node name="ScrollContainer" type="ScrollContainer" parent="LevelPanels/VBoxContainer"]
 custom_minimum_size = Vector2(1700, 500)
 layout_mode = 2
-theme = ExtResource("4_1rkqb")
+theme = ExtResource("4_31h3w")
 follow_focus = true
 vertical_scroll_mode = 0
 scroll_deadzone = 10
-script = ExtResource("4_sc7fl")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="LevelPanels/VBoxContainer/ScrollContainer"]
+[node name="LevelButtonContainer" type="HBoxContainer" parent="LevelPanels/VBoxContainer/ScrollContainer"]
 custom_minimum_size = Vector2(500, 700)
 layout_mode = 2
 theme_override_constants/separation = 90
 
-[node name="DeveloperLevelButton" type="Button" parent="LevelPanels/VBoxContainer/ScrollContainer/HBoxContainer"]
+[node name="DeveloperLevelButton" type="Button" parent="LevelPanels/VBoxContainer/ScrollContainer/LevelButtonContainer"]
 custom_minimum_size = Vector2(500, 600)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-theme_override_styles/hover = ExtResource("3_mhmff")
-theme_override_styles/normal = ExtResource("4_mill3")
+theme_override_styles/normal = ExtResource("6_q7ccy")
+theme_override_styles/hover = ExtResource("7_coy0a")
 
-[node name="LevelImage" type="TextureRect" parent="LevelPanels/VBoxContainer/ScrollContainer/HBoxContainer/DeveloperLevelButton"]
+[node name="LevelImage" type="TextureRect" parent="LevelPanels/VBoxContainer/ScrollContainer/LevelButtonContainer/DeveloperLevelButton"]
 custom_minimum_size = Vector2(0, 500)
-layout_mode = 2
+layout_mode = 0
 offset_left = 186.0
 offset_top = 50.0
 offset_right = 314.0
 offset_bottom = 550.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
-texture = ExtResource("5_sc7fl")
+texture = ExtResource("8_hxra3")
 stretch_mode = 2
 
-[node name="LevelNameLabel" type="Label" parent="LevelPanels/VBoxContainer/ScrollContainer/HBoxContainer/DeveloperLevelButton"]
+[node name="LevelNameLabel" type="Label" parent="LevelPanels/VBoxContainer/ScrollContainer/LevelButtonContainer/DeveloperLevelButton"]
 custom_minimum_size = Vector2(0, 75)
-layout_mode = 2
+layout_mode = 0
 offset_top = 248.0
 offset_right = 500.0
 offset_bottom = 352.0
-theme = ExtResource("3_lpyf1")
+theme = ExtResource("9_plf4j")
 text = "Developer Playground"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="Level1Button" type="Button" parent="LevelPanels/VBoxContainer/ScrollContainer/HBoxContainer"]
+[node name="Level1Button" type="Button" parent="LevelPanels/VBoxContainer/ScrollContainer/LevelButtonContainer"]
 custom_minimum_size = Vector2(500, 600)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-theme_override_styles/hover = ExtResource("3_mhmff")
-theme_override_styles/normal = ExtResource("4_mill3")
+theme_override_styles/normal = ExtResource("6_q7ccy")
+theme_override_styles/hover = ExtResource("7_coy0a")
 
-[node name="LevelImage" type="TextureRect" parent="LevelPanels/VBoxContainer/ScrollContainer/HBoxContainer/Level1Button"]
+[node name="LevelImage" type="TextureRect" parent="LevelPanels/VBoxContainer/ScrollContainer/LevelButtonContainer/Level1Button"]
 custom_minimum_size = Vector2(0, 500)
-layout_mode = 2
+layout_mode = 0
 offset_left = 186.0
 offset_top = 50.0
 offset_right = 314.0
 offset_bottom = 550.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
-texture = ExtResource("5_sc7fl")
+texture = ExtResource("8_hxra3")
 stretch_mode = 2
 
-[node name="LevelNameLabel" type="Label" parent="LevelPanels/VBoxContainer/ScrollContainer/HBoxContainer/Level1Button"]
+[node name="LevelNameLabel" type="Label" parent="LevelPanels/VBoxContainer/ScrollContainer/LevelButtonContainer/Level1Button"]
 custom_minimum_size = Vector2(0, 75)
-layout_mode = 2
+layout_mode = 0
 offset_top = 248.0
 offset_right = 500.0
 offset_bottom = 352.0
-theme = ExtResource("3_lpyf1")
+theme = ExtResource("9_plf4j")
 text = "The Grasslands
 
 Tutorial"
@@ -154,7 +153,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="LevelNumLabel" type="Label" parent="LevelPanels/VBoxContainer/ScrollContainer/HBoxContainer/Level1Button"]
+[node name="LevelNumLabel" type="Label" parent="LevelPanels/VBoxContainer/ScrollContainer/LevelButtonContainer/Level1Button"]
 custom_minimum_size = Vector2(400, 100)
 layout_mode = 1
 anchors_preset = 12
@@ -164,47 +163,47 @@ anchor_bottom = 1.0
 offset_top = -48.0
 grow_horizontal = 2
 grow_vertical = 0
-theme = ExtResource("3_lpyf1")
+theme = ExtResource("9_plf4j")
 text = "Level 1"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="Level2Button" type="Button" parent="LevelPanels/VBoxContainer/ScrollContainer/HBoxContainer"]
+[node name="Level2Button" type="Button" parent="LevelPanels/VBoxContainer/ScrollContainer/LevelButtonContainer"]
 custom_minimum_size = Vector2(500, 600)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 mouse_filter = 2
-theme_override_styles/hover = ExtResource("3_mhmff")
-theme_override_styles/normal = ExtResource("4_mill3")
+theme_override_styles/normal = ExtResource("6_q7ccy")
+theme_override_styles/hover = ExtResource("7_coy0a")
 disabled = true
 
-[node name="LevelImage" type="TextureRect" parent="LevelPanels/VBoxContainer/ScrollContainer/HBoxContainer/Level2Button"]
+[node name="LevelImage" type="TextureRect" parent="LevelPanels/VBoxContainer/ScrollContainer/LevelButtonContainer/Level2Button"]
 custom_minimum_size = Vector2(0, 500)
-layout_mode = 2
+layout_mode = 0
 offset_left = 186.0
 offset_top = 50.0
 offset_right = 314.0
 offset_bottom = 550.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
-texture = ExtResource("5_sc7fl")
+texture = ExtResource("8_hxra3")
 stretch_mode = 2
 
-[node name="LevelNameLabel" type="Label" parent="LevelPanels/VBoxContainer/ScrollContainer/HBoxContainer/Level2Button"]
+[node name="LevelNameLabel" type="Label" parent="LevelPanels/VBoxContainer/ScrollContainer/LevelButtonContainer/Level2Button"]
 custom_minimum_size = Vector2(0, 75)
-layout_mode = 2
+layout_mode = 0
 offset_top = 248.0
 offset_right = 500.0
 offset_bottom = 352.0
-theme = ExtResource("3_lpyf1")
+theme = ExtResource("9_plf4j")
 text = "Tanglewood Forest"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="LevelNumLabel" type="Label" parent="LevelPanels/VBoxContainer/ScrollContainer/HBoxContainer/Level2Button"]
+[node name="LevelNumLabel" type="Label" parent="LevelPanels/VBoxContainer/ScrollContainer/LevelButtonContainer/Level2Button"]
 custom_minimum_size = Vector2(400, 100)
 layout_mode = 1
 anchors_preset = 7
@@ -217,13 +216,13 @@ offset_top = -49.0
 offset_right = 20.0
 grow_horizontal = 2
 grow_vertical = 0
-theme = ExtResource("3_lpyf1")
+theme = ExtResource("9_plf4j")
 text = "Level 2"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="DimOverlay" type="ColorRect" parent="LevelPanels/VBoxContainer/ScrollContainer/HBoxContainer/Level2Button"]
+[node name="DimOverlay" type="ColorRect" parent="LevelPanels/VBoxContainer/ScrollContainer/LevelButtonContainer/Level2Button"]
 z_index = 100
 layout_mode = 1
 anchors_preset = 15
@@ -234,7 +233,7 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 0.862745)
 
-[node name="LockIcon" type="TextureRect" parent="LevelPanels/VBoxContainer/ScrollContainer/HBoxContainer/Level2Button/DimOverlay"]
+[node name="LockIcon" type="TextureRect" parent="LevelPanels/VBoxContainer/ScrollContainer/LevelButtonContainer/Level2Button/DimOverlay"]
 custom_minimum_size = Vector2(100, 150)
 layout_mode = 1
 anchors_preset = 8
@@ -248,45 +247,45 @@ offset_right = 20.0
 offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("8_mill3")
+texture = ExtResource("10_l1a6e")
 expand_mode = 3
 stretch_mode = 5
 
-[node name="Level3Button" type="Button" parent="LevelPanels/VBoxContainer/ScrollContainer/HBoxContainer"]
+[node name="Level3Button" type="Button" parent="LevelPanels/VBoxContainer/ScrollContainer/LevelButtonContainer"]
 custom_minimum_size = Vector2(500, 600)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 mouse_filter = 2
-theme_override_styles/hover = ExtResource("3_mhmff")
-theme_override_styles/normal = ExtResource("4_mill3")
+theme_override_styles/normal = ExtResource("6_q7ccy")
+theme_override_styles/hover = ExtResource("7_coy0a")
 disabled = true
 
-[node name="LevelImage" type="TextureRect" parent="LevelPanels/VBoxContainer/ScrollContainer/HBoxContainer/Level3Button"]
+[node name="LevelImage" type="TextureRect" parent="LevelPanels/VBoxContainer/ScrollContainer/LevelButtonContainer/Level3Button"]
 custom_minimum_size = Vector2(0, 500)
-layout_mode = 2
+layout_mode = 0
 offset_left = 186.0
 offset_top = 50.0
 offset_right = 314.0
 offset_bottom = 550.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
-texture = ExtResource("5_sc7fl")
+texture = ExtResource("8_hxra3")
 stretch_mode = 2
 
-[node name="LevelNameLabel" type="Label" parent="LevelPanels/VBoxContainer/ScrollContainer/HBoxContainer/Level3Button"]
+[node name="LevelNameLabel" type="Label" parent="LevelPanels/VBoxContainer/ScrollContainer/LevelButtonContainer/Level3Button"]
 custom_minimum_size = Vector2(0, 75)
-layout_mode = 2
+layout_mode = 0
 offset_top = 248.0
 offset_right = 500.0
 offset_bottom = 352.0
-theme = ExtResource("3_lpyf1")
+theme = ExtResource("9_plf4j")
 text = "Deep Tanglewood Forest"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="LevelNumLabel" type="Label" parent="LevelPanels/VBoxContainer/ScrollContainer/HBoxContainer/Level3Button"]
+[node name="LevelNumLabel" type="Label" parent="LevelPanels/VBoxContainer/ScrollContainer/LevelButtonContainer/Level3Button"]
 custom_minimum_size = Vector2(400, 100)
 layout_mode = 1
 anchors_preset = 7
@@ -299,13 +298,13 @@ offset_top = -49.0
 offset_right = 20.0
 grow_horizontal = 2
 grow_vertical = 0
-theme = ExtResource("3_lpyf1")
+theme = ExtResource("9_plf4j")
 text = "Level 3"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="DimOverlay" type="ColorRect" parent="LevelPanels/VBoxContainer/ScrollContainer/HBoxContainer/Level3Button"]
+[node name="DimOverlay" type="ColorRect" parent="LevelPanels/VBoxContainer/ScrollContainer/LevelButtonContainer/Level3Button"]
 z_index = 100
 layout_mode = 1
 anchors_preset = 15
@@ -316,7 +315,7 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 0.862745)
 
-[node name="LockIcon" type="TextureRect" parent="LevelPanels/VBoxContainer/ScrollContainer/HBoxContainer/Level3Button/DimOverlay"]
+[node name="LockIcon" type="TextureRect" parent="LevelPanels/VBoxContainer/ScrollContainer/LevelButtonContainer/Level3Button/DimOverlay"]
 custom_minimum_size = Vector2(100, 150)
 layout_mode = 1
 anchors_preset = 8
@@ -330,45 +329,45 @@ offset_right = 20.0
 offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("8_mill3")
+texture = ExtResource("10_l1a6e")
 expand_mode = 3
 stretch_mode = 5
 
-[node name="Level4Button" type="Button" parent="LevelPanels/VBoxContainer/ScrollContainer/HBoxContainer"]
+[node name="Level4Button" type="Button" parent="LevelPanels/VBoxContainer/ScrollContainer/LevelButtonContainer"]
 custom_minimum_size = Vector2(500, 600)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 mouse_filter = 2
-theme_override_styles/hover = ExtResource("3_mhmff")
-theme_override_styles/normal = ExtResource("4_mill3")
+theme_override_styles/normal = ExtResource("6_q7ccy")
+theme_override_styles/hover = ExtResource("7_coy0a")
 disabled = true
 
-[node name="LevelImage" type="TextureRect" parent="LevelPanels/VBoxContainer/ScrollContainer/HBoxContainer/Level4Button"]
+[node name="LevelImage" type="TextureRect" parent="LevelPanels/VBoxContainer/ScrollContainer/LevelButtonContainer/Level4Button"]
 custom_minimum_size = Vector2(0, 500)
-layout_mode = 2
+layout_mode = 0
 offset_left = 186.0
 offset_top = 50.0
 offset_right = 314.0
 offset_bottom = 550.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
-texture = ExtResource("5_sc7fl")
+texture = ExtResource("8_hxra3")
 stretch_mode = 2
 
-[node name="LevelNameLabel" type="Label" parent="LevelPanels/VBoxContainer/ScrollContainer/HBoxContainer/Level4Button"]
+[node name="LevelNameLabel" type="Label" parent="LevelPanels/VBoxContainer/ScrollContainer/LevelButtonContainer/Level4Button"]
 custom_minimum_size = Vector2(0, 75)
-layout_mode = 2
+layout_mode = 0
 offset_top = 248.0
 offset_right = 500.0
 offset_bottom = 352.0
-theme = ExtResource("3_lpyf1")
+theme = ExtResource("9_plf4j")
 text = "Ocean Biome"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="LevelNumLabel" type="Label" parent="LevelPanels/VBoxContainer/ScrollContainer/HBoxContainer/Level4Button"]
+[node name="LevelNumLabel" type="Label" parent="LevelPanels/VBoxContainer/ScrollContainer/LevelButtonContainer/Level4Button"]
 custom_minimum_size = Vector2(400, 100)
 layout_mode = 1
 anchors_preset = 7
@@ -381,13 +380,13 @@ offset_top = -49.0
 offset_right = 20.0
 grow_horizontal = 2
 grow_vertical = 0
-theme = ExtResource("3_lpyf1")
+theme = ExtResource("9_plf4j")
 text = "Level 4"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="DimOverlay" type="ColorRect" parent="LevelPanels/VBoxContainer/ScrollContainer/HBoxContainer/Level4Button"]
+[node name="DimOverlay" type="ColorRect" parent="LevelPanels/VBoxContainer/ScrollContainer/LevelButtonContainer/Level4Button"]
 z_index = 100
 layout_mode = 1
 anchors_preset = 15
@@ -398,7 +397,7 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 0.862745)
 
-[node name="LockIcon" type="TextureRect" parent="LevelPanels/VBoxContainer/ScrollContainer/HBoxContainer/Level4Button/DimOverlay"]
+[node name="LockIcon" type="TextureRect" parent="LevelPanels/VBoxContainer/ScrollContainer/LevelButtonContainer/Level4Button/DimOverlay"]
 custom_minimum_size = Vector2(100, 150)
 layout_mode = 1
 anchors_preset = 8
@@ -412,45 +411,45 @@ offset_right = 20.0
 offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("8_mill3")
+texture = ExtResource("10_l1a6e")
 expand_mode = 3
 stretch_mode = 5
 
-[node name="Level5Button" type="Button" parent="LevelPanels/VBoxContainer/ScrollContainer/HBoxContainer"]
+[node name="Level5Button" type="Button" parent="LevelPanels/VBoxContainer/ScrollContainer/LevelButtonContainer"]
 custom_minimum_size = Vector2(500, 600)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 mouse_filter = 2
-theme_override_styles/hover = ExtResource("3_mhmff")
-theme_override_styles/normal = ExtResource("4_mill3")
+theme_override_styles/normal = ExtResource("6_q7ccy")
+theme_override_styles/hover = ExtResource("7_coy0a")
 disabled = true
 
-[node name="LevelImage" type="TextureRect" parent="LevelPanels/VBoxContainer/ScrollContainer/HBoxContainer/Level5Button"]
+[node name="LevelImage" type="TextureRect" parent="LevelPanels/VBoxContainer/ScrollContainer/LevelButtonContainer/Level5Button"]
 custom_minimum_size = Vector2(0, 500)
-layout_mode = 2
+layout_mode = 0
 offset_left = 186.0
 offset_top = 50.0
 offset_right = 314.0
 offset_bottom = 550.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
-texture = ExtResource("5_sc7fl")
+texture = ExtResource("8_hxra3")
 stretch_mode = 2
 
-[node name="LevelNameLabel" type="Label" parent="LevelPanels/VBoxContainer/ScrollContainer/HBoxContainer/Level5Button"]
+[node name="LevelNameLabel" type="Label" parent="LevelPanels/VBoxContainer/ScrollContainer/LevelButtonContainer/Level5Button"]
 custom_minimum_size = Vector2(0, 75)
-layout_mode = 2
+layout_mode = 0
 offset_top = 248.0
 offset_right = 500.0
 offset_bottom = 352.0
-theme = ExtResource("3_lpyf1")
+theme = ExtResource("9_plf4j")
 text = "Snow  Biome"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="LevelNumLabel" type="Label" parent="LevelPanels/VBoxContainer/ScrollContainer/HBoxContainer/Level5Button"]
+[node name="LevelNumLabel" type="Label" parent="LevelPanels/VBoxContainer/ScrollContainer/LevelButtonContainer/Level5Button"]
 custom_minimum_size = Vector2(400, 100)
 layout_mode = 1
 anchors_preset = 7
@@ -463,13 +462,13 @@ offset_top = -49.0
 offset_right = 20.0
 grow_horizontal = 2
 grow_vertical = 0
-theme = ExtResource("3_lpyf1")
+theme = ExtResource("9_plf4j")
 text = "Level 5"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="DimOverlay" type="ColorRect" parent="LevelPanels/VBoxContainer/ScrollContainer/HBoxContainer/Level5Button"]
+[node name="DimOverlay" type="ColorRect" parent="LevelPanels/VBoxContainer/ScrollContainer/LevelButtonContainer/Level5Button"]
 z_index = 100
 layout_mode = 1
 anchors_preset = 15
@@ -480,7 +479,7 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 0.862745)
 
-[node name="LockIcon" type="TextureRect" parent="LevelPanels/VBoxContainer/ScrollContainer/HBoxContainer/Level5Button/DimOverlay"]
+[node name="LockIcon" type="TextureRect" parent="LevelPanels/VBoxContainer/ScrollContainer/LevelButtonContainer/Level5Button/DimOverlay"]
 custom_minimum_size = Vector2(100, 150)
 layout_mode = 1
 anchors_preset = 8
@@ -494,45 +493,45 @@ offset_right = 20.0
 offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("8_mill3")
+texture = ExtResource("10_l1a6e")
 expand_mode = 3
 stretch_mode = 5
 
-[node name="Level6Button" type="Button" parent="LevelPanels/VBoxContainer/ScrollContainer/HBoxContainer"]
+[node name="Level6Button" type="Button" parent="LevelPanels/VBoxContainer/ScrollContainer/LevelButtonContainer"]
 custom_minimum_size = Vector2(500, 600)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 mouse_filter = 2
-theme_override_styles/hover = ExtResource("3_mhmff")
-theme_override_styles/normal = ExtResource("4_mill3")
+theme_override_styles/normal = ExtResource("6_q7ccy")
+theme_override_styles/hover = ExtResource("7_coy0a")
 disabled = true
 
-[node name="LevelImage" type="TextureRect" parent="LevelPanels/VBoxContainer/ScrollContainer/HBoxContainer/Level6Button"]
+[node name="LevelImage" type="TextureRect" parent="LevelPanels/VBoxContainer/ScrollContainer/LevelButtonContainer/Level6Button"]
 custom_minimum_size = Vector2(0, 500)
-layout_mode = 2
+layout_mode = 0
 offset_left = 186.0
 offset_top = 50.0
 offset_right = 314.0
 offset_bottom = 550.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
-texture = ExtResource("5_sc7fl")
+texture = ExtResource("8_hxra3")
 stretch_mode = 2
 
-[node name="LevelNameLabel" type="Label" parent="LevelPanels/VBoxContainer/ScrollContainer/HBoxContainer/Level6Button"]
+[node name="LevelNameLabel" type="Label" parent="LevelPanels/VBoxContainer/ScrollContainer/LevelButtonContainer/Level6Button"]
 custom_minimum_size = Vector2(0, 75)
-layout_mode = 2
+layout_mode = 0
 offset_top = 248.0
 offset_right = 500.0
 offset_bottom = 352.0
-theme = ExtResource("3_lpyf1")
+theme = ExtResource("9_plf4j")
 text = "The Void Realm"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="LevelNumLabel" type="Label" parent="LevelPanels/VBoxContainer/ScrollContainer/HBoxContainer/Level6Button"]
+[node name="LevelNumLabel" type="Label" parent="LevelPanels/VBoxContainer/ScrollContainer/LevelButtonContainer/Level6Button"]
 custom_minimum_size = Vector2(400, 100)
 layout_mode = 1
 anchors_preset = 7
@@ -545,13 +544,13 @@ offset_top = -49.0
 offset_right = 20.0
 grow_horizontal = 2
 grow_vertical = 0
-theme = ExtResource("3_lpyf1")
+theme = ExtResource("9_plf4j")
 text = "Level 6"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="DimOverlay" type="ColorRect" parent="LevelPanels/VBoxContainer/ScrollContainer/HBoxContainer/Level6Button"]
+[node name="DimOverlay" type="ColorRect" parent="LevelPanels/VBoxContainer/ScrollContainer/LevelButtonContainer/Level6Button"]
 z_index = 100
 layout_mode = 1
 anchors_preset = 15
@@ -562,7 +561,7 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 0.862745)
 
-[node name="LockIcon" type="TextureRect" parent="LevelPanels/VBoxContainer/ScrollContainer/HBoxContainer/Level6Button/DimOverlay"]
+[node name="LockIcon" type="TextureRect" parent="LevelPanels/VBoxContainer/ScrollContainer/LevelButtonContainer/Level6Button/DimOverlay"]
 custom_minimum_size = Vector2(100, 150)
 layout_mode = 1
 anchors_preset = 8
@@ -576,45 +575,45 @@ offset_right = 20.0
 offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("8_mill3")
+texture = ExtResource("10_l1a6e")
 expand_mode = 3
 stretch_mode = 5
 
-[node name="Level7Button" type="Button" parent="LevelPanels/VBoxContainer/ScrollContainer/HBoxContainer"]
+[node name="Level7Button" type="Button" parent="LevelPanels/VBoxContainer/ScrollContainer/LevelButtonContainer"]
 custom_minimum_size = Vector2(500, 600)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 mouse_filter = 2
-theme_override_styles/hover = ExtResource("3_mhmff")
-theme_override_styles/normal = ExtResource("4_mill3")
+theme_override_styles/normal = ExtResource("6_q7ccy")
+theme_override_styles/hover = ExtResource("7_coy0a")
 disabled = true
 
-[node name="LevelImage" type="TextureRect" parent="LevelPanels/VBoxContainer/ScrollContainer/HBoxContainer/Level7Button"]
+[node name="LevelImage" type="TextureRect" parent="LevelPanels/VBoxContainer/ScrollContainer/LevelButtonContainer/Level7Button"]
 custom_minimum_size = Vector2(0, 500)
-layout_mode = 2
+layout_mode = 0
 offset_left = 186.0
 offset_top = 50.0
 offset_right = 314.0
 offset_bottom = 550.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
-texture = ExtResource("5_sc7fl")
+texture = ExtResource("8_hxra3")
 stretch_mode = 2
 
-[node name="LevelNameLabel" type="Label" parent="LevelPanels/VBoxContainer/ScrollContainer/HBoxContainer/Level7Button"]
+[node name="LevelNameLabel" type="Label" parent="LevelPanels/VBoxContainer/ScrollContainer/LevelButtonContainer/Level7Button"]
 custom_minimum_size = Vector2(0, 75)
-layout_mode = 2
+layout_mode = 0
 offset_top = 248.0
 offset_right = 500.0
 offset_bottom = 352.0
-theme = ExtResource("3_lpyf1")
+theme = ExtResource("9_plf4j")
 text = "The Void Realm (Endless)"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="LevelNumLabel" type="Label" parent="LevelPanels/VBoxContainer/ScrollContainer/HBoxContainer/Level7Button"]
+[node name="LevelNumLabel" type="Label" parent="LevelPanels/VBoxContainer/ScrollContainer/LevelButtonContainer/Level7Button"]
 custom_minimum_size = Vector2(400, 100)
 layout_mode = 1
 anchors_preset = 7
@@ -627,13 +626,13 @@ offset_top = -49.0
 offset_right = 20.0
 grow_horizontal = 2
 grow_vertical = 0
-theme = ExtResource("3_lpyf1")
+theme = ExtResource("9_plf4j")
 text = "Level 7"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="DimOverlay" type="ColorRect" parent="LevelPanels/VBoxContainer/ScrollContainer/HBoxContainer/Level7Button"]
+[node name="DimOverlay" type="ColorRect" parent="LevelPanels/VBoxContainer/ScrollContainer/LevelButtonContainer/Level7Button"]
 z_index = 100
 layout_mode = 1
 anchors_preset = 15
@@ -644,7 +643,7 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 0.862745)
 
-[node name="LockIcon" type="TextureRect" parent="LevelPanels/VBoxContainer/ScrollContainer/HBoxContainer/Level7Button/DimOverlay"]
+[node name="LockIcon" type="TextureRect" parent="LevelPanels/VBoxContainer/ScrollContainer/LevelButtonContainer/Level7Button/DimOverlay"]
 custom_minimum_size = Vector2(100, 150)
 layout_mode = 1
 anchors_preset = 8
@@ -658,7 +657,7 @@ offset_right = 20.0
 offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("8_mill3")
+texture = ExtResource("10_l1a6e")
 expand_mode = 3
 stretch_mode = 5
 
@@ -671,10 +670,10 @@ custom_minimum_size = Vector2(0, 75)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
-theme = ExtResource("3_lpyf1")
+theme = ExtResource("9_plf4j")
 text = "Go Back"
 flat = true
 
-[connection signal="pressed" from="LevelPanels/VBoxContainer/ScrollContainer/HBoxContainer/DeveloperLevelButton" to="." method="_on_developer_level_button_pressed"]
-[connection signal="pressed" from="LevelPanels/VBoxContainer/ScrollContainer/HBoxContainer/Level1Button" to="." method="_on_level_1_button_pressed"]
-[connection signal="pressed" from="LevelPanels/VBoxContainer/BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="LevelPanels/VBoxContainer/ScrollContainer/LevelButtonContainer/DeveloperLevelButton" to="." method="on_developer_level_btn"]
+[connection signal="pressed" from="LevelPanels/VBoxContainer/ScrollContainer/LevelButtonContainer/Level1Button" to="." method="on_level_1_btn"]
+[connection signal="pressed" from="LevelPanels/VBoxContainer/BackButton" to="." method="on_back_btn"]

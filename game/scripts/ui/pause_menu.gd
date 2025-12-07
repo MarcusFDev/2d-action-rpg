@@ -1,37 +1,44 @@
+class_name PauseMenu
 extends Control
-@onready var pause_menu: Control = $"."
-@onready var level: Node2D = $"../../../../.."
 
+## Enables debug messages in the output terminal. [br]
+## [b]Note:[/b] Useful for development and troubleshooting.
+@export var enable_debug: bool = false
+
+# Script Variables
 var paused: bool = false
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta: float) -> void:
-	if Input.is_action_just_pressed("pause"):
-		the_pause_menu()
 
-func the_pause_menu() -> void:
-	if paused:
-		pause_menu.hide()
-		Engine.time_scale = 1
-	else:
-		pause_menu.show()
-		Engine.time_scale = 0
-	
+func _unhandled_input(_event: InputEvent) -> void:
+	if InputManagerClass.is_pause_pressed():
+		toggle_pause()
+		if enable_debug:
+			print("PauseMenu | Pause button press detected.")
+
+func toggle_pause() -> void:
 	paused = !paused
-
-
-func _on_resume_btn_pressed() -> void:
-	the_pause_menu()
-
-
-func _on_main_menu_btn_pressed() -> void:
-	get_tree().change_scene_to_file("res://scenes/ui/main_menu.tscn")
-
-
-func _on_restart_button_pressed() -> void:
-	var current_scene: Node = get_tree().current_scene
-	if current_scene:
-		var scene_path: String = current_scene.scene_file_path
-		# Unpause the game before restarting
+	
+	if paused:
+		self.hide()
 		Engine.time_scale = 1
-		paused = false
-		get_tree().change_scene_to_file(scene_path)
+		if enable_debug:
+			print("PauseMenu | Pause toggled off.")
+	else:
+		self.show()
+		Engine.time_scale = 0
+		if enable_debug:
+			print("PauseMenu | Pause toggled on.")
+
+func on_resume_btn() -> void:
+	toggle_pause()
+	if enable_debug:
+		print("PauseMenu | Resume button press detected.")
+
+func on_main_menu_btn() -> void:
+	GameManager.on_main_menu()
+	if enable_debug:
+		print("PauseMenu | Main Menu button press detected.")
+
+func on_restart_btn() -> void:
+	GameManager.on_restart_level()
+	if enable_debug:
+		print("PauseMenu | Restart Game button press detected.")
