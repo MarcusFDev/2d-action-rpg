@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="First Game v0.2"
-run/main_scene="uid://d0k7ow6ig35r4"
+run/main_scene="uid://4gf4elb356ds"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://assets/images/icon.ico"
 
@@ -22,9 +22,9 @@ buses/default_bus_layout="res://scenes/music/music_controls.tres"
 [autoload]
 
 Music="*res://scenes/music/music.tscn"
-GameManager="*res://scripts/core/system_managers/game_manager.gd"
 InputManager="*res://scripts/core/system_managers/input_manager.gd"
 SignalBus="*res://scripts/core/system_managers/signal_bus.gd"
+Global="*res://scripts/core/global.gd"
 
 [debug]
 
