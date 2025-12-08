@@ -6,7 +6,7 @@ extends Control
 @export var enable_debug: bool = false
 
 func _unhandled_input(_event: InputEvent) -> void:
-	if InputManagerClass.is_pause_pressed():
+	if Global.input_manager.is_pause_pressed():
 		Global.ui_manager.on_pause_menu()
 		if enable_debug:
 			print("PauseMenu | Pause button press detected.")

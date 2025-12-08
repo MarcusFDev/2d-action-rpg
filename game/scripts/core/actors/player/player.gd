@@ -35,15 +35,15 @@ func _idle_state() -> void:
 			if idle_state.enable_debug:
 				print("Player cannot detect floor. Switching to: ", fall_state)
 			return fall_state
-		if InputManagerClass.is_jump_pressed() and jump_comp.can_jump():
+		if Global.input_manager.is_jump_pressed() and jump_comp.can_jump():
 			if idle_state.enable_debug:
 				print("Player Jump Key detected. Switching to: ", jump_state)
 			return jump_state
-		if InputManagerClass.get_movement_axis() != 0:
+		if Global.input_manager.get_movement_axis() != 0:
 			if idle_state.enable_debug:
 				print("Player Move Key detected. Switching to: ", move_state)
 			return move_state
-		if InputManagerClass.is_attack_pressed():
+		if Global.input_manager.is_attack_pressed():
 			return attack_state
 		return null
 
@@ -55,7 +55,7 @@ func _move_state() -> void:
 				print("Player cannot detect floor. Switching to: ", fall_state)
 			return fall_state
 		
-		var input_direction: float = InputManagerClass.get_movement_axis()
+		var input_direction: float = Global.input_manager.get_movement_axis()
 		if input_direction != 0:
 			movement_comp.set_direction(Vector2((input_direction), 0))
 		else:
@@ -68,19 +68,19 @@ func _move_state() -> void:
 				print("Player Movement ended. Switching to:", idle_state)
 			return idle_state
 		
-		if InputManagerClass.is_jump_pressed() and jump_comp.can_jump():
+		if Global.input_manager.is_jump_pressed() and jump_comp.can_jump():
 			if move_state.enable_debug:
 				print("Player Jump Key detected. Switching to: ", jump_state)
 			return jump_state
 		
-		if InputManagerClass.is_attack_pressed():
+		if Global.input_manager.is_attack_pressed():
 			return attack_state
 
 		return null
 
 func _jump_state() -> void:
 	jump_state.handle_physics = func(_delta: float) -> State:
-		var input_direction: float = InputManagerClass.get_movement_axis()
+		var input_direction: float = Global.input_manager.get_movement_axis()
 		if input_direction != 0:
 			var movement: float = input_direction * movement_comp.move_speed 
 			velocity.x = lerp(velocity.x, movement, 0.1)
@@ -94,11 +94,11 @@ func _jump_state() -> void:
 
 func _fall_state() -> void:
 	fall_state.handle_physics = func(_delta: float) -> State:
-		var input_direction: float = InputManagerClass.get_movement_axis()
+		var input_direction: float = Global.input_manager.get_movement_axis()
 		var target_speed: float = input_direction * movement_comp.move_speed
 		velocity.x = lerp(velocity.x, target_speed, 0.1)
 		
-		if InputManagerClass.is_jump_pressed() and jump_comp.can_jump():
+		if Global.input_manager.is_jump_pressed() and jump_comp.can_jump():
 			if move_state.enable_debug:
 				print("Player Jump Key detected. Switching to: ", jump_state)
 			return jump_state
@@ -118,38 +118,38 @@ func _fall_state() -> void:
 
 func _heal_state() -> void:
 	heal_state.handle_physics = func(_delta: float) -> State:
-		var input_direction: float = InputManagerClass.get_movement_axis()
+		var input_direction: float = Global.input_manager.get_movement_axis()
 		if input_direction == 0:
 			if heal_state.enable_debug:
 				print("Player Idling detected. switching to: ", idle_state)
 			return idle_state
 		
-		if InputManagerClass.is_jump_pressed() and jump_comp.can_jump():
+		if Global.input_manager.is_jump_pressed() and jump_comp.can_jump():
 			if heal_state.enable_debug:
 				print("Player Jump Key detected. Switching to: ", jump_state)
 			return jump_state
-		if InputManagerClass.get_movement_axis() != 0:
+		if Global.input_manager.get_movement_axis() != 0:
 			if heal_state.enable_debug:
 				print("Player Move Key detected. Switching to: ", move_state)
 			return move_state
-		if InputManagerClass.is_attack_pressed():
+		if Global.input_manager.is_attack_pressed():
 			return attack_state
 		
 		return null
 
 func _injured_state() -> void:
 	injured_state.handle_physics = func(_delta: float) -> State:
-		var input_direction: float = InputManagerClass.get_movement_axis()
+		var input_direction: float = Global.input_manager.get_movement_axis()
 		if input_direction == 0:
 			if injured_state.enable_debug:
 				print("Player Idling detected. switching to: ", idle_state)
 			return idle_state
 		
-		if InputManagerClass.is_jump_pressed() and jump_comp.can_jump():
+		if Global.input_manager.is_jump_pressed() and jump_comp.can_jump():
 			if injured_state.enable_debug:
 				print("Player Jump Key detected. Switching to: ", jump_state)
 			return jump_state
-		if InputManagerClass.get_movement_axis() != 0:
+		if Global.input_manager.get_movement_axis() != 0:
 			if injured_state.enable_debug:
 				print("Player Move Key detected. Switching to: ", move_state)
 			return move_state
