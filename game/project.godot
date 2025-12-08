@@ -21,7 +21,6 @@ buses/default_bus_layout="res://scenes/music/music_controls.tres"
 
 [autoload]
 
-Music="*res://scenes/music/music.tscn"
 Global="*res://scripts/core/global.gd"
 
 [debug]

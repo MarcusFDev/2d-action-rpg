@@ -11,3 +11,4 @@ var ui_manager: Node
 var game_manager: Node
 var event_manager: Node
 var input_manager: Node
+var audio_manager: Node

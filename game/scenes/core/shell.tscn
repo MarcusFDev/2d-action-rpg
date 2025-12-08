@@ -1,8 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://4gf4elb356ds"]
+[gd_scene load_steps=7 format=3 uid="uid://4gf4elb356ds"]
 
 [ext_resource type="PackedScene" uid="uid://dxfqo0inurxu8" path="res://scenes/ui/ui_manager.tscn" id="2_78ocq"]
 [ext_resource type="Script" uid="uid://du7wmcjunx0o7" path="res://scripts/core/system_managers/event_manager.gd" id="2_484dk"]
 [ext_resource type="Script" uid="uid://cxn04bicrxv54" path="res://scripts/core/system_managers/game_manager.gd" id="2_jgybe"]
+[ext_resource type="Script" uid="uid://cl2t5qfaumqhs" path="res://scripts/core/system_managers/audio_manager.gd" id="3_ethxi"]
+[ext_resource type="PackedScene" uid="uid://0hi3k4acis7c" path="res://scenes/music/audio_manager.tscn" id="3_qndu6"]
 [ext_resource type="Script" uid="uid://bsni7g5nv5cm3" path="res://scripts/core/system_managers/input_manager.gd" id="4_484dk"]
 
 [node name="Shell" type="Node"]
@@ -11,6 +13,9 @@
 
 [node name="GameManager" type="Node" parent="."]
 script = ExtResource("2_jgybe")
+
+[node name="AudioManager" parent="." instance=ExtResource("3_qndu6")]
+script = ExtResource("3_ethxi")
 
 [node name="EventManager" type="Node" parent="."]
 script = ExtResource("2_484dk")
