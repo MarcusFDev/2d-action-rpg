@@ -1,0 +1,49 @@
+[gd_scene load_steps=9 format=3 uid="uid://dxfqo0inurxu8"]
+
+[ext_resource type="Script" uid="uid://bykpseimp4pb7" path="res://scripts/core/system_managers/ui_manager.gd" id="1_di16j"]
+[ext_resource type="PackedScene" uid="uid://djt4jaxstqp53" path="res://scenes/ui/huds/player_hud.tscn" id="1_ybivm"]
+[ext_resource type="PackedScene" uid="uid://d0k7ow6ig35r4" path="res://scenes/ui/menus/main_menu.tscn" id="2_di16j"]
+[ext_resource type="PackedScene" uid="uid://3qwe5nmnoejx" path="res://scenes/ui/menus/pause_menu.tscn" id="3_eb6af"]
+[ext_resource type="PackedScene" uid="uid://c0kyicitd13x6" path="res://scenes/ui/menus/level_pick_menu.tscn" id="4_gxop1"]
+[ext_resource type="PackedScene" uid="uid://cecmvrsqr2wb6" path="res://scenes/ui/menus/settings_menu.tscn" id="5_2w6d4"]
+[ext_resource type="PackedScene" uid="uid://dag3tmihu1pds" path="res://scenes/ui/menus/credits_menu.tscn" id="6_aabq4"]
+[ext_resource type="PackedScene" uid="uid://ddx81y73wlc8s" path="res://scenes/ui/menus/game_over_menu.tscn" id="7_a7jeg"]
+
+[node name="UIManager" type="Node" node_paths=PackedStringArray("main_menu", "pause_menu", "level_pick_menu", "settings_menu", "credits_menu", "game_over_menu")]
+script = ExtResource("1_di16j")
+main_menu = NodePath("CanvasLayer/Menus/MainMenu")
+pause_menu = NodePath("CanvasLayer/Menus/PauseMenu")
+level_pick_menu = NodePath("CanvasLayer/Menus/LevelPickMenu")
+settings_menu = NodePath("CanvasLayer/Menus/SettingsMenu")
+credits_menu = NodePath("CanvasLayer/Menus/CreditsMenu")
+game_over_menu = NodePath("CanvasLayer/Menus/GameOverMenu")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Huds" type="Node" parent="CanvasLayer"]
+
+[node name="PlayerHud" parent="CanvasLayer/Huds" instance=ExtResource("1_ybivm")]
+offset_left = -3840.0
+offset_right = -3840.0
+
+[node name="Menus" type="Node" parent="CanvasLayer"]
+
+[node name="MainMenu" parent="CanvasLayer/Menus" instance=ExtResource("2_di16j")]
+visible = false
+
+[node name="PauseMenu" parent="CanvasLayer/Menus" instance=ExtResource("3_eb6af")]
+size_flags_vertical = 4
+
+[node name="LevelPickMenu" parent="CanvasLayer/Menus" instance=ExtResource("4_gxop1")]
+visible = false
+
+[node name="SettingsMenu" parent="CanvasLayer/Menus" instance=ExtResource("5_2w6d4")]
+visible = false
+
+[node name="CreditsMenu" parent="CanvasLayer/Menus" instance=ExtResource("6_aabq4")]
+visible = false
+size_flags_horizontal = 0
+size_flags_vertical = 4
+
+[node name="GameOverMenu" parent="CanvasLayer/Menus" instance=ExtResource("7_a7jeg")]
+visible = false
