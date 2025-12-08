@@ -66,7 +66,7 @@ func on_animation_finished() -> void:
 		if enable_debug:
 			print(actor.name, " | DeathState: Animation finished.")
 		animation_finished = true
-		SignalBus.actor_died.emit(actor)
+		Global.event_manager.actor_died.emit(actor)
 
 func exit() -> void:
 	if enable_debug:

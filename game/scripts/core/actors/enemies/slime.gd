@@ -16,7 +16,7 @@ func setup_signals() -> void:
 	hurtbox.hit_received.connect(hit_signal_receiver)
 	health_comp.health_empty.connect(death_signal_receiver)
 	ground_check_comp.actor_grounded.connect(grounded_signal_receiver)
-	SignalBus.actor_died.connect(destroy_actor)
+	Global.event_manager.actor_died.connect(destroy_actor)
 
 func setup_states() -> void:
 	state_machine.init(self, animations, blackboard)

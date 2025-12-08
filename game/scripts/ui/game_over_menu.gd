@@ -6,7 +6,7 @@ extends Control
 @export var enable_debug: bool = false
 
 func _ready() -> void:
-	SignalBus.actor_died.connect(check_actor)
+	Global.event_manager.actor_died.connect(check_actor)
 
 func check_actor(signal_actor: Node) -> void:
 	if signal_actor.is_in_group("player"):
@@ -21,6 +21,6 @@ func on_restart_btn() -> void:
 		print("GameOverMenu | Restart Game button press detected.")
 
 func on_main_menu_btn() -> void:
-	Global.game_manager.on_main_menu()
+	Global.ui_manager.on_main_menu()
 	if enable_debug:
 		print("GameOverMenu | Main Menu button press detected.")
