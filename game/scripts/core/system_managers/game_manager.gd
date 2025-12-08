@@ -47,6 +47,7 @@ func on_restart_level() -> void:
 	if current_level == null:
 		push_error("GameManager | No level to restart.")
 	
+	Global.event_manager.level_restart.emit()
 	Engine.time_scale = 1
 	load_level(current_level_path)
 	

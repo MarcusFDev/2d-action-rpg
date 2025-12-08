@@ -10,6 +10,8 @@ func _ready() -> void:
 	setup_signals()
 
 func setup_signals() -> void:
+	Global.event_manager.player_spawned.emit(self)
+	
 	pickup_permission_comp.pickup_received.connect(pickup_signal_receiver)
 	hurtbox.hit_received.connect(hit_signal_receiver)
 	health_comp.health_empty.connect(death_signal_receiver)
