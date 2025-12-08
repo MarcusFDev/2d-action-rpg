@@ -1,4 +1,4 @@
-@icon("uid://btueibqdabkmv")
+@icon("uid://nh84ga4kp4vf")
 class_name UIManager
 extends Node
 

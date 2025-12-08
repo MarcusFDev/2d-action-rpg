@@ -1,4 +1,4 @@
-@icon("uid://dafrs6n457wu")
+@icon("uid://ckotdynk5obmx")
 class_name EventManager
 extends Node
 
