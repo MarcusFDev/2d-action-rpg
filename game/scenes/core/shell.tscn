@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://4gf4elb356ds"]
+[gd_scene load_steps=4 format=3 uid="uid://4gf4elb356ds"]
 
 [ext_resource type="PackedScene" uid="uid://dxfqo0inurxu8" path="res://scenes/ui/ui_manager.tscn" id="2_78ocq"]
+[ext_resource type="Script" uid="uid://du7wmcjunx0o7" path="res://scripts/core/system_managers/event_manager.gd" id="2_484dk"]
 [ext_resource type="Script" uid="uid://cxn04bicrxv54" path="res://scripts/core/system_managers/game_manager.gd" id="2_jgybe"]
 
 [node name="Shell" type="Node"]
@@ -9,5 +10,8 @@
 
 [node name="GameManager" type="Node" parent="."]
 script = ExtResource("2_jgybe")
+
+[node name="EventManager" type="Node" parent="."]
+script = ExtResource("2_484dk")
 
 [node name="LevelRoot" type="Node" parent="."]
