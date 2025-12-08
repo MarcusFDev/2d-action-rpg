@@ -1,59 +1,56 @@
+class_name GameManager
 extends Node
-
-# ===============================
-# ===== Game Manager Script =====
-# ===============================
 
 ## Enables debug messages in the output terminal. [br]
 ## [b]Note:[/b] Useful for development and troubleshooting.
 @export var enable_debug: bool = false
 
 #Script Variables
-var current_scene: String
-var previous_scene: String
+var current_level: Node = null
+var current_level_path: String
 
-func _ready() -> void:
-	var scene: Variant = get_tree().current_scene
-	if scene:
-		current_scene = scene.scene_file_path
+# ===============================
+# ==== Manager Intialization ====
+# ===============================
 
-func change_scene(path: String) -> void:
-	previous_scene = current_scene
-	current_scene = path
+func _enter_tree() -> void:
+	Global.game_manager = self
 
-	get_tree().change_scene_to_file(path)
+# ==========================
+# ===== Level Handling =====
+# ==========================
 
+func load_level(path: String) -> void:
+	if current_level != null:
+		current_level.queue_free()
+		current_level = null
+	
+	current_level_path = path
+	
+	var scene_res: Variant = ResourceLoader.load(path)
+	if scene_res == null:
+		push_error("GameManager | Failed to load level: " + path)
+		return
+	
+	current_level = scene_res.instantiate()
+	
+	var level_root: Variant = get_tree().root.get_node("Shell/LevelRoot")
+	level_root.add_child(current_level)
+	
+	Global.ui_manager.on_hide_menu()
+	
 	if enable_debug:
-		print("GameManager | Scene changed to:", path)
-
-# ==============================
-# ==== Menu Button Handling ====
-# ==============================
-
-func on_main_menu() -> void:
-	Engine.time_scale = 1
-	change_scene("res://scenes/ui/main_menu.tscn")
-
-func on_level_pick_menu() -> void:
-	Engine.time_scale = 1
-	change_scene("res://scenes/ui/level_pick_menu.tscn")
-
-func on_settings_menu() -> void:
-	Engine.time_scale = 1
-	change_scene("res://scenes/ui/settings_menu.tscn")
-
-func on_credits_menu() -> void:
-	Engine.time_scale = 1
-	change_scene("res://scenes/ui/credits_menu.tscn")
-
-func on_back_btn() -> void:
-	change_scene(previous_scene)
+		print("GameManager | Level loaded:", path)
 
 func on_restart_level() -> void:
+	if current_level == null:
+		push_error("GameManager | No level to restart.")
+	
 	Engine.time_scale = 1
-	get_tree().reload_current_scene()
+	load_level(current_level_path)
+	
 	if enable_debug:
-		print("GameManager | Reloading Game scene.")
+		print("GameManager | Restarting level: ", current_level)
 
 func on_game_exit() -> void:
 	get_tree().quit()
