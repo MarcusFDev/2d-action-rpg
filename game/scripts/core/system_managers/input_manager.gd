@@ -1,5 +1,17 @@
-class_name InputManagerClass
+@icon("uid://dk648n4k6swil")
+class_name InputManager
 extends Node
+
+## Enables debug messages in the output terminal. [br]
+## [b]Note:[/b] Useful for development and troubleshooting.
+@export var enable_debug: bool = false
+
+# ===============================
+# ==== Manager Intialization ====
+# ===============================
+
+func _enter_tree() -> void:
+	Global.input_manager = self
 
 static func is_jump_pressed() -> bool:
 	return Input.is_action_just_pressed("jump")
