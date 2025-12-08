@@ -1,3 +1,4 @@
+@icon("uid://d3ms52dafhodm")
 class_name GameManager
 extends Node
 
