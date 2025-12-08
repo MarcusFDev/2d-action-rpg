@@ -1,12 +1,10 @@
 class_name PlayerHUD
 extends Control
 
-@export var actor_path: NodePath
+## Enables debug messages in the output terminal. [br]
+## [b]Note:[/b] Useful for development and troubleshooting.
 @export var enable_debug: bool = false
 
-@export_category("HUD Settings")
-
-@onready var actor: Node = get_node_or_null(actor_path)
 @onready var hearts: Array[AnimatedSprite2D] = [
 	$HealthBar/Heart1,
 	$HealthBar/Heart2,
@@ -19,18 +17,20 @@ extends Control
 	$HealthBar/Heart9
 	]
 
+var player: CharacterBody2D
 
 func _ready() -> void:
-	if not actor:
-		push_warning("PlayerHUD: No actor assigned.")
+	player = get_tree().get_first_node_in_group("player")
+	if player == null:
+		push_warning("PlayerHUD: No player found in group 'player'.")
 		return
 
-	var health_component: Component = actor.get_node_or_null("Components/HealthComponent")
+	var health_component: Component = player.get_node_or_null("Components/HealthComponent")
 	if health_component:
 		health_component.update_health.connect(update_health_bar)
 		init_health_bar(health_component.current_health)
 	else:
-		push_warning("PlayerHUD: Actor has no HealthComponent.")
+		push_warning("PlayerHUD: Player has no HealthComponent.")
 
 func init_health_bar(current_health: float) -> void:
 	for i: float in hearts.size():

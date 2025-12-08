@@ -6,21 +6,21 @@ extends Control
 @export var enable_debug: bool = false
 
 func on_play_btn() -> void:
-	GameManager.on_level_pick_menu()
+	Global.ui_manager.on_level_pick_menu()
 	if enable_debug:
 		print("MainMenu | Play button press detected.")
 
 func on_settings_btn() -> void:
-	GameManager.on_settings_menu()
+	Global.ui_manager.on_settings_menu()
 	if enable_debug:
 		print("MainMenu | Settings button press detected.")
 
 func on_credits_btn() -> void:
-	GameManager.on_credits_menu()
+	Global.ui_manager.on_credits_menu()
 	if enable_debug:
 		print("MainMenu | Credits button press detected.")
 
 func on_quit_btn() -> void:
-	GameManager.on_game_exit()
+	Global.game_manager.on_game_exit()
 	if enable_debug:
 		print("MainMenu | Game Exit button press detected.")

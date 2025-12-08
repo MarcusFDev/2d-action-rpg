@@ -6,4 +6,4 @@ extends Control
 @export var enable_debug: bool = false
 
 func on_back_btn() -> void:
-	GameManager.on_back_btn()
+	Global.ui_manager.on_back_btn()

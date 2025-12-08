@@ -31,18 +31,18 @@ func level_pick_menu() -> void:
 			lock_icon.visible = is_locked
 
 func on_back_btn() -> void:
-	GameManager.on_back_btn()
 	if enable_debug:
 		print("LevelPickMenu | Back button press detected.")
+	Global.ui_manager.on_back_btn()
 
 func on_developer_level_btn() -> void:
-	Engine.time_scale = 1
-	GameManager.change_scene("res://scenes/levels/developer_level.tscn")
 	if enable_debug:
 		print("LevelPickMenu | DeveloperLevel button press detected.")
-
-func on_level_1_btn() -> void:
 	Engine.time_scale = 1
-	GameManager.change_scene("res://scenes/levels/tutorial_level.tscn")
+	Global.game_manager.load_level("res://scenes/levels/developer_level.tscn")
+	
+func on_level_1_btn() -> void:
 	if enable_debug:
 		print("LevelPickMenu | Level1 button press detected.")
+	Engine.time_scale = 1
+	Global.game_manager.load_level("res://scenes/levels/tutorial_level.tscn")
