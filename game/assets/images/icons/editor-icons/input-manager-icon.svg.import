@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ckotdynk5obmx"
-path="res://.godot/imported/event-manager-icon.svg-d235df7003786f532e1af0490edd9492.ctex"
+uid="uid://dk648n4k6swil"
+path="res://.godot/imported/input-manager-icon.svg-3d48993eae262e63fc81f799e888b5b0.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/images/icons/editor-icons/event-manager-icon.svg"
-dest_files=["res://.godot/imported/event-manager-icon.svg-d235df7003786f532e1af0490edd9492.ctex"]
+source_file="res://assets/images/icons/editor-icons/input-manager-icon.svg"
+dest_files=["res://.godot/imported/input-manager-icon.svg-3d48993eae262e63fc81f799e888b5b0.ctex"]
 
 [params]
 
