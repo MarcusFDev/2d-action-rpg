@@ -22,7 +22,6 @@ buses/default_bus_layout="res://scenes/music/music_controls.tres"
 [autoload]
 
 Music="*res://scenes/music/music.tscn"
-InputManager="*res://scripts/core/system_managers/input_manager.gd"
 Global="*res://scripts/core/global.gd"
 
 [debug]
