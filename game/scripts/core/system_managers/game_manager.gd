@@ -6,6 +6,11 @@ extends Node
 ## [b]Note:[/b] Useful for development and troubleshooting.
 @export var enable_debug: bool = false
 
+@export_category("Manager Settings")
+## Assign a Node container the Node2D level scene instantiates inside of
+## within the Shell scene.
+@export var level_root: Node
+
 #Script Variables
 var current_level: Node = null
 var current_level_path: String
@@ -34,8 +39,6 @@ func load_level(path: String) -> void:
 		return
 	
 	current_level = scene_res.instantiate()
-	
-	var level_root: Variant = get_tree().root.get_node("Shell/LevelRoot")
 	level_root.add_child(current_level)
 	
 	Global.ui_manager.on_hide_menu()

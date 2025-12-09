@@ -10,8 +10,9 @@
 
 [node name="UIManager" parent="." instance=ExtResource("2_78ocq")]
 
-[node name="GameManager" type="Node" parent="."]
+[node name="GameManager" type="Node" parent="." node_paths=PackedStringArray("level_root")]
 script = ExtResource("2_jgybe")
+level_root = NodePath("../LevelRoot")
 
 [node name="AudioManager" parent="." instance=ExtResource("3_qndu6")]
 
