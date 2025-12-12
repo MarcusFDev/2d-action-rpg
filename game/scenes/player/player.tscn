@@ -254,7 +254,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_hir57")
 }],
 "loop": false,
-"name": &"attack_1",
+"name": &"player_attack",
 "speed": 25.0
 }, {
 "frames": [{
@@ -453,7 +453,7 @@ health_component = NodePath("Components/HealthComponent")
 [node name="Animations" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -12)
 sprite_frames = SubResource("SpriteFrames_2hs0m")
-animation = &"player_death"
+animation = &"player_attack"
 autoplay = "player_idle"
 
 [node name="PlayerCollision" type="CollisionShape2D" parent="."]
@@ -589,11 +589,10 @@ actor_path = NodePath("../..")
 state_animation = "player_heal"
 use_parent_logic = true
 
-[node name="AttackState" type="Node" parent="StateMachine" node_paths=PackedStringArray("next_state")]
+[node name="AttackState" type="Node" parent="StateMachine"]
 script = ExtResource("17_6cv16")
-attack_animation = "attack_1"
-next_state = NodePath("../IdleState")
-hitbox_component = NodePath("../../HitBox")
+actor_path = NodePath("../..")
+use_parent_logic = true
 
 [node name="DeathState" type="Node" parent="StateMachine"]
 script = ExtResource("15_ioxgp")
@@ -602,4 +601,5 @@ state_animation = "player_death"
 
 [connection signal="animation_finished" from="Animations" to="StateMachine/InjuredState" method="on_animation_finished"]
 [connection signal="animation_finished" from="Animations" to="StateMachine/HealState" method="on_animation_finished"]
+[connection signal="animation_finished" from="Animations" to="StateMachine/AttackState" method="on_animation_finished"]
 [connection signal="animation_finished" from="Animations" to="StateMachine/DeathState" method="on_animation_finished"]

@@ -25,6 +25,7 @@ func setup_states() -> void:
 	_fall_state()
 	_heal_state()
 	_injured_state()
+	_attack_state()
 
 # ==============================
 # ===== Actor State Setup ======
@@ -141,6 +142,25 @@ func _heal_state() -> void:
 
 func _injured_state() -> void:
 	injured_state.handle_physics = func(_delta: float) -> State:
+		var input_direction: float = Global.input_manager.get_movement_axis()
+		if input_direction == 0:
+			if injured_state.enable_debug:
+				print("Player Idling detected. switching to: ", idle_state)
+			return idle_state
+		
+		if Global.input_manager.is_jump_pressed() and jump_comp.can_jump():
+			if injured_state.enable_debug:
+				print("Player Jump Key detected. Switching to: ", jump_state)
+			return jump_state
+		if Global.input_manager.get_movement_axis() != 0:
+			if injured_state.enable_debug:
+				print("Player Move Key detected. Switching to: ", move_state)
+			return move_state
+		
+		return null
+
+func _attack_state() -> void:
+	attack_state.handle_physics = func(_delta: float) -> State:
 		var input_direction: float = Global.input_manager.get_movement_axis()
 		if input_direction == 0:
 			if injured_state.enable_debug:
