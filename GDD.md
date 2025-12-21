@@ -1,4 +1,7 @@
-# ⚠️ Manifest Content to be ammended.
+# Game Design Document
+### ⚠️ Content to be ammended.
+
+***
 
 ## 🎮 Game Levels
 
